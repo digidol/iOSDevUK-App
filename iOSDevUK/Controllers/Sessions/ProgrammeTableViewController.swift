@@ -21,6 +21,8 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
     
     var selectedSessionItem: SessionItem?
     
+    var shouldScrollToCurrent: Bool = true
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -43,6 +45,16 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
         super.didReceiveMemoryWarning()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if shouldScrollToCurrent {
+            // We'd rather not animate, but how can we know when the table view knows the correct
+            // size for all the cells in order to scroll to the right place, before the view appears?
+            scrollToCurrentSession(animated: true)
+        }
+    }
+    
     // MARK: - Data Initialisation
     
     func accessDayList(withContext context: NSManagedObjectContext) -> [Day] {
@@ -84,6 +96,41 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
                 print("Unable to fetch list of sections.")
             }
         }
+    }
+    
+    /// Find the current or next session for the current set of sessions and scroll to it.
+    func scrollToCurrentSession(animated: Bool) {
+        guard let fetchedResultsController = fetchedResultsController,
+                let sections = fetchedResultsController.sections else {
+            return
+        }
+        
+        /// Find the session in the already-fetched results
+        let now = Date()
+        let nextOrCurrentSession = fetchedResultsController.fetchedObjects?.first { session in
+            guard let startTimeNSDate = session.startTime,
+                    let endTimeNSDate = session.endTime else {
+                return false
+            }
+            let startTime = startTimeNSDate as Date
+            let endTime = endTimeNSDate as Date
+            return (startTime <= now && endTime >= now) || (startTime >= now)
+        }
+        
+        /// If we found one, resolve it to a section index and row
+        if let sessionToScrollTo = nextOrCurrentSession {
+            for (sectionIndex, section) in sections.enumerated() {
+                if let rowIndex = section.objects?.firstIndex(where: {
+                    let session = $0 as! Session
+                    return session == sessionToScrollTo
+                }) {
+                    tableView.scrollToRow(at: IndexPath(row: rowIndex, section: sectionIndex), at: .top, animated: animated)
+                    break
+                }
+            }
+        }
+        
+        shouldScrollToCurrent = false
     }
     
     // MARK: - Segmented Control
