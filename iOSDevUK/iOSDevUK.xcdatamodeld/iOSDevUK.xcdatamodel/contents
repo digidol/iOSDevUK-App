@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14135" systemVersion="17G65" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="AppSetting" representedClassName="AppSetting" syncable="YES">
+        <attribute name="dateValue" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="intValue" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="note" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="stringValue" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Day" representedClassName="Day" syncable="YES">
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="sections" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Section" inverseName="day" inverseEntity="Section" syncable="YES"/>
+    </entity>
+    <entity name="Location" representedClassName="Location" syncable="YES">
+        <attribute name="active" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="frontListPosition" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="latitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="longitude" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="note" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="recordName" attributeType="String" syncable="YES"/>
+        <attribute name="shortName" attributeType="String" syncable="YES"/>
+        <attribute name="showImage" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="locationType" maxCount="1" deletionRule="Nullify" destinationEntity="LocationType" inverseName="locations" inverseEntity="LocationType" syncable="YES"/>
+        <relationship name="sessions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SessionItem" inverseName="location" inverseEntity="SessionItem" syncable="YES"/>
+        <relationship name="webLink" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WebLink" inverseName="locations" inverseEntity="WebLink" syncable="YES"/>
+    </entity>
+    <entity name="LocationType" representedClassName="LocationType" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="note" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="order" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="recordName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="locations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Location" inverseName="locationType" inverseEntity="Location" syncable="YES"/>
+    </entity>
+    <entity name="Note" representedClassName="Note" syncable="YES">
+        <attribute name="content" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastEdited" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <relationship name="sessionItem" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SessionItem" inverseName="note" inverseEntity="SessionItem" syncable="YES"/>
+    </entity>
+    <entity name="Section" representedClassName="Section" syncable="YES">
+        <attribute name="footer" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="header" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="recordName" attributeType="String" syncable="YES"/>
+        <relationship name="day" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Day" inverseName="sections" inverseEntity="Day" syncable="YES"/>
+        <relationship name="sessions" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Session" inverseName="section" inverseEntity="Session" syncable="YES"/>
+    </entity>
+    <entity name="Session" representedClassName="Session" syncable="YES">
+        <attribute name="endTime" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="recordName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="startTime" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="section" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Section" inverseName="sessions" inverseEntity="Section" syncable="YES"/>
+        <relationship name="sessionItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SessionItem" inverseName="session" inverseEntity="SessionItem" syncable="YES"/>
+    </entity>
+    <entity name="SessionItem" representedClassName="SessionItem" syncable="YES">
+        <attribute name="active" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="content" attributeType="String" syncable="YES"/>
+        <attribute name="listOnFrontScreen" optional="YES" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="order" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="recordName" attributeType="String" syncable="YES"/>
+        <attribute name="title" attributeType="String" syncable="YES"/>
+        <attribute name="type" attributeType="String" syncable="YES"/>
+        <relationship name="location" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Location" inverseName="sessions" inverseEntity="Location" syncable="YES"/>
+        <relationship name="note" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Note" inverseName="sessionItem" inverseEntity="Note" syncable="YES"/>
+        <relationship name="session" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Session" inverseName="sessionItems" inverseEntity="Session" syncable="YES"/>
+        <relationship name="speakers" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Speaker" inverseName="sessionItems" inverseEntity="Speaker" syncable="YES"/>
+        <relationship name="userSelected" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="UserSettings" inverseName="sessionItems" inverseEntity="UserSettings" syncable="YES"/>
+    </entity>
+    <entity name="Speaker" representedClassName="Speaker" syncable="YES">
+        <attribute name="biography" attributeType="String" syncable="YES"/>
+        <attribute name="linkedIn" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" attributeType="String" syncable="YES"/>
+        <attribute name="recordName" attributeType="String" syncable="YES"/>
+        <attribute name="twitterId" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="sessionItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SessionItem" inverseName="speakers" inverseEntity="SessionItem" syncable="YES"/>
+        <relationship name="webLinks" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="WebLink" inverseName="speakers" inverseEntity="WebLink" syncable="YES"/>
+    </entity>
+    <entity name="Sponsor" representedClassName="Sponsor" syncable="YES">
+        <attribute name="active" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="cellType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="image" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="note" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="recordName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sponsorCategory" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="sponsorOrder" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="tagline" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="URI" syncable="YES"/>
+    </entity>
+    <entity name="UserSettings" representedClassName="UserSettings" syncable="YES">
+        <attribute name="showMySchedulePrompt" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="sessionItems" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="SessionItem" inverseName="userSelected" inverseEntity="SessionItem" syncable="YES"/>
+    </entity>
+    <entity name="WebLink" representedClassName="WebLink" syncable="YES">
+        <attribute name="active" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="recordName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="URI" syncable="YES"/>
+        <relationship name="locations" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Location" inverseName="webLink" inverseEntity="Location" syncable="YES"/>
+        <relationship name="speakers" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Speaker" inverseName="webLinks" inverseEntity="Speaker" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="AppSetting" positionX="-639" positionY="-18" width="128" height="120"/>
+        <element name="Day" positionX="-459" positionY="-279" width="128" height="75"/>
+        <element name="Location" positionX="-243" positionY="126" width="128" height="225"/>
+        <element name="LocationType" positionX="-416" positionY="252" width="128" height="120"/>
+        <element name="Note" positionX="-119" positionY="-198" width="128" height="88"/>
+        <element name="Section" positionX="-452" positionY="-162" width="128" height="135"/>
+        <element name="Session" positionX="-443" positionY="0" width="128" height="150"/>
+        <element name="SessionItem" positionX="-245" positionY="-108" width="128" height="225"/>
+        <element name="Speaker" positionX="-18" positionY="-36" width="128" height="150"/>
+        <element name="Sponsor" positionX="-639" positionY="-225" width="128" height="195"/>
+        <element name="UserSettings" positionX="-432" positionY="-126" width="128" height="75"/>
+        <element name="WebLink" positionX="-36" positionY="198" width="128" height="135"/>
+    </elements>
+</model>
