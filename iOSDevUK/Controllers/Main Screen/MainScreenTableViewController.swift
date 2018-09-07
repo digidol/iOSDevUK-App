@@ -39,7 +39,7 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
         
         initialiseAutomaticTableCellHeight(50.0)
         
-        //setAlternativeTime(time: "2018-09-02T15:14:00+01:00")
+        setAlternativeTime(time: "2018-09-07T15:14:00+01:00")
     }
     
     func setAlternativeTime(time: String) {
@@ -108,7 +108,6 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     // MARK: - Table view data source
@@ -136,16 +135,14 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
         
         if let date = conferenceDate() {
             if date.conferenceDateStatus() == .beforeConference {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "outOfConfernceMessage", for: indexPath) as! MainScreenMessageTableViewCell
-                cell.messageLabel.numberOfLines = 0
+                let cell = tableView.dequeueReusableCell(withIdentifier: "outOfConferenceMessage", for: indexPath) as! MainScreenMessageTableViewCell
                 cell.messageLabel.text = "We start in \(date.timeToStartAsString())"
                 cell.logoView.image = UIImage(named: "DefaultImage")
                 return cell
             }
             else if date.conferenceDateStatus() == .afterConference {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "outOfConfernceMessage", for: indexPath) as! MainScreenMessageTableViewCell
-                cell.messageLabel.numberOfLines = 0
-                cell.textLabel?.text = "iOSDevUK 8 has finished. Follow @iOSDevUK for details about next year"
+                let cell = tableView.dequeueReusableCell(withIdentifier: "outOfConferenceMessage", for: indexPath) as! MainScreenMessageTableViewCell
+                cell.messageLabel.text = "iOSDevUK 8 has finished. Follow @iOSDevUK for details about next year"
                 cell.logoView.image = UIImage(named: "DefaultImage")
                 return cell
             }
