@@ -15,8 +15,6 @@ class SessionItemTableViewController: IDUTableViewController {
     
     let sections = [nil, "Description", "Speaker(s)", "Location"]
     
-    // FIXME var dataManager: DataManager?
-    
     var sessionItem: IDUSessionItem?
     
     fileprivate func setupButtonState() {

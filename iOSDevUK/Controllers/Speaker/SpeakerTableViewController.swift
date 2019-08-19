@@ -14,8 +14,6 @@ class SpeakerTableViewController: IDUTableViewController, IDUDataManager {
 
     @IBOutlet weak var headerImageView: UIImageView!
     
-    //var dataManager: DataManager?
-    
     var selectedItem: ((Any) -> Void)?
     
     var speaker: IDUSpeaker?
@@ -108,23 +106,6 @@ class SpeakerTableViewController: IDUTableViewController, IDUDataManager {
                 }*/
             }
             
-            
-            
-            
-            
-            let sortDescriptor = NSSortDescriptor(key: "session.startTime", ascending: true)
-            //FIXME
-            /*if let sortedArray = speaker?.sessionItems?.sortedArray(using: [sortDescriptor]) as? [SessionItem] {
-                cell.sessionItem = sortedArray[indexPath.row]
-                if callingSessionItem == sortedArray[indexPath.row] {
-                    cell.isUserInteractionEnabled = false
-                    cell.accessoryType = .none
-                }
-                else {
-                    cell.isUserInteractionEnabled = true
-                    cell.accessoryType = .disclosureIndicator
-                }
-            }*/
             return cell
         }
         
@@ -145,14 +126,9 @@ class SpeakerTableViewController: IDUTableViewController, IDUDataManager {
         
         if let sessionItemController = segue.destination as? SessionItemTableViewController {
             
-            // FIXME sessionItemController.dataManager = dataManager
-            
-            if let indexPath = tableView.indexPathForSelectedRow {
-                let sortDescriptor = NSSortDescriptor(key: "session.startTime", ascending: true)
-                //FIXME
-                //if let sortedArray = speaker?.sessionItems?.sortedArray(using: [sortDescriptor]) as? [SessionItem] {
-                //    sessionItemController.sessionItem = sortedArray[indexPath.row]
-                //}
+            if let indexPath = tableView.indexPathForSelectedRow,
+               let sortedSessionItems = speaker?.sessionItems.sorted(by: { $0.session.startTime < $1.session.startTime}) {
+                sessionItemController.sessionItem = sortedSessionItems[indexPath.row]
             }
         }
     }

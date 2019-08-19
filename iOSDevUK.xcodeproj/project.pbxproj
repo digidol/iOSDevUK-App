@@ -726,7 +726,7 @@
 				CURRENT_PROJECT_VERSION = 2019.08.16.1;
 				DEVELOPMENT_TEAM = NNN4GFZ9C2;
 				INFOPLIST_FILE = iOSDevUK/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -748,7 +748,7 @@
 				CURRENT_PROJECT_VERSION = 2019.08.16.1;
 				DEVELOPMENT_TEAM = NNN4GFZ9C2;
 				INFOPLIST_FILE = iOSDevUK/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

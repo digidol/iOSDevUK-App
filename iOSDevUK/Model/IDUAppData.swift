@@ -80,6 +80,19 @@ class IDUSession {
         print("de-initialising IDUSession \(recordName)")
         sessionItems.removeAll()
     }
+    
+    func sessionItem(atPosition position: Int) -> IDUSessionItem? {
+    
+        // filter to remove possible session items where location is nil, before sorting
+        let items = sessionItems.filter( { $0.location != nil } ).sorted(by: {
+            $0.location!.recordName > $1.location!.recordName
+        })
+        
+        if position < items.count {
+            return items[position]
+        }
+        return nil
+    }
 }
 
 enum IDUSessionItemType: String, Codable {
@@ -90,6 +103,8 @@ enum IDUSessionItemType: String, Codable {
     case lunch
     case talk
     case workshop
+    case social
+    case dinner
 }
 
 class IDUSessionItem {
@@ -117,7 +132,6 @@ class IDUSessionItem {
     
     deinit {
         print("de-initialising IDUSessionItem \(recordName)")
-        location = nil
         speakers.removeAll()
     }
     

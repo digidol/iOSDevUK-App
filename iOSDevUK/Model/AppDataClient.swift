@@ -33,7 +33,8 @@ class AppDataClient {
      */
     init(dataVersion: Int?) {
         self.dataVersion = dataVersion
-        self.apiBaseUrl = URL(string: "http://localhost/iosdevuk_server/api/")
+        //self.apiBaseUrl = URL(string: "http://localhost/iosdevuk_server/api/")
+        self.apiBaseUrl = URL(string: "https://teaching.dcs.aber.ac.uk/iosdevuk/api/")
     }
     
     /**
@@ -56,8 +57,8 @@ class AppDataClient {
                 do {
                     let decoder = JSONDecoder()
                     decoder.dateDecodingStrategy = .iso8601
-                    let data = try decoder.decode(ServerMetadata.self, from: downloadedData)
-                    processor(data)
+                    let decodedData = try decoder.decode(ServerMetadata.self, from: downloadedData)
+                    processor(decodedData)
                 }
                 catch let error as NSError {
                     print("There was an error: \(error)")

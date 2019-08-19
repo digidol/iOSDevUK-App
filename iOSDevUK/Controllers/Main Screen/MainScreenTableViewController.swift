@@ -63,56 +63,6 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
     }
     
     /**
-     Runs a process to setup the data. This will start a background task
-     that checks for existing data and then, if necessary, performs updates
-     to the database.
-     
-     This is done on a background task with a new child context
-     to avoid thread errors with manipulating the data store for update and display
-     at the same time.
-     
-     The final task of this function is to reload the data in the table.
-     */
-    /*func setupData() {
-        if let manager = dataManager {
-            manager.persistentContainer.performBackgroundTask { context in
-                
-                ////////////////////////////////////////////////////////////
-                // FIXME - remember to not ship with this statement enabled
-                //manager.clearAllData(inContext: context)
-                ////////////////////////////////////////////////////////////
-                
-                var dataModelVersion = AppSetting.dataModelVersion(inContext: context)
-                if dataModelVersion == 0 {
-                    print("DataSetup --> initialising the data")
-                    manager.initialiseData(inContext: context)
-                }
-                
-                dataModelVersion = AppSetting.dataModelVersion(inContext: context)
-                if dataModelVersion == 20180815 {
-                    print("DataSetup --> will update to 20180823")
-                    manager.updateData(withIdentifier: 20180823, inContext: context)
-                }
-                
-                dataModelVersion = AppSetting.dataModelVersion(inContext: context)
-                if dataModelVersion == 20180823 {
-                    print("DataSetup --> ** will update to 20180831")
-                    manager.updateData(withIdentifier: 20180831, inContext: context)
-                }
-                
-                dataModelVersion = AppSetting.dataModelVersion(inContext: context)
-                if dataModelVersion == 20180831 {
-                    print("DataSetup -> no further update")
-                }
-                
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-            }
-        }
-    }*/
-    
-    /**
      Show the screen, making sure that the table data is re-displayed.
      */
     override func viewWillAppear(_ animated: Bool) {
@@ -188,7 +138,6 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
         let sessionItemCell = tableView.dequeueReusableCell(withIdentifier: "sessionItems", for: indexPath) as! SessionItemsTableViewCell
         
         if let manager = appDataManager {
-            //sessionItemCell.dataManager = manager
             sessionItemCell.setup(sessionItems: manager.sessionItems())
             sessionItemCell.selectedItem = {
                 item in
@@ -204,7 +153,6 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
         let speakerCell = tableView.dequeueReusableCell(withIdentifier: "speakers", for: indexPath) as! SpeakersTableViewCell
         
         if let manager = appDataManager {
-            //speakerCell.collectionDataManager = SpeakerImageTextCollectionViewCellDataManager(dataManager: manager)
             speakerCell.speakers = manager.speakers()
             speakerCell.selectedItem = {
                 item in
@@ -314,7 +262,7 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
             //mapLocationsController.dataManager = dataManager
         }
         else if let programmeController = segue.destination as? ProgrammeTableViewController {
-            //programmeController.dataManager = dataManager
+            programmeController.days = appDataManager?.days() ?? []
         }
         else if let myScheduleController = segue.destination as? MyScheduleTableViewController {
             //myScheduleController.dataManager = dataManager

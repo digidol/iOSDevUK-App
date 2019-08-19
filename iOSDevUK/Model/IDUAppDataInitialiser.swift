@@ -10,7 +10,7 @@ import Foundation
 
 class IDUAppDataInitialiser {
 
-    var serverData: ServerAppData
+    private var serverData: ServerAppData
     
     var dayList = [IDUDay]()
     
@@ -163,7 +163,7 @@ class IDUAppDataInitialiser {
         }
     }
     
-    func processLocations(locationTypes locationTypes: [IDULocationType], links webLinks: [String:IDUWebLink]) -> [IDULocation] {
+    func processLocations(locationTypes: [IDULocationType], links webLinks: [String:IDUWebLink]) -> [IDULocation] {
         
         var dictionary = [String:IDULocationType]()
                 
