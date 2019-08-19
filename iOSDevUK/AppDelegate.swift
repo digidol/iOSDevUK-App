@@ -14,13 +14,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    var dataManager = DataManager()
+    var dataManager = ServerAppDataManager()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         if let rootController = self.window?.rootViewController as? UINavigationController {
             if let topController = rootController.topViewController as? MainScreenTableViewController {
-                topController.dataManager = dataManager
+                topController.appDataManager = dataManager
             }
         }
         return true
@@ -46,8 +46,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        // Saves changes in the application's managed object context before the application terminates.
-        dataManager.save()
     }
     
 }

@@ -10,9 +10,9 @@ import UIKit
 
 class NowAndNextTableViewCell: UITableViewCell {
 
-    var nowSession: Session?
+    var nowSession: IDUSession?
     
-    var nextSession: Session?
+    var nextSession: IDUSession?
     
     @IBOutlet weak var collectionView: UICollectionView!
     
@@ -40,11 +40,11 @@ extension NowAndNextTableViewCell: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if section == 0 {
-            return nowSession?.sessionItems?.count ?? 1
+            return nowSession?.sessionItems.count ?? 1
         }
         
         if section == 1 {
-            return nextSession?.sessionItems?.count ?? 1
+            return nextSession?.sessionItems.count ?? 1
         }
         
         return 0
@@ -54,14 +54,14 @@ extension NowAndNextTableViewCell: UICollectionViewDataSource {
         
         cell.nowNextLabel.text = "Now"
         
-        let count = nowSession?.sessionItems?.count ?? 0
+        let count = nowSession?.sessionItems.count ?? 0
         
         if count == 0 {
             cell.title.text = "No session on at the moment."
             cell.room.text = ""
         }
         else {
-            let sessionItem = nowSession?.sessionItem(atPosition: indexPath.row)
+            let sessionItem = nowSession?.sessionItems[indexPath.row]
             cell.title.text = sessionItem?.title
             cell.room.text = sessionItem?.location?.name
         }
@@ -73,14 +73,14 @@ extension NowAndNextTableViewCell: UICollectionViewDataSource {
         
         cell.nowNextLabel.text = "Next"
         
-        let count = nextSession?.sessionItems?.count ?? 0
+        let count = nextSession?.sessionItems.count ?? 0
         
         if count == 0 {
             cell.title.text = "No more sessions follow."
             cell.room.text = ""
         }
         else {
-            let sessionItem = nextSession?.sessionItem(atPosition: indexPath.row)
+            let sessionItem = nextSession?.sessionItems[indexPath.row]
             cell.title.text = sessionItem?.title
             cell.room.text = sessionItem?.location?.name
         }

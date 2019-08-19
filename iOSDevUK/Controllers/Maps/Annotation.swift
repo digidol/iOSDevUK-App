@@ -13,7 +13,7 @@ class Annotation: NSObject, MKAnnotation {
     
     var identifier: String!
     
-    var locationDescription: String!
+    var locationDescription: String?
     
     var coordinate: CLLocationCoordinate2D
     
@@ -21,13 +21,13 @@ class Annotation: NSObject, MKAnnotation {
     
     var subtitle: String?
     
-    var location: Location
+    var location: IDULocation
     
-    init(location: Location) {
-        identifier = location.recordName!
-        locationDescription = location.note!
+    init(location: IDULocation) {
+        identifier = location.recordName
+        locationDescription = location.note
         coordinate = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
-        title = location.name!
+        title = location.name
         self.location = location
     }
 }

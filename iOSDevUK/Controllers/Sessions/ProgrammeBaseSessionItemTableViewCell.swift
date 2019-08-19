@@ -27,7 +27,7 @@ class ProgrammeBaseSessionItemTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func configure(withSession session: Session) {
+    func configure(withSession session: IDUSession) {
         let formatter = DateFormatter()
         formatter.timeZone = TimeZone(identifier: "Europe/London")
         formatter.dateFormat = "HH:mm"
@@ -47,7 +47,7 @@ class ProgrammeBaseSessionItemTableViewCell: UITableViewCell {
         }
     }
     
-    func configure(withSession session: Session, whereUserSelected isUserSelected: Bool) {
+    func configure(withSession session: IDUSession, whereUserSelected isUserSelected: Bool) {
         configure(withSession: session)
     }
     

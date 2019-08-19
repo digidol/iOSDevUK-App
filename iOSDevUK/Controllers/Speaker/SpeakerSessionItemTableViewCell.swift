@@ -15,22 +15,22 @@ class SpeakerSessionItemTableViewCell: UITableViewCell {
     @IBOutlet weak var timeStart: UILabel!
     @IBOutlet weak var title: UILabel!
     
-    var sessionItem: SessionItem? {
+    var sessionItem: IDUSessionItem? {
         didSet {
             if let sessionItem = sessionItem {
-                title.text = sessionItem.title!
+                title.text = sessionItem.title
                 
                 let formatter = DateFormatter()
                 formatter.timeZone = TimeZone(identifier: "Europe/London")
-                formatter.dateFormat = "EEE"
                 
-                if let startTime = sessionItem.session?.startTime {
-                    formatter.dateFormat = "EEE"
-                    day.text = formatter.string(from: startTime as Date)
-                    
-                    formatter.dateFormat = "HH:mm"
-                    timeStart.text = formatter.string(from: startTime as Date)
-                }
+                let startTime = sessionItem.session.startTime
+                
+                formatter.dateFormat = "EEE"
+                day.text = formatter.string(from: startTime)
+                
+                formatter.dateFormat = "HH:mm"
+                timeStart.text = formatter.string(from: startTime)
+                
                 
                 if let sessionLocation = sessionItem.location {
                     location.text = sessionLocation.name

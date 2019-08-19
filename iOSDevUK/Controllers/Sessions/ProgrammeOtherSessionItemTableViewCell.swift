@@ -22,32 +22,33 @@ class ProgrammeOtherSessionItemTableViewCell: ProgrammeBaseSessionItemTableViewC
         super.setSelected(selected, animated: animated)
     }
     
-    override func configure(withSession session: Session) {
+    override func configure(withSession session: IDUSession) {
         super.configure(withSession: session)
         
-        if let sessionItem = session.sessionItem(atPosition: 0) {
+        let sessionItem = session.sessionItems[0]
+        //let sessionItem = session.sessionItems[0] //{
             sessionTitle.text = sessionItem.title
             location.text = sessionItem.location?.shortName
             
-            if sessionItem.type == SessionType.coffeeBiscuits {
+            if sessionItem.type == IDUSessionItemType.coffeeBiscuits {
                 emojiLabel.text = "☕️🍪"
             }
-            else if sessionItem.type == SessionType.coffeeCake {
+            else if sessionItem.type == IDUSessionItemType.coffeeCake {
                 emojiLabel.text = "☕️🍰"
             }
-            else if sessionItem.type == SessionType.registration {
+            else if sessionItem.type == IDUSessionItemType.registration {
                 emojiLabel.text = "🎫"
             }
-            else if sessionItem.type == SessionType.train {
+            else if sessionItem.type == IDUSessionItemType.train {
                 emojiLabel.text = "🚂"
             }
-            else if sessionItem.type == SessionType.lunch {
+            else if sessionItem.type == IDUSessionItemType.lunch {
                 emojiLabel.text = "🍴☕️"
             }
             else {
                 emojiLabel.text = ""
             }
-        }
+        //}
         
         self.backgroundColor = UIColor.iOSDevUKOtherCellBackground()
     }

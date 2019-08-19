@@ -15,18 +15,18 @@ class SessionItemTableViewController: IDUTableViewController {
     
     let sections = [nil, "Description", "Speaker(s)", "Location"]
     
-    var dataManager: DataManager?
+    // FIXME var dataManager: DataManager?
     
-    var sessionItem: SessionItem?
+    var sessionItem: IDUSessionItem?
     
     fileprivate func setupButtonState() {
-        if let userSettings = loadUserSettings(),
+        /*if let userSettings = loadUserSettings(),
             let item = sessionItem,
             let inList = userSettings.sessionItems?.contains(item) {
             if inList {
                 toggleAddRemoveButtonTitle()
             }
-        }
+        }*/
     }
     
     override func viewDidLoad() {
@@ -49,7 +49,7 @@ class SessionItemTableViewController: IDUTableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if section == 2 {
-            return sessionItem?.speakers?.count ?? 0
+            return sessionItem?.speakers.count ?? 0
         }
         return 1
     }
@@ -67,7 +67,7 @@ class SessionItemTableViewController: IDUTableViewController {
             let formatter = DateFormatter()
             formatter.timeZone = TimeZone(identifier: "Europe/London")
             formatter.dateFormat = "EEE HH:mm"
-            if let startTime = sessionItem?.session?.startTime {
+            if let startTime = sessionItem?.session.startTime {
                cell.time.text = formatter.string(from: startTime as Date)
             }
             else {
@@ -82,9 +82,14 @@ class SessionItemTableViewController: IDUTableViewController {
         }
         else if indexPath.section == 2 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "sessionItemSpeakerCell", for: indexPath) as! AlternativeBasicTableViewCell
-            let speakers = sessionItem?.speakers?.sortedArray(using: [NSSortDescriptor(key: "name", ascending: true)]) as! [Speaker]
-            cell.itemLabel.text = speakers[indexPath.row].name
-            cell.itemImage?.displayImage(named: speakers[indexPath.row].name)
+            
+            if let speakers = sessionItem?.sortedSpeakers() {
+                cell.itemLabel.text = speakers[indexPath.row].name
+                cell.itemImage?.displayImage(named: speakers[indexPath.row].name)
+                            
+            }
+                //sessionItem?.speakers?.sortedArray(using: [NSSortDescriptor(key: "name", ascending: true)]) as! [Speaker]
+            
             cell.itemImage?.addBorderWithCorner()
             return cell
         }
@@ -110,7 +115,8 @@ class SessionItemTableViewController: IDUTableViewController {
         if let indexPath = tableView.indexPathForSelectedRow {
             
             if let speakerController = segue.destination as? SpeakerTableViewController {
-                if let speakers = sessionItem?.speakers?.sortedArray(using: [NSSortDescriptor(key: "name", ascending: true)]) as? [Speaker] {
+                if let speakers = sessionItem?.sortedSpeakers() {
+                    //sessionItem?.speakers?.sortedArray(using: [NSSortDescriptor(key: "name", ascending: true)]) as? [IDUSpeaker] {
                     
                     speakerController.speaker = speakers[indexPath.row]
                     speakerController.callingSessionItem = sessionItem
@@ -122,32 +128,34 @@ class SessionItemTableViewController: IDUTableViewController {
         }
     }
     
-    func loadUserSettings() -> UserSettings? {
-        if let viewContext = dataManager?.persistentContainer.viewContext {
+    func loadUserSettings() -> IDUUserSettings? {
+        //FIXME
+        /*if let viewContext = dataManager?.persistentContainer.viewContext {
             return UserSettings.retrieveInstance(inContext: viewContext)
-        }
+        }*/
         
         return nil
     }
     
     @IBAction func addToMySchedule(_ sender: AnyObject) {
         
-        if let userSettings = loadUserSettings(),
+        // FIXME
+        /*if let userSettings = loadUserSettings(),
            let item = sessionItem {
            
             if let inList = userSettings.sessionItems?.contains(item) {
                 if !inList {
-                    userSettings.addToSessionItems(item)
+                    // FIXME userSettings.addToSessionItems(item)
                     dataManager?.save()
                     toggleAddRemoveButtonTitle()
                 }
                 else {
-                    userSettings.removeFromSessionItems(item)
+                    // FIXME userSettings.removeFromSessionItems(item)
                     dataManager?.save()
                     toggleAddRemoveButtonTitle()
                 }
             }
-        }
+        }*/
         
     }
     

@@ -28,24 +28,26 @@ class ProgrammeDoubleSessionItemTableViewCell: ProgrammeSingleSessionItemTableVi
         // Configure the view for the selected state
     }
 
-    override func configure(withSession session: Session) {
+    override func configure(withSession session: IDUSession) {
         super.configure(withSession: session)
         
-        if let item = session.sessionItem(atPosition: 1) {
+        // FIXME if
+            let item = session.sessionItems[1] //{
             sessionTwoTitle.text = item.title
             sessionTwoNames.text = item.speakerNames()
             sessionTwoLocation.text = item.location?.shortName
-        }
+        //}
     }
     
-    override func configure(withSession session: Session, whereUserSelected isUserSelected: Bool) {
+    override func configure(withSession session: IDUSession, whereUserSelected isUserSelected: Bool) {
         super.configure(withSession: session)
         
-        if let item = session.sessionItem(atPosition: 1, whereUserSelected: isUserSelected) {
+        // FIXME if
+            let item = session.sessionItems[1] // (atPosition: 1, whereUserSelected: isUserSelected) {
             sessionTwoTitle.text = item.title
             sessionTwoNames.text = item.speakerNames()
             sessionTwoLocation.text = item.location?.shortName
-        }
+        //}
     }
     
     

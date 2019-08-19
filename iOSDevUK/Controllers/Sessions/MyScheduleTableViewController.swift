@@ -13,12 +13,12 @@ class MyScheduleTableViewController: IDUTableViewController {
 
     @IBOutlet weak var headerImage: UIImageView!
     
-    var dataManager: DataManager?
+    //var dataManager: DataManager?
     
     /*
     Accesses the list of sessions that the user has added to 'my schedule'.
     */
-    var fetchedResultsController: NSFetchedResultsController<Session>?
+    //var fetchedResultsController: NSFetchedResultsController<Session>?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,7 +38,7 @@ class MyScheduleTableViewController: IDUTableViewController {
     }
     
     fileprivate func initialiseResultsController() {
-        if let dataManager = dataManager {
+        /*if let dataManager = dataManager {
             
             let fetchRequest: NSFetchRequest<Session> = Session.fetchRequest()
             fetchRequest.predicate = NSPredicate(format: "ANY sessionItems.userSelected != nil")
@@ -57,7 +57,7 @@ class MyScheduleTableViewController: IDUTableViewController {
             catch {
                 print("************** Unable to fetch list of sections.")
             }
-        }
+        }*/
     }
 
     override func didReceiveMemoryWarning() {
@@ -71,7 +71,7 @@ class MyScheduleTableViewController: IDUTableViewController {
             return nil
         }
         
-        let sectionFetchRequest: NSFetchRequest<Section> = Section.fetchRequest()
+        /*let sectionFetchRequest: NSFetchRequest<Section> = Section.fetchRequest()
         
         if let name = fetchedResultsController?.sections?[section - 1].name {
             sectionFetchRequest.predicate = NSPredicate(format: "recordName = %@", name)
@@ -79,21 +79,22 @@ class MyScheduleTableViewController: IDUTableViewController {
             if let sectionData = try? dataManager?.persistentContainer.viewContext.fetch(sectionFetchRequest) {
                 return sectionData?[0].name ?? "??"
             }
-        }
+        }*/
         
         return "Missing"
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 1 + (fetchedResultsController?.sections?.count ?? 0)
+        return 1 //+ (fetchedResultsController?.sections?.count ?? 0)
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
+        /*if section == 0 {
             return 1
         }
         
+        // FIXME
         guard let sections = fetchedResultsController?.sections else {
             return 0
         }
@@ -103,7 +104,8 @@ class MyScheduleTableViewController: IDUTableViewController {
             return 0
         }
         
-        return sections[section - 1].numberOfObjects
+        return sections[section - 1].numberOfObjects*/
+        return 1
     }
 
     
@@ -115,7 +117,7 @@ class MyScheduleTableViewController: IDUTableViewController {
         }
         else {
             
-            if let session = fetchedResultsController?.object(at: IndexPath(row: indexPath.row, section: indexPath.section - 1)),
+            /*if let session = fetchedResultsController?.object(at: IndexPath(row: indexPath.row, section: indexPath.section - 1)),
                let count = session.sessionItems?.filtered(using: NSPredicate(format: "userSelected != nil")).count {
                 
                 let labels = ["singleCell", "doubleCell", "tripleCell"]
@@ -129,7 +131,7 @@ class MyScheduleTableViewController: IDUTableViewController {
                 cell.configure(withSession: session, whereUserSelected: true)
                 
                 return cell
-            }
+            }*/
         }
         
         print("Unexpectedly reached end of tableView cell without a valid cell")
@@ -143,11 +145,11 @@ class MyScheduleTableViewController: IDUTableViewController {
         return false // indexPath.section > 0
     }
     
-    fileprivate func loadUserSettings() -> UserSettings? {
-        if let viewContext = dataManager?.persistentContainer.viewContext {
+    fileprivate func loadUserSettings() -> IDUUserSettings? {
+        /*if let viewContext = dataManager?.persistentContainer.viewContext {
             return UserSettings.retrieveInstance(inContext: viewContext)
         }
-        
+        */
         return nil
     }
     
@@ -156,7 +158,7 @@ class MyScheduleTableViewController: IDUTableViewController {
         if editingStyle == .delete {
             print("just been asked to delete \(indexPath)")
             
-            if let session = fetchedResultsController?.object(at: IndexPath(row: indexPath.row, section: indexPath.section - 1)) {
+            /*if let session = fetchedResultsController?.object(at: IndexPath(row: indexPath.row, section: indexPath.section - 1)) {
                 
                 
                 
@@ -178,7 +180,7 @@ class MyScheduleTableViewController: IDUTableViewController {
                 }
                 
                 
-            }
+            }*/
         }
     }
     

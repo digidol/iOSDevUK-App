@@ -13,7 +13,7 @@ class AboutTableViewController: ExpandedTextCellTableViewController, SFSafariVie
 
     @IBOutlet weak var headerView: UIView!
     
-    var dataManager: DataManager?
+    var sponsors: [ServerSponsor]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -150,7 +150,8 @@ class AboutTableViewController: ExpandedTextCellTableViewController, SFSafariVie
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
        
         if let sponsorView = segue.destination as? SponsorTableViewController {
-            sponsorView.dataManager = dataManager
+            //sponsorView.dataManager = dataManager
+            sponsorView.sponsors = sponsors
         }
     }
 }

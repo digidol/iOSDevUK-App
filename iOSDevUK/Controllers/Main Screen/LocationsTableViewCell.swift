@@ -10,16 +10,23 @@ import UIKit
 
 class LocationsTableViewCell: UITableViewCell, IDUDataManager {
 
-    var dataManager: DataManager?
+    //var dataManager: DataManager?
     
-    var collectionDataManager: LocationImageTextCollectionViewCellDataManager?
+    //var collectionDataManager: LocationImageTextCollectionViewCellDataManager?
     
     var selectedItem: ((_ item: Any) -> Void)?
+    
+    private var locations: [IDULocation]?
     
     @IBOutlet weak var collectionView: UICollectionView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
+    }
+    
+    func setup(locations: [IDULocation]?) {
+        self.locations = locations?.filter({$0.frontListPosition > 0})
+                                   .sorted(by: {$0.frontListPosition > $1.frontListPosition})
     }
 }
 
@@ -31,9 +38,10 @@ extension LocationsTableViewCell: UICollectionViewDelegate {
      the transition to the relevent next screen.
      */
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let speaker = collectionDataManager?.object(at: indexPath) as? Location,
+        if let location = locations?[indexPath.row],
+            //let speaker = collectionDataManager?.object(at: indexPath) as? Location,
             let selectedItem = selectedItem {
-            selectedItem(speaker)
+            selectedItem(location)
         }
     }
 }
@@ -42,13 +50,28 @@ extension LocationsTableViewCell: UICollectionViewDataSource {
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return collectionDataManager?.numberOfItemsInSection(section) ?? 0
+        //return collectionDataManager?.numberOfItemsInSection(section) ?? 0
+        return locations?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "locationCell", for: indexPath) as! ImageTextCollectionViewCell
-        collectionDataManager?.configureCell(cell, atIndexPath: indexPath, withBorderRadius: 4.0)
+        
+        //collectionDataManager?.configureCell(cell, atIndexPath: indexPath, withBorderRadius: 4.0)
+        
+        if let location = locations?[indexPath.row] {
+            cell.name.text = location.name
+            cell.image.displayImage(named: location.recordName, withDefault: "LocationPin")
+            cell.image.addBorderWithCorner()
+        }
+        else {
+            cell.name.text = "Unknown"
+            cell.image.displayImage(named: "LocationPin")
+        }
+        
+        cell.twitterId?.text = nil
+        
         return cell
     }
     

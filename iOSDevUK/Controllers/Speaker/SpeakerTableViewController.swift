@@ -14,11 +14,11 @@ class SpeakerTableViewController: IDUTableViewController, IDUDataManager {
 
     @IBOutlet weak var headerImageView: UIImageView!
     
-    var dataManager: DataManager?
+    //var dataManager: DataManager?
     
     var selectedItem: ((Any) -> Void)?
     
-    var speaker: Speaker?
+    var speaker: IDUSpeaker?
     
     /**
      Normally, it is sensible to navigate from a speaker to a session.
@@ -27,14 +27,14 @@ class SpeakerTableViewController: IDUTableViewController, IDUDataManager {
      we have navigated from a specific session item. It is used to
      prevent navigating from this screen to the session item.
      */
-    var callingSessionItem: SessionItem?
+    var callingSessionItem: IDUSessionItem?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if let speaker = speaker {
             self.title = speaker.name
-            speakerImage.displayImage(named: speaker.name)
+            speakerImage.displayImage(named: speaker.recordName)
             speakerImage.addBorderWithCorner()
         }
         
@@ -63,7 +63,7 @@ class SpeakerTableViewController: IDUTableViewController, IDUDataManager {
             return 2
         }
         else if section == 1 {
-            return speaker?.sessionItems?.count ?? 0
+            return speaker?.sessionItems.count ?? 0 //FIXME speaker?.sessionItems?.count ?? 0
         }
         else {
             return 0
@@ -93,8 +93,28 @@ class SpeakerTableViewController: IDUTableViewController, IDUDataManager {
         if indexPath.section == 1 {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "speakerSessionCell", for: indexPath) as! SpeakerSessionItemTableViewCell
+            
+            if let sortedItems = speaker?.sessionItems.sorted(by: { $0.session.startTime < $1.session.startTime }) {
+                cell.sessionItem = sortedItems[indexPath.row]
+                /*if let callingItem = callingSessionItem {
+                
+                } callingItem == sortedItems[indexPath.row] {
+                    cell.isUserInteractionEnabled = false
+                    cell.accessoryType = .none
+                }
+                else {
+                    cell.isUserInteractionEnabled = true
+                    cell.accessoryType = .disclosureIndicator
+                }*/
+            }
+            
+            
+            
+            
+            
             let sortDescriptor = NSSortDescriptor(key: "session.startTime", ascending: true)
-            if let sortedArray = speaker?.sessionItems?.sortedArray(using: [sortDescriptor]) as? [SessionItem] {
+            //FIXME
+            /*if let sortedArray = speaker?.sessionItems?.sortedArray(using: [sortDescriptor]) as? [SessionItem] {
                 cell.sessionItem = sortedArray[indexPath.row]
                 if callingSessionItem == sortedArray[indexPath.row] {
                     cell.isUserInteractionEnabled = false
@@ -104,7 +124,7 @@ class SpeakerTableViewController: IDUTableViewController, IDUDataManager {
                     cell.isUserInteractionEnabled = true
                     cell.accessoryType = .disclosureIndicator
                 }
-            }
+            }*/
             return cell
         }
         
@@ -125,13 +145,14 @@ class SpeakerTableViewController: IDUTableViewController, IDUDataManager {
         
         if let sessionItemController = segue.destination as? SessionItemTableViewController {
             
-            sessionItemController.dataManager = dataManager
+            // FIXME sessionItemController.dataManager = dataManager
             
             if let indexPath = tableView.indexPathForSelectedRow {
                 let sortDescriptor = NSSortDescriptor(key: "session.startTime", ascending: true)
-                if let sortedArray = speaker?.sessionItems?.sortedArray(using: [sortDescriptor]) as? [SessionItem] {
-                    sessionItemController.sessionItem = sortedArray[indexPath.row]
-                }
+                //FIXME
+                //if let sortedArray = speaker?.sessionItems?.sortedArray(using: [sortDescriptor]) as? [SessionItem] {
+                //    sessionItemController.sessionItem = sortedArray[indexPath.row]
+                //}
             }
         }
     }

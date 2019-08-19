@@ -25,24 +25,24 @@ class ProgrammeSingleSessionItemTableViewCell: ProgrammeBaseSessionItemTableView
         // Configure the view for the selected state
     }
 
-    override func configure(withSession session: Session) {
+    override func configure(withSession session: IDUSession) {
         super.configure(withSession: session)
         
-        if let item = session.sessionItem(atPosition: 0) {
-            sessionOneTitle.text = item.title
-            sessionOneNames.text = item.speakerNames()
-            sessionOneLocation.text = item.location?.shortName
-        }
+        let item = session.sessionItems[0]
+        sessionOneTitle.text = item.title
+        sessionOneNames.text = item.speakerNames()
+        sessionOneLocation.text = item.location?.shortName
+        
     }
     
-    override func configure(withSession session: Session, whereUserSelected isUserSelected: Bool) {
+    override func configure(withSession session: IDUSession, whereUserSelected isUserSelected: Bool) {
         super.configure(withSession: session)
         
-        if let item = session.sessionItem(atPosition: 0, whereUserSelected: isUserSelected) {
-            sessionOneTitle.text = item.title
-            sessionOneNames.text = item.speakerNames()
-            sessionOneLocation.text = item.location?.shortName
-        }
+        // FIXME - look at whereUserSelected...
+        let item = session.sessionItems[0] //{ //, whereUserSelected: isUserSelected) {
+        sessionOneTitle.text = item.title
+        sessionOneNames.text = item.speakerNames()
+        sessionOneLocation.text = item.location?.shortName
     }
 
 }

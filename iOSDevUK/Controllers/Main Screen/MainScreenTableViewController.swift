@@ -15,10 +15,7 @@ import CoreData
  */
 class MainScreenTableViewController: IDUTableViewController, SFSafariViewControllerDelegate {
 
-    /**
-     Data Manager that provides access to the CoreData stack.
-     */
-    var dataManager: DataManager?
+    var appDataManager: AppDataManager?
     
     /**
      Holds a reference to an object that was selected in a collection view in one of the
@@ -35,17 +32,34 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupData()
+        initialiseData()
         
         initialiseAutomaticTableCellHeight(50.0)
         
-        setAlternativeTime(time: "2018-09-07T15:14:00+01:00")
+        //setAlternativeTime(time: "2018-09-07T15:14:00+01:00")
+    }
+    
+    func initialiseData() {
+        if let manager = appDataManager {
+            manager.initialiseData() { success, message in
+                print("success: \(success) and message \(String(describing: message))")
+                if success {
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                    }
+                } else {
+                    print("there was a problem accessing the data.")
+                }
+            }
+        }
     }
     
     func setAlternativeTime(time: String) {
-        let dateFormatter = ISO8601DateFormatter()
-        dateFormatter.timeZone = TimeZone(identifier: "Europe/London")
-        dataManager!.alternativeTime = dateFormatter.date(from: time)
+        if let manager = appDataManager {
+            let dateFormatter = ISO8601DateFormatter()
+            dateFormatter.timeZone = TimeZone(identifier: "Europe/London")
+            manager.setAlternativeDate(dateFormatter.date(from: time)!)
+        }
     }
     
     /**
@@ -59,7 +73,7 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
      
      The final task of this function is to reload the data in the table.
      */
-    func setupData() {
+    /*func setupData() {
         if let manager = dataManager {
             manager.persistentContainer.performBackgroundTask { context in
                 
@@ -96,7 +110,7 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
                 }
             }
         }
-    }
+    }*/
     
     /**
      Show the screen, making sure that the table data is re-displayed.
@@ -120,12 +134,18 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
         return 5
     }
 
+    /**
+     Initialises the conference date, which is used to determine if the time is before, during or after the conference.
+     */
     func conferenceDate() -> ConferenceDate? {
-        if let viewContext = dataManager?.persistentContainer.viewContext,
-           let startTime = AppSetting.conferenceStartTime(inContext: viewContext) as Date?,
-           let endTime = AppSetting.conferenceEndTime(inContext: viewContext) as Date? {
+        
+        if let manager = appDataManager,
+           let startDate = manager.startDate(),
+           let endDate = manager.endDate() {
             
-            return ConferenceDate(currentDate: dataManager!.currentTime(), startDate: startTime, endDate: endTime)
+            return ConferenceDate(currentDate: manager.currentTime(),
+                                  startDate: startDate,
+                                  endDate: endDate)
         }
         
         return nil
@@ -142,22 +162,23 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
             }
             else if date.conferenceDateStatus() == .afterConference {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "outOfConferenceMessage", for: indexPath) as! MainScreenMessageTableViewCell
-                cell.messageLabel.text = "iOSDevUK 8 has finished. Follow @iOSDevUK for details about next year"
+                cell.messageLabel.text = "iOSDevUK 9 has finished. Follow @iOSDevUK for details about next year"
                 cell.logoView.image = UIImage(named: "DefaultImage")
                 return cell
             }
             else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "nowNextItems", for: indexPath) as! NowAndNextTableViewCell
-                cell.nowSession = Session.nowSession(forDate: dataManager!.currentTime(), inContext: dataManager!.persistentContainer.viewContext)
-                cell.nextSession = Session.nextSession(forDate: dataManager!.currentTime(), inContext: dataManager!.persistentContainer.viewContext)
+                //FIXME
+                //cell.nowSession = Session.nowSession(forDate: dataManager!.currentTime(), inContext: dataManager!.persistentContainer.viewContext)
+                //cell.nextSession = Session.nextSession(forDate: dataManager!.currentTime(), inContext: dataManager!.persistentContainer.viewContext)
                 cell.collectionView.reloadData()
                 return cell
             }
         }
         else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "outOfConfernceMessage", for: indexPath) as! MainScreenMessageTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "outOfConferenceMessage", for: indexPath) as! MainScreenMessageTableViewCell
             cell.messageLabel.numberOfLines = 0
-            cell.messageLabel.text = "Setting up database"
+            cell.messageLabel.text = "Loading conference data"
             cell.logoView.image = UIImage(named: "DefaultImage")
             return cell
         }
@@ -165,25 +186,34 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
     
     fileprivate func processSessionItemsCell(forTableView tableView: UITableView, atIndexPath indexPath: IndexPath) -> UITableViewCell {
         let sessionItemCell = tableView.dequeueReusableCell(withIdentifier: "sessionItems", for: indexPath) as! SessionItemsTableViewCell
-        sessionItemCell.dataManager = dataManager
-        sessionItemCell.selectedItem = {
-            item in
-            self.selectedCollectionViewItem = item
-            self.performSegue(withIdentifier: "sessionItemSegue", sender: self)
+        
+        if let manager = appDataManager {
+            //sessionItemCell.dataManager = manager
+            sessionItemCell.setup(sessionItems: manager.sessionItems())
+            sessionItemCell.selectedItem = {
+                item in
+                self.selectedCollectionViewItem = item
+                self.performSegue(withIdentifier: "sessionItemSegue", sender: self)
+            }
+            sessionItemCell.collectionView?.reloadData()
         }
-        sessionItemCell.collectionView?.reloadData()
         return sessionItemCell
     }
     
     fileprivate func processSpeakersCell(forTableView tableView: UITableView, atIndexPath indexPath: IndexPath) -> UITableViewCell {
         let speakerCell = tableView.dequeueReusableCell(withIdentifier: "speakers", for: indexPath) as! SpeakersTableViewCell
-        speakerCell.collectionDataManager = SpeakerImageTextCollectionViewCellDataManager(dataManager: dataManager!)
-        speakerCell.selectedItem = {
-            item in
-            self.selectedCollectionViewItem = item
-            self.performSegue(withIdentifier: "mainSpeakerSegue", sender: self)
+        
+        if let manager = appDataManager {
+            //speakerCell.collectionDataManager = SpeakerImageTextCollectionViewCellDataManager(dataManager: manager)
+            speakerCell.speakers = manager.speakers()
+            speakerCell.selectedItem = {
+                item in
+                self.selectedCollectionViewItem = item
+                self.performSegue(withIdentifier: "mainSpeakerSegue", sender: self)
+            }
+            speakerCell.collectionView?.reloadData()
         }
-        speakerCell.collectionView?.reloadData()
+        
         return speakerCell
     }
     
@@ -202,13 +232,17 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
      */
     fileprivate func processLocationsCell(forTableView tableView: UITableView, atIndexPath indexPath: IndexPath) -> UITableViewCell {
         let locationCell = tableView.dequeueReusableCell(withIdentifier: "locations", for: indexPath) as! LocationsTableViewCell
-        locationCell.collectionDataManager = LocationImageTextCollectionViewCellDataManager(dataManager: dataManager!, withSortKey: "frontListPosition", withPredicate: NSPredicate(format: "frontListPosition > 0"))
-        locationCell.selectedItem = {
-            item in
-            self.selectedCollectionViewItem = item
-            self.performSegue(withIdentifier: "mainLocationSegue", sender: self)
+        
+        if let manager = appDataManager {
+            //locationCell.collectionDataManager = LocationImageTextCollectionViewCellDataManager(dataManager: manager, withSortKey: "frontListPosition", withPredicate: NSPredicate(format: "frontListPosition > 0"))
+            locationCell.setup(locations: manager.locations())
+            locationCell.selectedItem = {
+                item in
+                self.selectedCollectionViewItem = item
+                self.performSegue(withIdentifier: "mainLocationSegue", sender: self)
+            }
+            locationCell.collectionView?.reloadData()
         }
-        locationCell.collectionView?.reloadData()
         return locationCell
     }
     
@@ -254,36 +288,39 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if let aboutController = segue.destination as? AboutTableViewController {
-            aboutController.dataManager = dataManager
+            aboutController.sponsors = appDataManager?.sponsors() ?? []
         }
         else if let speakerController = segue.destination as? SpeakerTableViewController {
-            speakerController.dataManager = dataManager
-            speakerController.speaker = selectedCollectionViewItem as? Speaker
+            speakerController.speaker = selectedCollectionViewItem as? IDUSpeaker
         }
         else if let sessionItemController = segue.destination as? SessionItemTableViewController {
-            sessionItemController.dataManager = dataManager
-            sessionItemController.sessionItem = selectedCollectionViewItem as? SessionItem
+            // FIXME sessionItemController.dataManager = dataManager
+            sessionItemController.sessionItem = selectedCollectionViewItem as? IDUSessionItem
         }
         else if let speakersController = segue.destination as? SpeakersCollectionViewController {
-            speakersController.collectionDataManager = SpeakerImageTextCollectionViewCellDataManager(dataManager: dataManager!)
+            /*speakersController.collectionDataManager = SpeakerImageTextCollectionViewCellDataManager(dataManager: dataManager!)*/
+            speakersController.speakers = appDataManager?.speakers()
         }
         else if let locationsController = segue.destination as? LocationsCollectionViewController {
-            locationsController.collectionDataManager = LocationImageTextCollectionViewCellDataManager(dataManager: dataManager!, withSortKey: "name", withPredicate: nil)
+            locationsController.locations = appDataManager?.locations() ?? []
+            
+            /*locationsController.collectionDataManager = LocationImageTextCollectionViewCellDataManager(dataManager: dataManager!, withSortKey: "name", withPredicate: nil)*/
+            
         }
         else if let singleLocationController = segue.destination as? MapLocationViewController {
-            singleLocationController.location = selectedCollectionViewItem as? Location
+            singleLocationController.location = selectedCollectionViewItem as? IDULocation
         }
         else if let mapLocationsController = segue.destination as? AllLocationsMapViewController {
-            mapLocationsController.dataManager = dataManager
+            //mapLocationsController.dataManager = dataManager
         }
         else if let programmeController = segue.destination as? ProgrammeTableViewController {
-            programmeController.dataManager = dataManager
+            //programmeController.dataManager = dataManager
         }
         else if let myScheduleController = segue.destination as? MyScheduleTableViewController {
-            myScheduleController.dataManager = dataManager
+            //myScheduleController.dataManager = dataManager
         }
         else if let sponsorController = segue.destination as? SponsorTableViewController {
-            sponsorController.dataManager = dataManager
+            sponsorController.sponsors = self.appDataManager?.sponsors() ?? []
         }
     }
     
@@ -345,11 +382,11 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
      */
     @IBAction func uploadData(_ sender: AnyObject) {
         
-        dataManager?.persistentContainer.performBackgroundTask {
+        /*dataManager?.persistentContainer.performBackgroundTask {
             context in
             let manager = CloudDataManager(context: context)
             manager.upload()
-        }
+        }*/
         
     }
 }

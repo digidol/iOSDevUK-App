@@ -13,6 +13,8 @@ class SpeakersCollectionViewController: UICollectionViewController {
 
     var collectionDataManager: ImageTextCollectionViewDataManager?
     
+    var speakers: [IDUSpeaker]?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -30,18 +32,25 @@ class SpeakersCollectionViewController: UICollectionViewController {
    // MARK: UICollectionViewDataSource
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return collectionDataManager?.numberOfSections() ?? 0
+        //return collectionDataManager?.numberOfSections() ?? 0
+        return 1
     }
 
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return collectionDataManager?.numberOfItemsInSection(section) ?? 0
+        //return collectionDataManager?.numberOfItemsInSection(section) ?? 0
+        return speakers?.count ?? 0
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "speakersCollectionCell2", for: indexPath) as! ImageTextCollectionViewCell
-        collectionDataManager?.configureCell(cell, atIndexPath: indexPath, withBorderRadius: 4.0)
+        //collectionDataManager?.configureCell(cell, atIndexPath: indexPath, withBorderRadius: 4.0)
+        
+        if let speaker = speakers?[indexPath.row] {
+            cell.configure(name: speaker.name, imageName: speaker.recordName, twitterId: speaker.twitterId, withBorderRadius: 4.0)
+        }
+        
         return cell
     }
 
@@ -49,11 +58,11 @@ class SpeakersCollectionViewController: UICollectionViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let speakerController = segue.destination as? SpeakerTableViewController {
-            speakerController.dataManager = collectionDataManager?.dataManager
+            // FIXME speakerController.dataManager = collectionDataManager?.dataManager
             
             if let indexPaths = collectionView?.indexPathsForSelectedItems,
                let indexPath = indexPaths.first,
-               let speaker = collectionDataManager?.object(at: indexPath) as? Speaker {
+               let speaker = collectionDataManager?.object(at: indexPath) as? IDUSpeaker {
                 speakerController.speaker = speaker
             }
             else {

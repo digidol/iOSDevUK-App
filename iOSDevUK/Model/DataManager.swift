@@ -25,6 +25,28 @@ class DataManager {
         initialiser.clearAllData()
     }
     
+    func initialiseData(onCompletion callback: @escaping (Bool, String?) -> Void) {
+        
+        
+        
+        
+            
+            let client = AppDataClient(dataVersion: nil)
+                    
+            client.downloadMetadata{ (data) in
+                if data != nil {
+                    client.downloadUpdate { (data) in
+                        print("Download returned \(String(describing: data))")
+                        
+                        callback(true, nil)
+                    }
+                } else {
+                    print("Unable to retrieve the metadata")
+                    callback(false, "Unable to access metadata.")
+                }
+            }
+        }
+    
     /**
      Initialise the data during the first installation of the app.
      */

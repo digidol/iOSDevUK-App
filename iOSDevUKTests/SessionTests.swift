@@ -10,7 +10,7 @@ import XCTest
 @testable import iOSDevUK
 
 class SessionTests: XCTestCase {
-    
+    /*
     var dataManager: DataManager?
     var isoDateFormatter: ISO8601DateFormatter?
     
@@ -91,6 +91,6 @@ class SessionTests: XCTestCase {
         let date = isoDateFormatter?.date(from: "2018-09-06T16:30:01+01:00")
         let next = Session.nextSession(forDate: date!, inContext: dataManager!.persistentContainer.viewContext)
         XCTAssertNil(next)
-    }
+    }*/
     
 }

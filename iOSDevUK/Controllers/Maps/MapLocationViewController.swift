@@ -21,7 +21,7 @@ class MapLocationViewController: UIViewController, MKMapViewDelegate, SFSafariVi
     
     @IBOutlet weak var showWebsiteButton: UIButton!
     
-    var location: Location? {
+    var location: IDULocation? {
         didSet {
             initialiseView()
         }
@@ -88,7 +88,7 @@ class MapLocationViewController: UIViewController, MKMapViewDelegate, SFSafariVi
     /**
     Shows the specified location on the map.
      */
-    func showLocation(_ location: Location) {
+    func showLocation(_ location: IDULocation) {
         mapView.mapType = .hybrid
         
         let annotation = Annotation(location: location)

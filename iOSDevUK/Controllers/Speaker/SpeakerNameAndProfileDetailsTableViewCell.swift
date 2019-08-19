@@ -23,7 +23,7 @@ class SpeakerNameAndProfileDetailsTableViewCell: UITableViewCell {
      */
     @IBOutlet weak var linkedInButton: UIButton!
     
-    var speaker: Speaker? {
+    var speaker: IDUSpeaker? {
         didSet {
             setSpeakerInfo()
         }

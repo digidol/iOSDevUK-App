@@ -11,7 +11,7 @@ import UIKit
 
 protocol IDUDataManager {
     
-    var dataManager: DataManager? { get set }
+    //var dataManager: DataManager? { get set }
     
     var selectedItem: ((_ item: Any) -> Void)? { get set }
 

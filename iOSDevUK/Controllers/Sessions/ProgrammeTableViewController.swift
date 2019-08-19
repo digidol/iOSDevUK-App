@@ -15,23 +15,27 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
     
     @IBOutlet weak var tableView: UITableView!
     
-    var dataManager: DataManager?
+    // FIXME
+    var days = [IDUDay]()
     
-    var fetchedResultsController: NSFetchedResultsController<Session>?
+    //FIXME var dataManager: DataManager?
     
-    var selectedSessionItem: SessionItem?
+    //var fetchedResultsController: NSFetchedResultsController<Session>?
+    
+    var selectedSessionItem: IDUSessionItem?
     
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        guard let manager = dataManager else {
+        /*guard let manager = dataManager else {
             print("DataManager has not been set for the list of sessions")
             return
         }
         
         let days = accessDayList(withContext: manager.persistentContainer.viewContext)
+        */
         setupSegmentedControlWithDays(days)
         initialiseSections(forDay: nil)
         
@@ -45,7 +49,7 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
 
     // MARK: - Data Initialisation
     
-    func accessDayList(withContext context: NSManagedObjectContext) -> [Day] {
+    /*func accessDayList(withContext context: NSManagedObjectContext) -> [Day] {
      
         let dayFetchRequest: NSFetchRequest<Day> = Day.fetchRequest()
         dayFetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
@@ -57,10 +61,10 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
         }
         
         return []
-    }
+    }*/
     
-    func initialiseSections(forDay day: Day?) {
-        if let dataManager = dataManager {
+    func initialiseSections(forDay day: IDUDay?) {
+        /*if let dataManager = dataManager {
             
             let fetchRequest: NSFetchRequest<Session> = Session.fetchRequest()
             
@@ -83,12 +87,12 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
             catch {
                 print("Unable to fetch list of sections.")
             }
-        }
+        }*/
     }
     
     // MARK: - Segmented Control
     
-    func setupSegmentedControlWithDays(_ days: [Day]) {
+    func setupSegmentedControlWithDays(_ days: [IDUDay]) {
         segmentedControl.removeSegment(at: 1, animated: false)
         
         let formatter = DateFormatter()
@@ -113,7 +117,7 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
     
         switch sender.selectedSegmentIndex {
         case 1, 2, 3, 4:
-            let days = accessDayList(withContext: (dataManager?.persistentContainer.viewContext)!)
+            //FIXME let days = accessDayList(withContext: (dataManager?.persistentContainer.viewContext)!)
             initialiseSections(forDay: days[sender.selectedSegmentIndex - 1])
             
         default:
@@ -125,7 +129,7 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
     
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        let sectionFetchRequest: NSFetchRequest<Section> = Section.fetchRequest()
+        /*let sectionFetchRequest: NSFetchRequest<Section> = Section.fetchRequest()
         
         if let name = fetchedResultsController?.sections?[section].name {
             sectionFetchRequest.predicate = NSPredicate(format: "recordName = %@", name)
@@ -133,7 +137,7 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
             if let sectionData = try? dataManager?.persistentContainer.viewContext.fetch(sectionFetchRequest) {
                 return sectionData?[0].name ?? "??"
             }
-        }
+        }*/
         
         return "Missing"
     }
@@ -141,20 +145,25 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
     // MARK: - Table view data source
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return fetchedResultsController?.sections?.count ?? 0
+        // return fetchedResultsController?.sections?.count ?? 0
+        return 0
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        /*
         guard let section = fetchedResultsController?.sections?[section] else {
             return 0
         }
         
         return section.numberOfObjects
+        */
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if let session = fetchedResultsController?.object(at: indexPath),
+        /* FIXME
+         if let session = fetchedResultsController?.object(at: indexPath),
            let count = session.sessionItems?.count {
             
             if count == 1 {
@@ -185,7 +194,7 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
                 tripleCell.notifySessionItemSelected = notify(withSelectedItem:atPoint:inCell:)
                 return tripleCell
             }
-        }
+        }*/
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "otherCell", for: indexPath) as! ProgrammeOtherSessionItemTableViewCell
         cell.sessionTitle.text = "Whoops"
@@ -195,12 +204,14 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
     }
 
     func notify(withSelectedItem position: Int, atPoint point: CGPoint, inCell cell: UITableViewCell) {
+        /*
+        FIXME
         if let indexPath = tableView.indexPathForRow(at: tableView.convert(point, from: cell)),
            let session = fetchedResultsController?.object(at: indexPath) {
             
-            selectedSessionItem = session.sessionItem(atPosition: position)
+            // FIXME selectedSessionItem = session.sessionItem(atPosition: position)
             performSegue(withIdentifier: "programmeSessionItemDetailSegue", sender: self)
-        }
+        }*/
     }
     
     
@@ -211,7 +222,7 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if let sessionItemController = segue.destination as? SessionItemTableViewController {
-            sessionItemController.dataManager = dataManager
+            // FIXME sessionItemController.dataManager = dataManager
             sessionItemController.sessionItem = selectedSessionItem
         }
     }

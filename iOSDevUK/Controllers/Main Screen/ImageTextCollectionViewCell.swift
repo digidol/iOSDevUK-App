@@ -15,4 +15,25 @@ class ImageTextCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var image: UIImageView!
     
     @IBOutlet weak var twitterId: UILabel?
+    
+    func configure(name: String,
+                   imageName: String,
+                   twitterId: String?,
+                   withBorderRadius radius: CGFloat?) {
+        self.name.text = name
+        self.image.displayImage(named: imageName)
+        if radius != nil {
+            image.addBorderWithCorner(radius: radius!)
+        }
+        else {
+            image.addBorderWithCorner()
+        }
+            
+        if let id = twitterId {
+            self.twitterId?.text = "@\(id)"
+        }
+        else {
+            self.twitterId?.text = ""
+        }
+    }
 }

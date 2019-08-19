@@ -12,11 +12,13 @@ import CoreData
 
 class AllLocationsMapViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate {
     
-    var dataManager: DataManager? {
+    /*
+     FIXME
+     var dataManager: DataManager? {
         didSet {
             initialiseData()
         }
-    }
+    }*/
     
     /// Types of location that are shown in the table
     //var locationTypes = [Any]()
@@ -30,7 +32,7 @@ class AllLocationsMapViewController: UIViewController, UITableViewDelegate, UITa
     /// Table of categories that can be shown on the map
     @IBOutlet var tableView: UITableView!
     
-    var fetchedResultsController: NSFetchedResultsController<LocationType>?
+    // FIXME var fetchedResultsController: NSFetchedResultsController<LocationType>?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,7 +44,8 @@ class AllLocationsMapViewController: UIViewController, UITableViewDelegate, UITa
     
     func initialiseData() {
         
-        if let dataManager = dataManager {
+        // FIXME
+        /*if let dataManager = dataManager {
             let fetchRequest: NSFetchRequest<LocationType> = LocationType.fetchRequest()
             let sortDescriptor = NSSortDescriptor(key: "order", ascending: true)
             fetchRequest.sortDescriptors = [sortDescriptor]
@@ -63,7 +66,7 @@ class AllLocationsMapViewController: UIViewController, UITableViewDelegate, UITa
         else {
             print("Unable to access data manager in AllLocationsMapViewController")
             fatalError()
-        }
+        }*/
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -89,19 +92,22 @@ class AllLocationsMapViewController: UIViewController, UITableViewDelegate, UITa
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let section = fetchedResultsController?.sections?[section] else {
+        /*guard let section = fetchedResultsController?.sections?[section] else {
             return 0
         }
         
-        return section.numberOfObjects
+        return section.numberOfObjects*/
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "locationItem", for: indexPath)
         
+        /*
+        FIXME
         if let type = fetchedResultsController?.object(at: indexPath) {
             cell.textLabel?.text = type.name
-        }
+        }*/
         return cell
     }
     
@@ -119,12 +125,14 @@ class AllLocationsMapViewController: UIViewController, UITableViewDelegate, UITa
     func showMapLocations(forIndexPath indexPath: IndexPath) {
         mapView.removeAnnotations(mapView.annotations)
         
-        guard let locations = fetchedResultsController?.object(at: indexPath).locations?.allObjects as? [Location] else {
+        // FIXME
+        /*guard let locations = fetchedResultsController?.object(at: indexPath).locations?.allObjects as? [Location] else {
             print("unable to access location list")
             return
-        }
+        }*/
         
-        showMapAnnotations(locations: locations)
+        //FIXME showMapAnnotations(locations: locations)
+        let locations = [IDULocation]()
         
         let region = regionForLocations(locations: locations)
         mapView.setRegion(region, animated: true)
@@ -164,7 +172,7 @@ class AllLocationsMapViewController: UIViewController, UITableViewDelegate, UITa
      - Parameters:
      - locations: a list of locations that need to be displayed on the map
      */
-    func regionForLocations(locations: [Location]) -> MKCoordinateRegion {
+    func regionForLocations(locations: [IDULocation]) -> MKCoordinateRegion {
         
         let box = createBoundingCoordinatesAroundLocations(locations: locations)
         
@@ -182,7 +190,7 @@ class AllLocationsMapViewController: UIViewController, UITableViewDelegate, UITa
     /**
      
      */
-    func showMapAnnotations(locations: [Location]) {
+    func showMapAnnotations(locations: [IDULocation]) {
         for location in locations {
             let annotation = Annotation(location: location)
             mapView.addAnnotation(annotation)
@@ -195,7 +203,7 @@ class AllLocationsMapViewController: UIViewController, UITableViewDelegate, UITa
      - Parameters:
      - locations: List of locations that should be shown in this box
      */
-    func createBoundingCoordinatesAroundLocations(locations: [Location]) -> (minimum: CLLocationCoordinate2D, maximum: CLLocationCoordinate2D) {
+    func createBoundingCoordinatesAroundLocations(locations: [IDULocation]) -> (minimum: CLLocationCoordinate2D, maximum: CLLocationCoordinate2D) {
         
         var minimum = CLLocationCoordinate2D()
         var maximum = CLLocationCoordinate2D()

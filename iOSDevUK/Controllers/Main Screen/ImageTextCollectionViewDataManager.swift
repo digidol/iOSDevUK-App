@@ -12,7 +12,7 @@ import UIKit
 
 protocol ImageTextCollectionViewDataManager {
     
-    var dataManager: DataManager? { get set }
+    // FIXME var dataManager: DataManager? { get set }
     
     func numberOfSections() -> Int
     

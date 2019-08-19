@@ -17,6 +17,9 @@ class SponsorTableViewController: IDUTableViewController, SFSafariViewController
     
     @IBOutlet weak var headerImage: UIImageView!
     
+    var sponsors: [ServerSponsor]?
+    
+    /* FIXME
     var dataManager: DataManager? {
         didSet {
             initialiseFetchedResultsController()
@@ -46,6 +49,7 @@ class SponsorTableViewController: IDUTableViewController, SFSafariViewController
             }
         }
     }
+ */
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,62 +60,48 @@ class SponsorTableViewController: IDUTableViewController, SFSafariViewController
         self.headerImage.displayImage(named: "DefaultImage")
         self.headerImage.addBorderWithCorner(radius: 8.0)
      
-        initialiseFetchedResultsController()
+        // FIXME initialiseFetchedResultsController()
         
     }
 
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        guard let sections = fetchedResultsController?.sections else {
-            return 0
-        }
-        
-        return sections.count
+        return 1
         
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let sectionInfo = fetchedResultsController?.sections?[section] else {
-            return 0
-        }
-        return sectionInfo.numberOfObjects
+        return sponsors?.count ?? 0
     }
     
-    func configure(cell: UITableViewCell, withSponsor sponsor: Sponsor) {
+    func configure(cell: UITableViewCell, withSponsor sponsor: ServerSponsor) {
         guard let cell = cell as? SponsorTableViewCell else {
             return
         }
         
         cell.sponsorName.text = sponsor.name
-        cell.sponsorCategory.text = "\(sponsor.sponsorCategory ?? "Unknown") Sponsor"
+        cell.sponsorCategory.text = "\(sponsor.sponsorCategory) Sponsor"
         cell.sponsorCategory.textColor = self.view.tintColor
         
         if let _ = sponsor.url {
             cell.sponsorUrl.text = "Click for careers info"
         }
         
-        cell.sponsorLogo.displayImage(named: "Sponsor\(sponsor.name?.replacingOccurrences(of: " ", with: "") ?? "error")")
+        cell.sponsorLogo.displayImage(named: sponsor.recordName)
         cell.tagline.text = sponsor.tagline
         
-        if let category = sponsor.sponsorCategory {
-            cell.sponsorCategoryImage.image = UIImage(named: category)
-        }
+        cell.sponsorCategoryImage.image = UIImage(named: String(describing: sponsor.sponsorCategory))
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-        guard let sponsor = fetchedResultsController?.object(at: indexPath) else {
+        
+        guard let sponsor = sponsors?[indexPath.row] else {
             print("Unable to retrieve sponsor information for indexPath \(indexPath)")
             fatalError()
         }
         
-        guard let cellType = sponsor.cellType else {
-            print("The cell type hasn't been set for \(sponsor.recordName ?? "missing name")")
-            fatalError()
-        }
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellType, for: indexPath) as! SponsorTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: sponsor.cellType), for: indexPath) as! SponsorTableViewCell
         
         configure(cell: cell, withSponsor: sponsor)
         
@@ -119,7 +109,7 @@ class SponsorTableViewController: IDUTableViewController, SFSafariViewController
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let sponsor = fetchedResultsController?.object(at: indexPath) {
+        if let sponsor = sponsors?[indexPath.row] {
             if let url = sponsor.url {
                 let webViewController = SFSafariViewController(url: url)
                 webViewController.delegate = self

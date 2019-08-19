@@ -24,24 +24,26 @@ class ProgrammeTripleSessionItemTableViewCell: ProgrammeDoubleSessionItemTableVi
         super.setSelected(selected, animated: animated)
     }
         
-    override func configure(withSession session: Session) {
+    override func configure(withSession session: IDUSession) {
         super.configure(withSession: session)
             
-        if let item = session.sessionItem(atPosition: 2) {
+        // FIXME if
+            let item = session.sessionItems[2] // {
                 sessionThreeTitle.text = item.title
                 sessionThreeNames.text = item.speakerNames()
                 sessionThreeLocation.text = item.location?.shortName
-        }
+        //}
     }
     
-    override func configure(withSession session: Session, whereUserSelected isUserSelected: Bool) {
+    override func configure(withSession session: IDUSession, whereUserSelected isUserSelected: Bool) {
         super.configure(withSession: session)
         
-        if let item = session.sessionItem(atPosition: 2, whereUserSelected: isUserSelected) {
+        //FIXME if
+            let item = session.sessionItems[2] // , whereUserSelected: isUserSelected) {
             sessionThreeTitle.text = item.title
             sessionThreeNames.text = item.speakerNames()
             sessionThreeLocation.text = item.location?.shortName
-        }
+        //}
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {

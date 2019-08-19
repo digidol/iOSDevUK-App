@@ -11,7 +11,7 @@ import SafariServices
 
 class LocationViewController: UIViewController, SFSafariViewControllerDelegate {
 
-    var location: Location? {
+    var location: IDULocation? {
         didSet {
             initialiseLocation()
         }
