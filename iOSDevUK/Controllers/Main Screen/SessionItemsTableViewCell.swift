@@ -7,9 +7,8 @@
 //
 
 import UIKit
-import CoreData
 
-class SessionItemsTableViewCell: UITableViewCell { // , IDUDataManager {
+class SessionItemsTableViewCell: UITableViewCell {
     
     var sessionItems: [IDUSessionItem]?
     
@@ -29,7 +28,7 @@ class SessionItemsTableViewCell: UITableViewCell { // , IDUDataManager {
 extension SessionItemsTableViewCell: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        if let sessionItem = sessionItems?[indexPath.row], //fetchedResultsController?.object(at: indexPath),
+        if let sessionItem = sessionItems?[indexPath.row],
             let selectedItem = selectedItem {
             
             selectedItem(sessionItem)

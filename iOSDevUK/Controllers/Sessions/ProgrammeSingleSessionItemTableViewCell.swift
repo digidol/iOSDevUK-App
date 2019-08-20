@@ -27,22 +27,26 @@ class ProgrammeSingleSessionItemTableViewCell: ProgrammeBaseSessionItemTableView
 
     override func configure(withSession session: IDUSession) {
         super.configure(withSession: session)
+        configure(sessionItems: session.sessionItems)
+    }
+    
+    override func configure(sessionItems: [IDUSessionItem]) {
+        super.configure(sessionItems: sessionItems)
         
-        let item = session.sessionItems[0]
+        let item = sessionItems[0]
         sessionOneTitle.text = item.title
         sessionOneNames.text = item.speakerNames()
         sessionOneLocation.text = item.location?.shortName
         
     }
     
-    override func configure(withSession session: IDUSession, whereUserSelected isUserSelected: Bool) {
+    /*override func configure(withSession session: IDUSession, whereUserSelected isUserSelected: Bool) {
         super.configure(withSession: session)
         
-        // FIXME - look at whereUserSelected...
-        let item = session.sessionItems[0] //{ //, whereUserSelected: isUserSelected) {
+        let item = session.sessionItems[0]
         sessionOneTitle.text = item.title
         sessionOneNames.text = item.speakerNames()
         sessionOneLocation.text = item.location?.shortName
-    }
+    }*/
 
 }

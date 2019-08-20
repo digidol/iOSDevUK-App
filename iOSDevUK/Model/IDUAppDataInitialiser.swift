@@ -29,6 +29,9 @@ class IDUAppDataInitialiser {
         self.locationList = processLocations(locationTypes: locationTypeList, links: webLinks)
         
         self.dayList = processDays(withSpeakers: speakerDictionary, withLocations: locationDictionary())
+        
+        self.sessionItemList = sessionItems()
+
     }
     
     func processDays(withSpeakers speakers: [String:IDUSpeaker], withLocations locations: [String:IDULocation]) -> [IDUDay] {
@@ -36,30 +39,30 @@ class IDUAppDataInitialiser {
         
         serverData.days.forEach { serverDay in
             let day = IDUDay(recordName: serverDay.recordName, date: serverDay.date)
-            day.sections = process(sections: serverDay.sections, speakers: speakers, locations: locations)
+            day.sections = process(sections: serverDay.sections, inDay: day, speakers: speakers, locations: locations)
             days.append(day)
         }
         
         return days
     }
     
-    func process(sections: [ServerSection], speakers: [String:IDUSpeaker], locations: [String:IDULocation]) -> [IDUSection] {
+    func process(sections: [ServerSection], inDay day: IDUDay, speakers: [String:IDUSpeaker], locations: [String:IDULocation]) -> [IDUSection] {
         var iduSections = [IDUSection]()
         
         sections.forEach { section in
-            let iduSection = IDUSection(recordName: section.recordName, name: section.name)
-            iduSection.sessions = process(sessions: section.sessions, speakers: speakers, locations: locations)
+            let iduSection = IDUSection(recordName: section.recordName, name: section.name, day: day)
+            iduSection.sessions = process(sessions: section.sessions, inSection: iduSection, speakers: speakers, locations: locations)
             iduSections.append(iduSection)
         }
         
         return iduSections
     }
     
-    func process(sessions: [ServerSession], speakers: [String:IDUSpeaker], locations: [String:IDULocation]) -> [IDUSession] {
+    func process(sessions: [ServerSession], inSection section: IDUSection, speakers: [String:IDUSpeaker], locations: [String:IDULocation]) -> [IDUSession] {
         var iduSessions = [IDUSession]()
         
         sessions.forEach { session in
-            let iduSession = IDUSession(recordName: session.recordName, start: session.startTime, end: session.endTime)
+            let iduSession = IDUSession(recordName: session.recordName, start: session.startTime, end: session.endTime, section: section)
             
             iduSession.sessionItems = process(sessionItems: session.sessionItems, inSession: iduSession, addingSpeakers: speakers, withLocations: locations )
             
@@ -99,7 +102,7 @@ class IDUAppDataInitialiser {
         return iduSessionItems
     }
     
-    var sessionItems: [IDUSessionItem] {
+    func sessionItems() -> [IDUSessionItem] {
         var sessionItemList = [IDUSessionItem]()
         
         dayList.forEach { day in
@@ -155,13 +158,13 @@ class IDUAppDataInitialiser {
         return webLinkDictionary
     }
     
-    var locationTypeList: [IDULocationType] {
+    lazy var locationTypeList: [IDULocationType] = {
         return serverData.locationTypes.map { locationType -> IDULocationType in
             return IDULocationType(recordName: locationType.recordName,
                                    name: locationType.name,
                                    order: locationType.order)
         }
-    }
+    }()
     
     func processLocations(locationTypes: [IDULocationType], links webLinks: [String:IDUWebLink]) -> [IDULocation] {
         
@@ -208,6 +211,16 @@ class IDUAppDataInitialiser {
         
         return dictionary
     }
+    
+    lazy var sessionItemDictionary: [String:IDUSessionItem] = {
+        var dictionary = [String:IDUSessionItem]()
+        
+        sessionItems().forEach { item in
+            dictionary[item.recordName] = item
+        }
+        
+        return dictionary
+    }()
     
     
 }

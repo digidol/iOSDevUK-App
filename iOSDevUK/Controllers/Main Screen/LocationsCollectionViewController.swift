@@ -11,8 +11,6 @@ import CoreData
 
 class LocationsCollectionViewController: UICollectionViewController {
     
-    var collectionDataManager: ImageTextCollectionViewDataManager?
-    
     var locations: [IDULocation]?
     
     override func viewDidLoad() {
@@ -26,20 +24,17 @@ class LocationsCollectionViewController: UICollectionViewController {
     // MARK: UICollectionViewDataSource
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        //return collectionDataManager?.numberOfSections() ?? 0
         return 1
     }
     
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        //return collectionDataManager?.numberOfItemsInSection(section) ?? 0
         return locations?.count ?? 0
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "locationCollectionCell", for: indexPath) as! ImageTextCollectionViewCell
-        //collectionDataManager?.configureCell(cell, atIndexPath: indexPath, withBorderRadius: nil)
         
         if let location = locations?[indexPath.row] {
             cell.name.text = location.name
@@ -63,7 +58,7 @@ class LocationsCollectionViewController: UICollectionViewController {
            let indexPaths = collectionView?.indexPathsForSelectedItems,
            let indexPath = indexPaths.first,
            let location = locations?[indexPath.row] {
-            //collectionDataManager?.object(at: indexPath) as? IDULocation {
+            
             locationController.location = location
         }
         else {

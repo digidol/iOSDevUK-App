@@ -8,7 +8,6 @@
 
 import UIKit
 import SafariServices
-import CoreData
 
 /**
  Manages the opening screen in the app, which provides access to all other screens.
@@ -182,7 +181,6 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
         let locationCell = tableView.dequeueReusableCell(withIdentifier: "locations", for: indexPath) as! LocationsTableViewCell
         
         if let manager = appDataManager {
-            //locationCell.collectionDataManager = LocationImageTextCollectionViewCellDataManager(dataManager: manager, withSortKey: "frontListPosition", withPredicate: NSPredicate(format: "frontListPosition > 0"))
             locationCell.setup(locations: manager.locations())
             locationCell.selectedItem = {
                 item in
@@ -239,33 +237,35 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
             aboutController.sponsors = appDataManager?.sponsors() ?? []
         }
         else if let speakerController = segue.destination as? SpeakerTableViewController {
+            speakerController.appSettings = appDataManager?.settings()
             speakerController.speaker = selectedCollectionViewItem as? IDUSpeaker
         }
         else if let sessionItemController = segue.destination as? SessionItemTableViewController {
-            // FIXME sessionItemController.dataManager = dataManager
             sessionItemController.sessionItem = selectedCollectionViewItem as? IDUSessionItem
         }
         else if let speakersController = segue.destination as? SpeakersCollectionViewController {
-            /*speakersController.collectionDataManager = SpeakerImageTextCollectionViewCellDataManager(dataManager: dataManager!)*/
+            speakersController.appSettings = appDataManager?.settings()
             speakersController.speakers = appDataManager?.speakers()
         }
         else if let locationsController = segue.destination as? LocationsCollectionViewController {
             locationsController.locations = appDataManager?.locations() ?? []
-            
-            /*locationsController.collectionDataManager = LocationImageTextCollectionViewCellDataManager(dataManager: dataManager!, withSortKey: "name", withPredicate: nil)*/
-            
         }
         else if let singleLocationController = segue.destination as? MapLocationViewController {
             singleLocationController.location = selectedCollectionViewItem as? IDULocation
         }
         else if let mapLocationsController = segue.destination as? AllLocationsMapViewController {
-            //mapLocationsController.dataManager = dataManager
+            mapLocationsController.locationTypes = appDataManager?.locationTypes() ?? []
         }
         else if let programmeController = segue.destination as? ProgrammeTableViewController {
             programmeController.days = appDataManager?.days() ?? []
         }
         else if let myScheduleController = segue.destination as? MyScheduleTableViewController {
-            //myScheduleController.dataManager = dataManager
+            
+            if let settings = appDataManager?.settings(),
+                let sessionItems = appDataManager?.sessionItemDictionary() {
+                myScheduleController.setup(sessionItems: sessionItems, withSettings: settings)
+            }
+            
         }
         else if let sponsorController = segue.destination as? SponsorTableViewController {
             sponsorController.sponsors = self.appDataManager?.sponsors() ?? []

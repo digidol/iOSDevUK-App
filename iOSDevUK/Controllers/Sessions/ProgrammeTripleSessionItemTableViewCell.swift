@@ -26,25 +26,26 @@ class ProgrammeTripleSessionItemTableViewCell: ProgrammeDoubleSessionItemTableVi
         
     override func configure(withSession session: IDUSession) {
         super.configure(withSession: session)
-            
-        // FIXME if
-            let item = session.sessionItems[2] // {
-                sessionThreeTitle.text = item.title
-                sessionThreeNames.text = item.speakerNames()
-                sessionThreeLocation.text = item.location?.shortName
-        //}
+        configure(sessionItems: session.sessionItems)
     }
     
-    override func configure(withSession session: IDUSession, whereUserSelected isUserSelected: Bool) {
+    override func configure(sessionItems: [IDUSessionItem]) {
+        super.configure(sessionItems: sessionItems)
+        
+        let item = sessionItems[2]
+        sessionThreeTitle.text = item.title
+        sessionThreeNames.text = item.speakerNames()
+        sessionThreeLocation.text = item.location?.shortName
+    }
+    
+    /*override func configure(withSession session: IDUSession, whereUserSelected isUserSelected: Bool) {
         super.configure(withSession: session)
         
-        //FIXME if
-            let item = session.sessionItems[2] // , whereUserSelected: isUserSelected) {
-            sessionThreeTitle.text = item.title
-            sessionThreeNames.text = item.speakerNames()
-            sessionThreeLocation.text = item.location?.shortName
-        //}
-    }
+        let item = session.sessionItems[2]
+        sessionThreeTitle.text = item.title
+        sessionThreeNames.text = item.speakerNames()
+        sessionThreeLocation.text = item.location?.shortName
+    }*/
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let notify = notifySessionItemSelected,

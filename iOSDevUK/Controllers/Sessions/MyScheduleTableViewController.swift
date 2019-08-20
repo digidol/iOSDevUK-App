@@ -9,16 +9,102 @@
 import UIKit
 import CoreData
 
+class ScheduleSection {
+    var recordName: String
+    var date: Date
+    var sessions = [ScheduleSession]()
+    
+    init(recordName: String, date: Date) {
+        self.recordName = recordName
+        self.date = date
+    }
+    
+    func session(forName name: String) -> ScheduleSession? {
+        if let index = sessions.firstIndex(where: { $0.recordName == name }) {
+            return sessions[index]
+        }
+        
+        return nil
+    }
+    
+    func add(session: ScheduleSession) {
+        sessions.append(session)
+    }
+    
+    func orderedSessions() -> [ScheduleSession] {
+        return sessions.sorted(by: { $0.startTime < $1.startTime })
+    }
+    
+}
+
+class ScheduleSession {
+    var recordName: String
+    var startTime: Date
+    var endTime: Date
+    var sessionItems = [IDUSessionItem]()
+    
+    init(recordName: String, startTime: Date, endTime: Date) {
+        self.recordName = recordName
+        self.startTime = startTime
+        self.endTime = endTime
+    }
+    
+    func add(sessionItem: IDUSessionItem) {
+        sessionItems.append(sessionItem)
+    }
+    
+    func orderedSessionItems() -> [IDUSessionItem] {
+        return sessionItems.filter( { $0.location != nil } )
+                           .sorted(by: { $0.location!.recordName > $1.location!.recordName })
+    }
+}
+
+
 class MyScheduleTableViewController: IDUTableViewController {
 
     @IBOutlet weak var headerImage: UIImageView!
     
-    //var dataManager: DataManager?
+    private var settings: AppSettings?
     
-    /*
-    Accesses the list of sessions that the user has added to 'my schedule'.
-    */
-    //var fetchedResultsController: NSFetchedResultsController<Session>?
+    private var scheduleItems: [IDUSessionItem]?
+    
+    private var scheduleSections: [ScheduleSection]?
+    
+    func setup(sessionItems: [String:IDUSessionItem], withSettings appSettings: AppSettings) {
+        
+        if let recordNames = appSettings.scheduleItems() {
+            
+            var sections = [String:ScheduleSection]()
+            
+            recordNames.forEach( { name in
+                if let sessionItem = sessionItems[name] {
+                    
+                    let parentSession = sessionItem.session
+                    let parentSection = parentSession.section
+                    
+                    var section = sections[parentSection.recordName]
+                    if section == nil {
+                        section = ScheduleSection(recordName: parentSection.recordName, date: parentSection.day.date)
+                        sections[section!.recordName] = section!
+                    }
+                    
+                    if let session = section!.session(forName: parentSession.recordName) {
+                        session.add(sessionItem: sessionItem)
+                    }
+                    else {
+                        let session  = ScheduleSession(recordName: parentSession.recordName, startTime: parentSession.startTime, endTime: parentSession.endTime)
+                        section!.add(session: session)
+                        session.add(sessionItem: sessionItem)
+                    }
+                    
+                }
+            })
+            
+            scheduleSections = sections.values.sorted(by: { $0.date < $1.date })
+            
+        }
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,7 +113,7 @@ class MyScheduleTableViewController: IDUTableViewController {
         //self.navigationItem.rightBarButtonItem = self.editButtonItem
         
         initialiseAutomaticTableCellHeight(50.0)
-        initialiseResultsController()
+        initialiseSections()
         
         if let image = UIImage(named: "TalkImages-Tiled") {
             headerImage.backgroundColor = UIColor(patternImage: image)
@@ -37,7 +123,7 @@ class MyScheduleTableViewController: IDUTableViewController {
         }
     }
     
-    fileprivate func initialiseResultsController() {
+    fileprivate func initialiseSections() {
         /*if let dataManager = dataManager {
             
             let fetchRequest: NSFetchRequest<Session> = Session.fetchRequest()
@@ -71,41 +157,24 @@ class MyScheduleTableViewController: IDUTableViewController {
             return nil
         }
         
-        /*let sectionFetchRequest: NSFetchRequest<Section> = Section.fetchRequest()
-        
-        if let name = fetchedResultsController?.sections?[section - 1].name {
-            sectionFetchRequest.predicate = NSPredicate(format: "recordName = %@", name)
-            
-            if let sectionData = try? dataManager?.persistentContainer.viewContext.fetch(sectionFetchRequest) {
-                return sectionData?[0].name ?? "??"
-            }
-        }*/
+        if let sections = scheduleSections {
+            return sections[section - 1].recordName
+        }
         
         return "Missing"
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1 //+ (fetchedResultsController?.sections?.count ?? 0)
+        return 1 + (scheduleSections?.count ?? 0)
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        /*if section == 0 {
+        
+        if section == 0 {
             return 1
         }
         
-        // FIXME
-        guard let sections = fetchedResultsController?.sections else {
-            return 0
-        }
-        
-        if sections.count < (section - 1) {
-            print("error here with the count")
-            return 0
-        }
-        
-        return sections[section - 1].numberOfObjects*/
-        return 1
+        return scheduleSections?[section - 1].sessions.count ?? 0
     }
 
     
@@ -117,8 +186,8 @@ class MyScheduleTableViewController: IDUTableViewController {
         }
         else {
             
-            /*if let session = fetchedResultsController?.object(at: IndexPath(row: indexPath.row, section: indexPath.section - 1)),
-               let count = session.sessionItems?.filtered(using: NSPredicate(format: "userSelected != nil")).count {
+            if let session = scheduleSections?[indexPath.section - 1].orderedSessions()[indexPath.row] {
+               let count = session.orderedSessionItems().count
                 
                 let labels = ["singleCell", "doubleCell", "tripleCell"]
                 if count - 1 > labels.count {
@@ -128,10 +197,12 @@ class MyScheduleTableViewController: IDUTableViewController {
                 
                 let cell = tableView.dequeueReusableCell(withIdentifier: labels[count - 1], for: indexPath) as! ProgrammeBaseSessionItemTableViewCell
                 
-                cell.configure(withSession: session, whereUserSelected: true)
+                cell.configure(startTime: session.startTime, endTime: session.endTime, sessionItems: session.orderedSessionItems())
+                
+                //cell.configure(withSession: session, whereUserSelected: true)
                 
                 return cell
-            }*/
+            }
         }
         
         print("Unexpectedly reached end of tableView cell without a valid cell")
@@ -184,16 +255,5 @@ class MyScheduleTableViewController: IDUTableViewController {
         }
     }
     
-
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

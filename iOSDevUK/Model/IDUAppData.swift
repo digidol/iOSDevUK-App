@@ -53,9 +53,12 @@ class IDUSection {
     var name: String
     var sessions = [IDUSession]()
     
-    init(recordName: String, name: String) {
+    unowned var day: IDUDay
+    
+    init(recordName: String, name: String, day: IDUDay) {
         self.recordName = name
         self.name = name
+        self.day = day
     }
     
     deinit {
@@ -70,10 +73,13 @@ class IDUSession {
     var endTime: Date
     var sessionItems = [IDUSessionItem]()
     
-    init(recordName: String, start: Date, end: Date) {
+    unowned var section: IDUSection
+    
+    init(recordName: String, start: Date, end: Date, section: IDUSection) {
         self.recordName = recordName
         self.startTime = start
         self.endTime = end
+        self.section = section
     }
     
     deinit {

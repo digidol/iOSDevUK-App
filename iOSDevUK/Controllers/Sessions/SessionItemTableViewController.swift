@@ -15,16 +15,20 @@ class SessionItemTableViewController: IDUTableViewController {
     
     let sections = [nil, "Description", "Speaker(s)", "Location"]
     
+    var appSettings: AppSettings?
+    
     var sessionItem: IDUSessionItem?
     
     fileprivate func setupButtonState() {
-        /*if let userSettings = loadUserSettings(),
-            let item = sessionItem,
-            let inList = userSettings.sessionItems?.contains(item) {
-            if inList {
+        print("about to check app settings")
+        
+        if let settings = appSettings, let item = sessionItem {
+            print("Checking for \(item.recordName): \(settings.isInMySchedule(withRecordName: item.recordName))")
+            
+            if settings.isInMySchedule(withRecordName: item.recordName) {
                 toggleAddRemoveButtonTitle()
             }
-        }*/
+        }
     }
     
     override func viewDidLoad() {
@@ -137,23 +141,17 @@ class SessionItemTableViewController: IDUTableViewController {
     
     @IBAction func addToMySchedule(_ sender: AnyObject) {
         
-        // FIXME
-        /*if let userSettings = loadUserSettings(),
-           let item = sessionItem {
-           
-            if let inList = userSettings.sessionItems?.contains(item) {
-                if !inList {
-                    // FIXME userSettings.addToSessionItems(item)
-                    dataManager?.save()
-                    toggleAddRemoveButtonTitle()
-                }
-                else {
-                    // FIXME userSettings.removeFromSessionItems(item)
-                    dataManager?.save()
-                    toggleAddRemoveButtonTitle()
-                }
+        if let settings = appSettings, let item = sessionItem {
+            
+            if settings.isInMySchedule(withRecordName: item.recordName) {
+                settings.removeMyScheduleItem(withRecordName: item.recordName)
+                toggleAddRemoveButtonTitle()
             }
-        }*/
+            else {
+                settings.addMyScheduleItem(withRecordName: item.recordName)
+                toggleAddRemoveButtonTitle()
+            }
+        }
         
     }
     

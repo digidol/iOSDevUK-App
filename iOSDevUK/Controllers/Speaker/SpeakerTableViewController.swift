@@ -14,6 +14,8 @@ class SpeakerTableViewController: IDUTableViewController, IDUDataManager {
 
     @IBOutlet weak var headerImageView: UIImageView!
     
+    var appSettings: AppSettings?
+    
     var selectedItem: ((Any) -> Void)?
     
     var speaker: IDUSpeaker?
@@ -128,6 +130,7 @@ class SpeakerTableViewController: IDUTableViewController, IDUDataManager {
             
             if let indexPath = tableView.indexPathForSelectedRow,
                let sortedSessionItems = speaker?.sessionItems.sorted(by: { $0.session.startTime < $1.session.startTime}) {
+                sessionItemController.appSettings = appSettings
                 sessionItemController.sessionItem = sortedSessionItems[indexPath.row]
             }
         }

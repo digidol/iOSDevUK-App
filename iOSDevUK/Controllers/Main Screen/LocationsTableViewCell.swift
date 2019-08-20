@@ -10,10 +10,6 @@ import UIKit
 
 class LocationsTableViewCell: UITableViewCell, IDUDataManager {
 
-    //var dataManager: DataManager?
-    
-    //var collectionDataManager: LocationImageTextCollectionViewCellDataManager?
-    
     var selectedItem: ((_ item: Any) -> Void)?
     
     private var locations: [IDULocation]?
@@ -50,7 +46,6 @@ extension LocationsTableViewCell: UICollectionViewDataSource {
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        //return collectionDataManager?.numberOfItemsInSection(section) ?? 0
         return locations?.count ?? 0
     }
     
@@ -58,12 +53,10 @@ extension LocationsTableViewCell: UICollectionViewDataSource {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "locationCell", for: indexPath) as! ImageTextCollectionViewCell
         
-        //collectionDataManager?.configureCell(cell, atIndexPath: indexPath, withBorderRadius: 4.0)
-        
         if let location = locations?[indexPath.row] {
             cell.name.text = location.name
             cell.image.displayImage(named: location.recordName, withDefault: "LocationPin")
-            cell.image.addBorderWithCorner()
+            cell.image.addBorderWithCorner(radius: 4.0)
         }
         else {
             cell.name.text = "Unknown"

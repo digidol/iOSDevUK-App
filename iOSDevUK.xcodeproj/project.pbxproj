@@ -47,6 +47,7 @@
 		6BB68B742118605E00AE2823 /* SessionHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB68B732118605E00AE2823 /* SessionHeaderTableViewCell.swift */; };
 		6BB68B7621189ABC00AE2823 /* UIImageView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB68B7521189ABC00AE2823 /* UIImageView+extension.swift */; };
 		6BB68B782118A4DE00AE2823 /* AlternativeBasicTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB68B772118A4DE00AE2823 /* AlternativeBasicTableViewCell.swift */; };
+		6BBDAFB6230B6325000B9F24 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BBDAFB5230B6325000B9F24 /* AppSettings.swift */; };
 		6BC8D450213FC58100CDA67B /* UIColor+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BC8D44F213FC58000CDA67B /* UIColor+extension.swift */; };
 		6BF3C3C5211F084E00806319 /* ProgrammeTripleSessionItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF3C3C4211F084E00806319 /* ProgrammeTripleSessionItemTableViewCell.swift */; };
 		6BF3C3C7211F78BB00806319 /* ConferenceDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF3C3C6211F78BB00806319 /* ConferenceDate.swift */; };
@@ -56,7 +57,6 @@
 		6BF3C3DD21203AE100806319 /* MainScreenMessageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF3C3DC21203AE100806319 /* MainScreenMessageTableViewCell.swift */; };
 		6BF3C3E22121DA8300806319 /* AboutAppViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF3C3E12121DA8300806319 /* AboutAppViewController.swift */; };
 		6BF3C3E42121DB9600806319 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF3C3E32121DB9600806319 /* MessageUI.framework */; };
-		6BF46A76211C3E46006E337A /* ImageTextCollectionViewDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF46A75211C3E46006E337A /* ImageTextCollectionViewDataManager.swift */; };
 		6BF46A7D211C61B1006E337A /* AllLocationsMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF46A7C211C61B1006E337A /* AllLocationsMapViewController.swift */; };
 		6BF46A80211C61DD006E337A /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF46A7F211C61DD006E337A /* MapKit.framework */; };
 		6BF46A82211C6581006E337A /* Annotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF46A81211C6581006E337A /* Annotation.swift */; };
@@ -151,6 +151,7 @@
 		6BB68B732118605E00AE2823 /* SessionHeaderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionHeaderTableViewCell.swift; sourceTree = "<group>"; };
 		6BB68B7521189ABC00AE2823 /* UIImageView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+extension.swift"; sourceTree = "<group>"; };
 		6BB68B772118A4DE00AE2823 /* AlternativeBasicTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternativeBasicTableViewCell.swift; sourceTree = "<group>"; };
+		6BBDAFB5230B6325000B9F24 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppSettings.swift; path = "../../../../../../System/Volumes/Data/Users/neiltaylor/GitRepositories/iOSDevUK-App/iOSDevUK/Model/AppSettings.swift"; sourceTree = "<group>"; };
 		6BC8D44F213FC58000CDA67B /* UIColor+extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+extension.swift"; sourceTree = "<group>"; };
 		6BF3C3C4211F084E00806319 /* ProgrammeTripleSessionItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgrammeTripleSessionItemTableViewCell.swift; sourceTree = "<group>"; };
 		6BF3C3C6211F78BB00806319 /* ConferenceDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConferenceDate.swift; sourceTree = "<group>"; };
@@ -166,9 +167,6 @@
 		6BF3C3E52121E05500806319 /* UserSettings+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserSettings+CoreDataClass.swift"; sourceTree = "<group>"; };
 		6BF3C3E62121E05500806319 /* UserSettings+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserSettings+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		6BF3C3E92122380500806319 /* SessionItem+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionItem+CoreDataProperties.swift"; sourceTree = "<group>"; };
-		6BF46A75211C3E46006E337A /* ImageTextCollectionViewDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageTextCollectionViewDataManager.swift; sourceTree = "<group>"; };
-		6BF46A77211C3F5B006E337A /* SpeakerImageTextCollectionViewCellDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakerImageTextCollectionViewCellDataManager.swift; sourceTree = "<group>"; };
-		6BF46A79211C429D006E337A /* LocationImageTextCollectionViewDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationImageTextCollectionViewDataManager.swift; sourceTree = "<group>"; };
 		6BF46A7C211C61B1006E337A /* AllLocationsMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllLocationsMapViewController.swift; sourceTree = "<group>"; };
 		6BF46A7F211C61DD006E337A /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		6BF46A81211C6581006E337A /* Annotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Annotation.swift; sourceTree = "<group>"; };
@@ -268,10 +266,8 @@
 				6BF3C3E12121DA8300806319 /* AboutAppViewController.swift */,
 				6BB68B6C2118455900AE2823 /* AttendeeInfoTableViewController.swift */,
 				6B8454A52116242E00D1063B /* ImageTextCollectionViewCell.swift */,
-				6BF46A75211C3E46006E337A /* ImageTextCollectionViewDataManager.swift */,
 				6B8454A72116244200D1063B /* InformationCollectionViewCell.swift */,
 				6B8454AB211624F500D1063B /* InformationTableViewCell.swift */,
-				6BF46A79211C429D006E337A /* LocationImageTextCollectionViewDataManager.swift */,
 				6BF46A83211C778D006E337A /* LocationsCollectionViewController.swift */,
 				6BF46A85211C785B006E337A /* LocationsTableViewCell.swift */,
 				6BF3C3DC21203AE100806319 /* MainScreenMessageTableViewCell.swift */,
@@ -280,7 +276,6 @@
 				6B8454B22116678D00D1063B /* NowAndNextTableViewCell.swift */,
 				6B8454A92116245900D1063B /* SessionItemCollectionViewCell.swift */,
 				6B8454AF2116253200D1063B /* SessionItemsTableViewCell.swift */,
-				6BF46A77211C3F5B006E337A /* SpeakerImageTextCollectionViewCellDataManager.swift */,
 				6B7219932117C93000F23784 /* SpeakersCollectionViewController.swift */,
 				6B8454AD2116250600D1063B /* SpeakersTableViewCell.swift */,
 			);
@@ -324,6 +319,7 @@
 				6B57C2E62309EB9300A952C7 /* IDUAppDataInitialiser.swift */,
 				6B47C6E9230AA4ED005AE255 /* AppDataClient.swift */,
 				6B47C6E5230AA4ED005AE255 /* AppDataManager.swift */,
+				6BBDAFB5230B6325000B9F24 /* AppSettings.swift */,
 				6B52DB96210F12C4004B5C4E /* AppSetting+CoreDataClass.swift */,
 				6BB2625B210FC6AA0093C34E /* AppSetting+CoreDataProperties.swift */,
 				6B8DC1C121373B6000C9B394 /* CloudDataManager.swift */,
@@ -541,7 +537,6 @@
 				6B52DB75210CCF32004B5C4E /* Bundle+extension.swift in Sources */,
 				6BB68B6A2118416100AE2823 /* SponsorTableViewController.swift in Sources */,
 				6B045D17212390F800A68B48 /* InclusivityViewController.swift in Sources */,
-				6BF46A76211C3E46006E337A /* ImageTextCollectionViewDataManager.swift in Sources */,
 				6B8454B32116678D00D1063B /* NowAndNextTableViewCell.swift in Sources */,
 				6B52DB36210C913B004B5C4E /* AppDelegate.swift in Sources */,
 				6B7219852117448400F23784 /* IDUDataManager.swift in Sources */,
@@ -576,6 +571,7 @@
 				6B7219942117C93000F23784 /* SpeakersCollectionViewController.swift in Sources */,
 				6BF46A9B211DB88B006E337A /* ProgrammeSingleSessionItemTableViewCell.swift in Sources */,
 				6BF46A82211C6581006E337A /* Annotation.swift in Sources */,
+				6BBDAFB6230B6325000B9F24 /* AppSettings.swift in Sources */,
 				6B72199221179BF700F23784 /* SpeakerNameAndProfileDetailsTableViewCell.swift in Sources */,
 				6B57C2E52309E6FF00A952C7 /* IDUAppData.swift in Sources */,
 				6BF3C3C5211F084E00806319 /* ProgrammeTripleSessionItemTableViewCell.swift in Sources */,

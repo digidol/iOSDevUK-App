@@ -13,6 +13,8 @@ import Foundation
  */
 protocol AppDataManager {
     
+    func settings() -> AppSettings
+    
     func currentTime() -> Date
     
     /**
@@ -43,12 +45,15 @@ protocol AppDataManager {
     
     func locations() -> [IDULocation]
     
+    func locationTypes() -> [IDULocationType]
+    
+    func sessionItemDictionary() -> [String:IDUSessionItem]
+    
     func isDataLoaded() -> Bool
     
     func addObserver(_ observer: AppDataObserver)
     
     func removeObserver(_ observer: AppDataObserver)
-    
 }
 
 
@@ -67,7 +72,17 @@ protocol AppDataObserver: class {
 
 class ServerAppDataManager: AppDataManager {
     
-    private var dayList: [IDUDay]?
+    func sessionItemDictionary() -> [String : IDUSessionItem] {
+        return appDataWrapper?.sessionItemDictionary ?? [:]
+    }
+    
+    private var appSettings = IDUAppSettings()
+    
+    func settings() -> AppSettings {
+        return appSettings
+    }
+    
+    /*private var dayList: [IDUDay]?
     
     private var speakerList: [IDUSpeaker]?
     
@@ -76,8 +91,9 @@ class ServerAppDataManager: AppDataManager {
     private var locationList: [IDULocation]?
     
     private var locationTypeList: [IDULocationType]?
+    */
     
-    
+    private var appDataWrapper: IDUAppDataInitialiser?
     
     func startDate() -> Date? {
         return data?.startDate ?? nil
@@ -115,12 +131,12 @@ class ServerAppDataManager: AppDataManager {
                     self.data = data
                     
                     if let serverData = data {
-                        let initialiser = IDUAppDataInitialiser(serverData: serverData)
-                        self.dayList = initialiser.dayList
-                        self.speakerList = initialiser.speakerList
-                        self.sessionItemList = initialiser.sessionItems
-                        self.locationList = initialiser.locationList
-                        self.locationTypeList = initialiser.locationTypeList
+                        self.appDataWrapper = IDUAppDataInitialiser(serverData: serverData)
+                        //self.dayList = initialiser.dayList
+                        //self.speakerList = initialiser.speakerList
+                        //self.sessionItemList = initialiser.sessionItems
+                        //self.locationList = initialiser.locationList
+                        //self.locationTypeList = initialiser.locationTypeList
                         print("processed the list of days")
                     }
                     
@@ -134,11 +150,11 @@ class ServerAppDataManager: AppDataManager {
     }
     
     func days() -> [IDUDay] {
-        return dayList ?? []
+        return appDataWrapper?.dayList ?? []
     }
     
     func sessionItems() -> [IDUSessionItem] {
-        return sessionItemList ?? []
+        return appDataWrapper?.sessionItemList ?? []
     }
     
     func sponsors() -> [ServerSponsor] {
@@ -146,7 +162,7 @@ class ServerAppDataManager: AppDataManager {
     }
     
     func speakers() -> [IDUSpeaker] {
-        if let list = speakerList {
+        if let list = appDataWrapper?.speakerList {
             return list.sorted { $0.name < $1.name }
         }
         
@@ -154,9 +170,12 @@ class ServerAppDataManager: AppDataManager {
     }
     
     func locations() -> [IDULocation] {
-        return locationList ?? []
+        return appDataWrapper?.locationList ?? []
     }
     
+    func locationTypes() -> [IDULocationType] {
+        return appDataWrapper?.locationTypeList ?? []
+    }
     
     func isDataLoaded() -> Bool {
         return data != nil

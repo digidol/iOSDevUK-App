@@ -30,25 +30,26 @@ class ProgrammeDoubleSessionItemTableViewCell: ProgrammeSingleSessionItemTableVi
 
     override func configure(withSession session: IDUSession) {
         super.configure(withSession: session)
-        
-        // FIXME if
-            let item = session.sessionItems[1] //{
-            sessionTwoTitle.text = item.title
-            sessionTwoNames.text = item.speakerNames()
-            sessionTwoLocation.text = item.location?.shortName
-        //}
+        configure(sessionItems: session.sessionItems)
     }
     
-    override func configure(withSession session: IDUSession, whereUserSelected isUserSelected: Bool) {
+    override func configure(sessionItems: [IDUSessionItem]) {
+        super.configure(sessionItems: sessionItems)
+        
+        let item = sessionItems[1]
+        sessionTwoTitle.text = item.title
+        sessionTwoNames.text = item.speakerNames()
+        sessionTwoLocation.text = item.location?.shortName
+    }
+    
+    /*override func configure(withSession session: IDUSession, withSessionItems: [IDUSessionItem]) {
         super.configure(withSession: session)
         
-        // FIXME if
-            let item = session.sessionItems[1] // (atPosition: 1, whereUserSelected: isUserSelected) {
-            sessionTwoTitle.text = item.title
-            sessionTwoNames.text = item.speakerNames()
-            sessionTwoLocation.text = item.location?.shortName
-        //}
-    }
+        let item = session.sessionItems[1]
+        sessionTwoTitle.text = item.title
+        sessionTwoNames.text = item.speakerNames()
+        sessionTwoLocation.text = item.location?.shortName
+    }*/
     
     
     

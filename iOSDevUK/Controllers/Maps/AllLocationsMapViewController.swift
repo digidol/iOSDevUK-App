@@ -12,16 +12,9 @@ import CoreData
 
 class AllLocationsMapViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate {
     
-    /*
-     FIXME
-     var dataManager: DataManager? {
-        didSet {
-            initialiseData()
-        }
-    }*/
     
     /// Types of location that are shown in the table
-    //var locationTypes = [Any]()
+    var locationTypes: [IDULocationType]?
     
     /// The map on display
     @IBOutlet var mapView: MKMapView!
@@ -32,41 +25,12 @@ class AllLocationsMapViewController: UIViewController, UITableViewDelegate, UITa
     /// Table of categories that can be shown on the map
     @IBOutlet var tableView: UITableView!
     
-    // FIXME var fetchedResultsController: NSFetchedResultsController<LocationType>?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-    }
-    
-    func initialiseData() {
-        
-        // FIXME
-        /*if let dataManager = dataManager {
-            let fetchRequest: NSFetchRequest<LocationType> = LocationType.fetchRequest()
-            let sortDescriptor = NSSortDescriptor(key: "order", ascending: true)
-            fetchRequest.sortDescriptors = [sortDescriptor]
-            
-            fetchedResultsController = NSFetchedResultsController(
-                fetchRequest: fetchRequest,
-                managedObjectContext: dataManager.persistentContainer.viewContext,
-                sectionNameKeyPath: nil,
-                cacheName: nil)
-            
-            do {
-                try fetchedResultsController?.performFetch()
-            }
-            catch {
-                print("Unable to fetch list of location types.")
-            }
-        }
-        else {
-            print("Unable to access data manager in AllLocationsMapViewController")
-            fatalError()
-        }*/
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -97,17 +61,16 @@ class AllLocationsMapViewController: UIViewController, UITableViewDelegate, UITa
         }
         
         return section.numberOfObjects*/
-        return 0
+        return locationTypes?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "locationItem", for: indexPath)
         
-        /*
-        FIXME
-        if let type = fetchedResultsController?.object(at: indexPath) {
-            cell.textLabel?.text = type.name
-        }*/
+        if let locationType = locationTypes?[indexPath.row] {
+            cell.textLabel?.text = locationType.name
+        }
+        
         return cell
     }
     
@@ -119,20 +82,15 @@ class AllLocationsMapViewController: UIViewController, UITableViewDelegate, UITa
         showMapLocations(forIndexPath: indexPath)
     }
     
-    /**
-     
-     */
     func showMapLocations(forIndexPath indexPath: IndexPath) {
         mapView.removeAnnotations(mapView.annotations)
         
-        // FIXME
-        /*guard let locations = fetchedResultsController?.object(at: indexPath).locations?.allObjects as? [Location] else {
-            print("unable to access location list")
+        guard let locations = locationTypes?[indexPath.row].locations else {
+            print("Unable to access list of locations")
             return
-        }*/
+        }
         
-        //FIXME showMapAnnotations(locations: locations)
-        let locations = [IDULocation]()
+        showMapAnnotations(locations: locations)
         
         let region = regionForLocations(locations: locations)
         mapView.setRegion(region, animated: true)

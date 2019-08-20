@@ -23,7 +23,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 topController.appDataManager = dataManager
             }
         }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: NSUbiquitousKeyValueStore.didChangeExternallyNotification, object: nil)
+        
+        NSUbiquitousKeyValueStore.default.synchronize()
+        
         return true
+    }
+    
+    @objc func onDidReceiveData(_ notification: Notification) {
+        print("Did recieve a notification \(notification)")
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
