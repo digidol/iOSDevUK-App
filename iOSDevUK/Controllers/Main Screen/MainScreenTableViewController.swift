@@ -35,7 +35,31 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
         
         initialiseAutomaticTableCellHeight(50.0)
         
+        configureRefreshControl()
+        
         //setAlternativeTime(time: "2018-09-07T15:14:00+01:00")
+    }
+    
+    func configureRefreshControl () {
+        tableView.refreshControl = UIRefreshControl()
+        tableView.refreshControl?.addTarget(self, action: #selector(updateData),
+                                            for: .valueChanged)
+    }
+    
+    @objc func updateData() {
+        // Update your content…
+        
+        print("Updating content...")
+        initialiseData()
+        
+        // Dismiss the refresh control.
+        endRefreshControlDisplay()
+    }
+    
+    func endRefreshControlDisplay() {
+        DispatchQueue.main.async {
+            self.tableView.refreshControl?.endRefreshing()
+        }
     }
     
     func initialiseData() {
@@ -49,6 +73,8 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
                 } else {
                     print("there was a problem accessing the data.")
                 }
+                
+                self.endRefreshControlDisplay()
             }
         }
     }
@@ -241,6 +267,7 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
             speakerController.speaker = selectedCollectionViewItem as? IDUSpeaker
         }
         else if let sessionItemController = segue.destination as? SessionItemTableViewController {
+            sessionItemController.appSettings = appDataManager?.settings()
             sessionItemController.sessionItem = selectedCollectionViewItem as? IDUSessionItem
         }
         else if let speakersController = segue.destination as? SpeakersCollectionViewController {
@@ -257,6 +284,7 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
             mapLocationsController.locationTypes = appDataManager?.locationTypes() ?? []
         }
         else if let programmeController = segue.destination as? ProgrammeTableViewController {
+            programmeController.appSettings = appDataManager?.settings()
             programmeController.days = appDataManager?.days() ?? []
         }
         else if let myScheduleController = segue.destination as? MyScheduleTableViewController {

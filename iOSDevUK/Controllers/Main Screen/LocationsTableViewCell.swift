@@ -34,9 +34,7 @@ extension LocationsTableViewCell: UICollectionViewDelegate {
      the transition to the relevent next screen.
      */
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let location = locations?[indexPath.row],
-            //let speaker = collectionDataManager?.object(at: indexPath) as? Location,
-            let selectedItem = selectedItem {
+        if let location = locations?[indexPath.row], let selectedItem = selectedItem {
             selectedItem(location)
         }
     }
@@ -56,7 +54,7 @@ extension LocationsTableViewCell: UICollectionViewDataSource {
         if let location = locations?[indexPath.row] {
             cell.name.text = location.name
             cell.image.displayImage(named: location.recordName, withDefault: "LocationPin")
-            cell.image.addBorderWithCorner(radius: 4.0)
+            cell.image.addBorderWithCorner()
         }
         else {
             cell.name.text = "Unknown"

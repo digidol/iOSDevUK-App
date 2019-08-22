@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class AppDataClient {
     
@@ -22,6 +23,7 @@ class AppDataClient {
      */
     private var apiBaseUrl: URL?
     
+    
     /**
      Initilaises the client with the current data version number.
      
@@ -31,10 +33,107 @@ class AppDataClient {
      
          - apiBaseUrl: The base URL that is used to access the API functions.
      */
-    init(dataVersion: Int?) {
-        self.dataVersion = dataVersion
+    init() {
         //self.apiBaseUrl = URL(string: "http://localhost/iosdevuk_server/api/")
         self.apiBaseUrl = URL(string: "https://teaching.dcs.aber.ac.uk/iosdevuk/api/")
+    }
+    
+    func loadData(withCallback callback: @escaping (ServerAppData?) -> Void) {
+        if let appData = loadExistingCopyFromLocalStore() {
+            downloadMetadata { serverMetadata in
+                if let metadata = serverMetadata {
+                    if appData.dataVersion < metadata.dataVersion {
+                        self.downloadUpdate(withFallback: appData, processor: callback)
+                    }
+                    else {
+                        // no need to download, use the local version
+                        callback(appData)
+                    }
+                }
+                else {
+                    // use data from the local store
+                    callback(appData)
+                }
+            }
+        }
+        else {
+            // No local store is available, so start the download
+            print("starting download")
+            downloadUpdate(withFallback: nil, processor: callback)
+        }
+        
+    }
+    
+    /**
+     Get the location for the documents directory.
+     
+     Credit: Taken from [Hacking with Swift](https://www.hackingwithswift.com/example-code/system/how-to-find-the-users-documents-directory) example.
+     
+     - Returns: A URL for the documents directory for this app.
+     */
+    func getDocumentsDirectory() -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0]
+    }
+    
+    func imageExists(forName name: String) -> Bool {
+        let cachesDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+        let fileUrl = cachesDirectory.appendingPathComponent("\(name).png", isDirectory: false)
+        return FileManager.default.fileExists(atPath: fileUrl.path)
+    }
+    
+    func loadExistingCopyFromLocalStore() -> ServerAppData? {
+        
+        let dataFile = getDocumentsDirectory().appendingPathComponent("data.json")
+        
+        if FileManager.default.fileExists(atPath: dataFile.path) {
+            if let content = FileManager.default.contents(atPath: dataFile.path) {
+                return decodeAppData(data: content)
+            }
+        }
+        
+        print("Unable to access local file")
+        return nil
+        
+    }
+    
+    func storeToLocalStore(appData: ServerAppData) -> Bool {
+        let dataFile = getDocumentsDirectory().appendingPathComponent("data.json")
+        
+        if FileManager.default.fileExists(atPath: dataFile.path) {
+            do {
+                try FileManager.default.removeItem(at: dataFile)
+            }
+            catch let error as NSError {
+                print("Error deleting file: \(error)")
+                return false
+            }
+        }
+        
+        do {
+            let encoder = JSONEncoder()
+            encoder.dateEncodingStrategy = .iso8601
+            let data = try encoder.encode(appData)
+            FileManager.default.createFile(atPath: dataFile.path, contents: data, attributes: nil)
+        }
+        catch let error as NSError {
+            print("Unable to store file: \(error)")
+            return false
+        }
+        
+        return true
+    }
+    
+    private func decodeAppData(data: Data) -> ServerAppData? {
+        do {
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
+            return try decoder.decode(ServerAppData.self, from: data)
+        }
+        catch let error as NSError {
+            print("There was an error: \(error)")
+            return nil
+        }
     }
     
     /**
@@ -84,7 +183,7 @@ class AppDataClient {
      
          - processor: Called when the download operation has completed.
      */
-    func downloadUpdate(withProcessor processor: @escaping (ServerAppData?) -> Void) {
+    func downloadUpdate(withFallback fallbackData: ServerAppData?, processor: @escaping (ServerAppData?) -> Void) {
         
         guard let url = URL(string: "schedule", relativeTo: self.apiBaseUrl) else {
             print("unable to build URL")
@@ -97,34 +196,76 @@ class AppDataClient {
             if let downloadedData = data {
                 print("data accessed: \(downloadedData)")
                 
-                do {
-                    let decoder = JSONDecoder()
-                    decoder.dateDecodingStrategy = .iso8601
-                    let data = try decoder.decode(ServerAppData.self, from: downloadedData)
-                    processor(data)
+                if let appData = self.decodeAppData(data: downloadedData) {
+                    // successfully accessed data from a remote source
+                    // store a copy in the documents directory
+                    if !self.storeToLocalStore(appData: appData) {
+                        print("Error storing file")
+                    }
+                    processor(appData)
                 }
-                catch let error as NSError {
-                    print("There was an error: \(error)")
-                    processor(nil)
+                else {
+                    print("Unable to access remote data, returning any fallback data")
+                    processor(fallbackData)
                 }
             }
             else {
-                print("hmm, unable to access the data")
-                processor(nil)
+                print("hmm, unable to access the data, returning any fallback data")
+                processor(fallbackData)
             }
-        
         }
         
         task.resume()
- 
-                    
     }
+    
+    var pendingDataTasks = [String:URLSessionDownloadTask]()
     
     /**
      
      */
-    func downloadImages(_ images: [String], withCallback: (Bool) -> Void) {
+    func downloadImages(_ images: [String]) {
         
+        images.forEach { name in
+            
+            if let url = apiBaseUrl?.appendingPathComponent("image", isDirectory: false),
+               var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false) {
+                urlComponents.query = "n=\(name)"
+                
+                if let url = urlComponents.url {
+                    
+                    let task = session.downloadTask(with: URLRequest(url: url), completionHandler: {
+                        url, response, error in
+                        
+                        print("finished task for \(name)")
+                        print(String(describing: url))
+                        
+                        do {
+                            if let downloadUrl = url {
+                                
+                                let imageData = try Data(contentsOf: downloadUrl)
+                                
+                                if let image = UIImage(data: imageData),
+                                    let pngData = UIImagePNGRepresentation(image) {
+                                    let cachesUrl = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+                                    let destinationUrl = cachesUrl.appendingPathComponent("\(name).png", isDirectory: false)
+                                    try pngData.write(to: destinationUrl)
+                                }
+                            }
+                        } catch let error as NSError {
+                            print("Error copying file: \(error)")
+                        }
+                        
+                        // remove the task, even if we failed on the copy. We can try again later on.
+                        self.pendingDataTasks.removeValue(forKey: name)
+                        print("Number of pending tasks: \(self.pendingDataTasks.count)")
+                    })
+                    
+                    self.pendingDataTasks[name] = task
+                    print("starting task for \(name) (of \(self.pendingDataTasks.count) tasks)")
+                    task.resume()
+                }
+            }
+        }
     }
     
     

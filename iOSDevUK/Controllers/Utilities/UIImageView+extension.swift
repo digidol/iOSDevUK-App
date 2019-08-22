@@ -33,11 +33,21 @@ extension UIImageView {
         displayName = displayName?.replacingOccurrences(of: "(", with: "")
         displayName = displayName?.replacingOccurrences(of: ")", with: "")
         
-        if let name = displayName,
-            let speakerImage = UIImage(named: name) {
-            self.image = speakerImage
+        if let name = displayName {
+            let cachesUrl = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+            let imageUrl = cachesUrl.appendingPathComponent("\(name).png", isDirectory: false)
+            if let data = try? Data(contentsOf: imageUrl),
+               let image = UIImage(data: data) {
+                
+                self.image = image
+            }
+            else if let assetImage = UIImage(named: name) {
+               self.image = assetImage
+            }
         }
-        else {
+        
+        // fallback - show a default image
+        if self.image == nil {
             self.image = UIImage(named: defaultName ?? "DefaultImage")
         }
     }

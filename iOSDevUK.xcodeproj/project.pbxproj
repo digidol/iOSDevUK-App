@@ -18,7 +18,7 @@
 		6B52DB62210C9714004B5C4E /* IDUTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B52DB61210C9714004B5C4E /* IDUTableViewController.swift */; };
 		6B52DB75210CCF32004B5C4E /* Bundle+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B52DB74210CCF32004B5C4E /* Bundle+extension.swift */; };
 		6B57C2E52309E6FF00A952C7 /* IDUAppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B57C2E42309E6FF00A952C7 /* IDUAppData.swift */; };
-		6B57C2E72309EB9300A952C7 /* IDUAppDataInitialiser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B57C2E62309EB9300A952C7 /* IDUAppDataInitialiser.swift */; };
+		6B57C2E72309EB9300A952C7 /* IDUAppDataWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B57C2E62309EB9300A952C7 /* IDUAppDataWrapper.swift */; };
 		6B72197921166BCE00F23784 /* NowAndNextCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B72197821166BCE00F23784 /* NowAndNextCollectionViewCell.swift */; };
 		6B7219812117407A00F23784 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6B72197C2117407900F23784 /* LaunchScreen.storyboard */; };
 		6B7219822117407A00F23784 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6B72197D2117407900F23784 /* MainStoryboard.storyboard */; };
@@ -110,7 +110,7 @@
 		6B52DBA6210F261C004B5C4E /* WebLink+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebLink+CoreDataClass.swift"; sourceTree = "<group>"; };
 		6B52DBB2210F2673004B5C4E /* NSManagedObject+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSManagedObject+extension.swift"; sourceTree = "<group>"; };
 		6B57C2E42309E6FF00A952C7 /* IDUAppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IDUAppData.swift; path = "../../../../../../System/Volumes/Data/Users/neiltaylor/GitRepositories/iOSDevUK-App/iOSDevUK/Model/IDUAppData.swift"; sourceTree = "<group>"; };
-		6B57C2E62309EB9300A952C7 /* IDUAppDataInitialiser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IDUAppDataInitialiser.swift; path = "../../../../../../System/Volumes/Data/Users/neiltaylor/GitRepositories/iOSDevUK-App/iOSDevUK/Model/IDUAppDataInitialiser.swift"; sourceTree = "<group>"; };
+		6B57C2E62309EB9300A952C7 /* IDUAppDataWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IDUAppDataWrapper.swift; path = "../../../../../../System/Volumes/Data/Users/neiltaylor/GitRepositories/iOSDevUK-App/iOSDevUK/Model/IDUAppDataWrapper.swift"; sourceTree = "<group>"; };
 		6B72197821166BCE00F23784 /* NowAndNextCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowAndNextCollectionViewCell.swift; sourceTree = "<group>"; };
 		6B72197C2117407900F23784 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6B72197D2117407900F23784 /* MainStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainStoryboard.storyboard; sourceTree = "<group>"; };
@@ -271,9 +271,9 @@
 				6BF46A83211C778D006E337A /* LocationsCollectionViewController.swift */,
 				6BF46A85211C785B006E337A /* LocationsTableViewCell.swift */,
 				6BF3C3DC21203AE100806319 /* MainScreenMessageTableViewCell.swift */,
+				6B8454B22116678D00D1063B /* NowAndNextTableViewCell.swift */,
 				6B52DB5A210C94CC004B5C4E /* MainScreenTableViewController.swift */,
 				6B72197821166BCE00F23784 /* NowAndNextCollectionViewCell.swift */,
-				6B8454B22116678D00D1063B /* NowAndNextTableViewCell.swift */,
 				6B8454A92116245900D1063B /* SessionItemCollectionViewCell.swift */,
 				6B8454AF2116253200D1063B /* SessionItemsTableViewCell.swift */,
 				6B7219932117C93000F23784 /* SpeakersCollectionViewController.swift */,
@@ -316,7 +316,7 @@
 			children = (
 				6B512BB0230221400090B1B4 /* ServerAppData.swift */,
 				6B57C2E42309E6FF00A952C7 /* IDUAppData.swift */,
-				6B57C2E62309EB9300A952C7 /* IDUAppDataInitialiser.swift */,
+				6B57C2E62309EB9300A952C7 /* IDUAppDataWrapper.swift */,
 				6B47C6E9230AA4ED005AE255 /* AppDataClient.swift */,
 				6B47C6E5230AA4ED005AE255 /* AppDataManager.swift */,
 				6BBDAFB5230B6325000B9F24 /* AppSettings.swift */,
@@ -530,7 +530,7 @@
 				6BF46A97211C9FD8006E337A /* LocationViewController.swift in Sources */,
 				6BF3C3E22121DA8300806319 /* AboutAppViewController.swift in Sources */,
 				6BB68B692118416100AE2823 /* SponsorTableViewCell.swift in Sources */,
-				6B57C2E72309EB9300A952C7 /* IDUAppDataInitialiser.swift in Sources */,
+				6B57C2E72309EB9300A952C7 /* IDUAppDataWrapper.swift in Sources */,
 				6B8454AA2116245900D1063B /* SessionItemCollectionViewCell.swift in Sources */,
 				6B8454A62116242F00D1063B /* ImageTextCollectionViewCell.swift in Sources */,
 				6B7219882117594A00F23784 /* SpeakerTableViewController.swift in Sources */,

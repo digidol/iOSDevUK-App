@@ -8,7 +8,7 @@
 
 import Foundation
 
-class IDUAppDataInitialiser {
+class IDUAppDataWrapper {
 
     private var serverData: ServerAppData
     
@@ -123,6 +123,7 @@ class IDUAppDataInitialiser {
         return serverData.speakers.map { speaker -> IDUSpeaker in
             let iduSpeaker = IDUSpeaker(recordName: speaker.recordName, name: speaker.name, biography: speaker.biography)
             iduSpeaker.twitterId = speaker.twitterId
+            iduSpeaker.imageVersion = speaker.imageVersion
             
             if let recordNames = speaker.webLinkRecordNames {
                 recordNames.forEach { webLinkRecordName in

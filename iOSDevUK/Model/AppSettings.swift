@@ -17,8 +17,9 @@ protocol AppSettings {
     func isInMySchedule(withRecordName recordName: String) -> Bool
     
     func scheduleItems() -> [String]?
+    
+    func synchronize()
 }
-
 
 class IDUAppSettings: AppSettings {
     
@@ -45,19 +46,21 @@ class IDUAppSettings: AppSettings {
     }
     
     func removeMyScheduleItem(withRecordName recordName: String) {
-        let keystore = NSUbiquitousKeyValueStore()
+        let keystore = NSUbiquitousKeyValueStore.default
         
         if var storedSchedule = keystore.object(forKey: ScheduleKey) as? [String] {
             if let index = storedSchedule.firstIndex(of: recordName) {
-                storedSchedule.remove(at: index)
-                keystore.synchronize()
+                let removedValue = storedSchedule.remove(at: index)
+                print("Removing \(recordName) and removed \(removedValue)")
+                keystore.set(storedSchedule, forKey: ScheduleKey)
+                //keystore.synchronize()
             }
         }
     }
     
     func isInMySchedule(withRecordName recordName: String) -> Bool {
         
-        let keystore = NSUbiquitousKeyValueStore()
+        let keystore = NSUbiquitousKeyValueStore.default
         if let storedSchedule = keystore.object(forKey: ScheduleKey) as? [String] {
             return storedSchedule.contains(recordName)
         }
@@ -67,9 +70,25 @@ class IDUAppSettings: AppSettings {
     
     func scheduleItems() -> [String]? {
         
-        let keystore = NSUbiquitousKeyValueStore()
+        let keystore = NSUbiquitousKeyValueStore.default
+        
+        let keys = keystore.dictionaryRepresentation.keys
+        for k in keys {
+            if k.starts(with: "sch") {
+                print(k)
+            }
+            else {
+                print("\(k) does not begin with sch")
+            }
+        }
+        
         return keystore.object(forKey: ScheduleKey) as? [String]
         
+    }
+    
+    func synchronize() {
+        let keystore = NSUbiquitousKeyValueStore.default
+        keystore.synchronize()
     }
     
 }

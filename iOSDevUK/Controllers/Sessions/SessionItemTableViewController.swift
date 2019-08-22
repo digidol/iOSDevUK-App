@@ -87,7 +87,7 @@ class SessionItemTableViewController: IDUTableViewController {
             
             if let speakers = sessionItem?.sortedSpeakers() {
                 cell.itemLabel.text = speakers[indexPath.row].name
-                cell.itemImage?.displayImage(named: speakers[indexPath.row].name)
+                cell.itemImage?.displayImage(named: speakers[indexPath.row].recordName)
                             
             }
                 //sessionItem?.speakers?.sortedArray(using: [NSSortDescriptor(key: "name", ascending: true)]) as! [Speaker]
@@ -118,8 +118,7 @@ class SessionItemTableViewController: IDUTableViewController {
             
             if let speakerController = segue.destination as? SpeakerTableViewController {
                 if let speakers = sessionItem?.sortedSpeakers() {
-                    //sessionItem?.speakers?.sortedArray(using: [NSSortDescriptor(key: "name", ascending: true)]) as? [IDUSpeaker] {
-                    
+                    speakerController.appSettings = appSettings
                     speakerController.speaker = speakers[indexPath.row]
                     speakerController.callingSessionItem = sessionItem
                 }
@@ -128,15 +127,6 @@ class SessionItemTableViewController: IDUTableViewController {
                 locationController.location = sessionItem?.location
             }
         }
-    }
-    
-    func loadUserSettings() -> IDUUserSettings? {
-        //FIXME
-        /*if let viewContext = dataManager?.persistentContainer.viewContext {
-            return UserSettings.retrieveInstance(inContext: viewContext)
-        }*/
-        
-        return nil
     }
     
     @IBAction func addToMySchedule(_ sender: AnyObject) {

@@ -54,6 +54,8 @@ protocol AppDataManager {
     func addObserver(_ observer: AppDataObserver)
     
     func removeObserver(_ observer: AppDataObserver)
+    
+    func image(recordName: String) -> URL?
 }
 
 
@@ -70,7 +72,17 @@ protocol AppDataObserver: class {
     func appDataFailedToLoad(withReason reason: String)
 }
 
+
+
+
+
 class ServerAppDataManager: AppDataManager {
+    
+    func image(recordName: String) -> URL? {
+        return nil
+    }
+    
+    
     
     func sessionItemDictionary() -> [String : IDUSessionItem] {
         return appDataWrapper?.sessionItemDictionary ?? [:]
@@ -82,18 +94,7 @@ class ServerAppDataManager: AppDataManager {
         return appSettings
     }
     
-    /*private var dayList: [IDUDay]?
-    
-    private var speakerList: [IDUSpeaker]?
-    
-    private var sessionItemList: [IDUSessionItem]?
-    
-    private var locationList: [IDULocation]?
-    
-    private var locationTypeList: [IDULocationType]?
-    */
-    
-    private var appDataWrapper: IDUAppDataInitialiser?
+    private var appDataWrapper: IDUAppDataWrapper?
     
     func startDate() -> Date? {
         return data?.startDate ?? nil
@@ -120,33 +121,59 @@ class ServerAppDataManager: AppDataManager {
         
     }
     
+    /**
+     Initialise the database by
+     */
     func initialiseData(onCompletion callback: @escaping (Bool, String?) -> Void) {
         
-        let client = AppDataClient(dataVersion: nil)
-                
-        client.downloadMetadata{ (data) in
-            if data != nil {
-                client.downloadUpdate { (data) in
-                    print("Download returned \(String(describing: data))")
-                    self.data = data
-                    
-                    if let serverData = data {
-                        self.appDataWrapper = IDUAppDataInitialiser(serverData: serverData)
-                        //self.dayList = initialiser.dayList
-                        //self.speakerList = initialiser.speakerList
-                        //self.sessionItemList = initialiser.sessionItems
-                        //self.locationList = initialiser.locationList
-                        //self.locationTypeList = initialiser.locationTypeList
-                        print("processed the list of days")
-                    }
-                    
-                    callback(true, nil)
-                }
-            } else {
-                print("Unable to retrieve the metadata")
-                callback(false, "Unable to access metadata.")
+        let client = AppDataClient()
+        
+        client.loadData { appData in
+            if let data = appData {
+                self.data = data
+                self.appDataWrapper = IDUAppDataWrapper(serverData: data)
+                self.processSpeakerImages()
+                self.processSponsorImages()
+                callback(true, nil)
+            }
+            else {
+                print("Unable to retrieve the app data")
+                callback(false, "Unable to access app data.")
             }
         }
+    }
+    
+    
+    func processSpeakerImages() {
+        
+        var imagesToLoad = [String]()
+        let appDataClient = AppDataClient()
+        
+        speakers().forEach { speaker in
+            
+            if speaker.imageVersion != nil && !appDataClient.imageExists(forName: speaker.recordName) {
+               imagesToLoad.append(speaker.recordName)
+            }
+        }
+        
+        appDataClient.downloadImages(imagesToLoad)
+        
+    }
+    
+    func processSponsorImages() {
+        
+        var imagesToLoad = [String]()
+        let appDataClient = AppDataClient()
+        
+        sponsors().forEach { sponsor in
+            
+            if sponsor.imageVersion != 0 && !appDataClient.imageExists(forName: sponsor.recordName) {
+                imagesToLoad.append(sponsor.recordName)
+            }
+        }
+        
+        appDataClient.downloadImages(imagesToLoad)
+        
     }
     
     func days() -> [IDUDay] {

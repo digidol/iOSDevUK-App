@@ -61,9 +61,9 @@ extension SessionItemsTableViewCell: UICollectionViewDataSource {
             cell.speaker.text = sessionItem.speakerNames()
                 
             if sessionItem.speakers.count > 0 {
-                cell.speakerOneImage.displayImage(named: sessionItem.speakers[0].name)
+                cell.speakerOneImage.displayImage(named: sessionItem.speakers[0].recordName)
                 if sessionItem.speakers.count == 2 {
-                    cell.speakerTwoImage.displayImage(named: sessionItem.speakers[1].name)
+                    cell.speakerTwoImage.displayImage(named: sessionItem.speakers[1].recordName)
                 }
             }
             

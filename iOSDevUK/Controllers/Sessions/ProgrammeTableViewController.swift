@@ -16,6 +16,8 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
     /** Table view that displays the programme outline */
     @IBOutlet weak var tableView: UITableView!
     
+    var appSettings: AppSettings?
+    
     /** List of days for the programme. These will be in date order when they are passed to this controller. */
     var days = [IDUDay]()
     
@@ -185,6 +187,7 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if let sessionItemController = segue.destination as? SessionItemTableViewController {
+            sessionItemController.appSettings = appSettings
             sessionItemController.sessionItem = selectedSessionItem
         }
     }

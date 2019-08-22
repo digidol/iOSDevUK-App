@@ -84,7 +84,7 @@ class MyScheduleTableViewController: IDUTableViewController {
                     
                     var section = sections[parentSection.recordName]
                     if section == nil {
-                        section = ScheduleSection(recordName: parentSection.recordName, date: parentSection.day.date)
+                        section = ScheduleSection(recordName: parentSection.recordName, date: parentSession.startTime)
                         sections[section!.recordName] = section!
                     }
                     
@@ -113,7 +113,6 @@ class MyScheduleTableViewController: IDUTableViewController {
         //self.navigationItem.rightBarButtonItem = self.editButtonItem
         
         initialiseAutomaticTableCellHeight(50.0)
-        initialiseSections()
         
         if let image = UIImage(named: "TalkImages-Tiled") {
             headerImage.backgroundColor = UIColor(patternImage: image)
@@ -121,31 +120,25 @@ class MyScheduleTableViewController: IDUTableViewController {
         else {
             headerImage.backgroundColor = UIColor.iOSDevUKDarkBlue()
         }
+        
+        configureRefreshControl()
     }
     
-    fileprivate func initialiseSections() {
-        /*if let dataManager = dataManager {
-            
-            let fetchRequest: NSFetchRequest<Session> = Session.fetchRequest()
-            fetchRequest.predicate = NSPredicate(format: "ANY sessionItems.userSelected != nil")
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "startTime", ascending: true)]
-            
-            
-            fetchedResultsController = NSFetchedResultsController(
-                fetchRequest: fetchRequest,
-                managedObjectContext: dataManager.persistentContainer.viewContext,
-                sectionNameKeyPath: "section.recordName",
-                cacheName: nil)
-            
-            do {
-                try fetchedResultsController?.performFetch()
-            }
-            catch {
-                print("************** Unable to fetch list of sections.")
-            }
-        }*/
+    func configureRefreshControl () {
+        tableView.refreshControl = UIRefreshControl()
+        tableView.refreshControl?.addTarget(self, action: #selector(synchronizeKeystore), for: .valueChanged)
     }
-
+    
+    @objc func synchronizeKeystore() {
+        
+        settings?.synchronize()
+        
+        DispatchQueue.main.async {
+            self.tableView.refreshControl?.endRefreshing()
+            self.tableView.reloadData()
+        }
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -209,20 +202,18 @@ class MyScheduleTableViewController: IDUTableViewController {
         fatalError()
     }
     
-
-    
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return false // indexPath.section > 0
     }
     
-    fileprivate func loadUserSettings() -> IDUUserSettings? {
+    //fileprivate func loadUserSettings() -> IDUUserSettings? {
         /*if let viewContext = dataManager?.persistentContainer.viewContext {
             return UserSettings.retrieveInstance(inContext: viewContext)
         }
         */
-        return nil
-    }
+    //    return nil
+    //}
     
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {

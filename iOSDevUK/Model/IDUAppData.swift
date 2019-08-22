@@ -175,6 +175,8 @@ class IDUSpeaker {
     
     var webLinks = [IDUWebLink]()
     
+    var imageVersion: Int?
+    
     init(recordName: String, name: String, biography: String) {
         self.name = name
         self.recordName = recordName
