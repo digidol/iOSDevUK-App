@@ -56,6 +56,10 @@ protocol AppDataManager {
     func removeObserver(_ observer: AppDataObserver)
     
     func image(recordName: String) -> URL?
+    
+    func nowSession(forDate date: Date) -> IDUSession?
+    
+    func nextSession(forDate date: Date) -> IDUSession?
 }
 
 
@@ -100,6 +104,49 @@ class ServerAppDataManager: AppDataManager {
         return data?.startDate ?? nil
     }
     
+    
+    func nowSession(forDate date: Date) -> IDUSession? {
+        
+        let filter = { (session: IDUSession) throws -> Bool in
+            return session.startTime <= date && session.endTime >= date
+        }
+        
+        let sorter = { (session1: IDUSession, session2: IDUSession) throws -> Bool in
+            session1.startTime < session2.startTime
+        }
+        
+        if let sessions = appDataWrapper?.sessions(filteredWith: filter, sortedBy: sorter) {
+            if sessions.count > 0 {
+                return sessions[0]
+            }
+        }
+        
+        return nil
+    }
+    
+    func nextSession(forDate date: Date) -> IDUSession? {
+        
+        let filter = { (session: IDUSession) throws -> Bool in
+            return session.startTime > date
+        }
+        
+        let sorter = { (session1: IDUSession, session2: IDUSession) throws -> Bool in
+            session1.startTime < session2.startTime
+        }
+        
+        if let sessions = appDataWrapper?.sessions(filteredWith: filter, sortedBy: sorter) {
+            if sessions.count > 0 {
+                return sessions[0]
+            }
+        }
+        
+        return nil
+    }
+    
+    
+    
+    
+    
     /**
      Returns the end date from the data that has been loaded.
           
@@ -118,7 +165,7 @@ class ServerAppDataManager: AppDataManager {
     }
     
     func setAlternativeDate(_ date: Date) {
-        
+        alternativeTime = date
     }
     
     /**

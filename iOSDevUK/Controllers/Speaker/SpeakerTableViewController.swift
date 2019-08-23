@@ -63,7 +63,7 @@ class SpeakerTableViewController: IDUTableViewController, IDUDataManager {
             return 2
         }
         else if section == 1 {
-            return speaker?.sessionItems.count ?? 0 //FIXME speaker?.sessionItems?.count ?? 0
+            return speaker?.sessionItems.count ?? 0
         }
         else {
             return 0

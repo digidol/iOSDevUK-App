@@ -37,7 +37,7 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
         
         configureRefreshControl()
         
-        //setAlternativeTime(time: "2018-09-07T15:14:00+01:00")
+        //setAlternativeTime(time: "2019-09-02T18:00:00+01:00")
     }
     
     func configureRefreshControl () {
@@ -143,7 +143,14 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
             }
             else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "nowNextItems", for: indexPath) as! NowAndNextTableViewCell
-                //FIXME
+                
+                if let dataManager = appDataManager {
+                
+                   cell.nowSession = dataManager.nowSession(forDate: dataManager.currentTime())
+                   cell.nextSession = dataManager.nextSession(forDate: dataManager.currentTime())
+                
+                }
+                
                 //cell.nowSession = Session.nowSession(forDate: dataManager!.currentTime(), inContext: dataManager!.persistentContainer.viewContext)
                 //cell.nextSession = Session.nextSession(forDate: dataManager!.currentTime(), inContext: dataManager!.persistentContainer.viewContext)
                 cell.collectionView.reloadData()

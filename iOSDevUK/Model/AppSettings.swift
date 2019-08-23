@@ -21,48 +21,79 @@ protocol AppSettings {
     func synchronize()
 }
 
+/**
+ Stores the selected status for a given session item.
+ */
+class SelectedSessionItemSetting: Codable {
+    
+    var name: String
+    
+    /** Indicates if the session item is selected. */
+    var selected: Bool {
+        didSet {
+            self.dateUpdated = Date()
+        }
+    }
+    
+    /** Indicates the date when this setting was updated. */
+    var dateUpdated: Date
+    
+    init(name: String, selected: Bool) {
+        self.name = name
+        self.selected = selected
+        self.dateUpdated = Date()
+    }
+}
+
 class IDUAppSettings: AppSettings {
     
-    let ScheduleKey = "schedule"
+    let ScheduleKeyPrefix = "schedule_"
+    
+    func key(forName name: String) -> String {
+        return "\(ScheduleKeyPrefix)\(name)"
+    }
+    
+    fileprivate func createScheduleItem(withName name: String, selected: Bool) -> [String:Any] {
+        return [
+            "name": name,
+            "selected": selected,
+            "date": Date()
+        ]
+    }
+    
+    fileprivate func updateSchedule(item: inout [String:Any], withSelected selected: Bool) {
+        item["selected"] = selected
+        item["date"] = Date()
+    }
     
     func addMyScheduleItem(withRecordName recordName: String) {
-        let keystore = NSUbiquitousKeyValueStore()
+        let keystore = NSUbiquitousKeyValueStore.default
         
-        var items: [String]
-        
-        if let scheduledItems = keystore.object(forKey: ScheduleKey) as? [String] {
-            items = scheduledItems
+        if var item = keystore.object(forKey: key(forName: recordName)) as? [String:Any] {
+            updateSchedule(item: &item, withSelected: true)
+            keystore.set(item, forKey: key(forName: recordName))
         }
         else {
-            items = [String]()
+            let itemToAdd = createScheduleItem(withName: recordName, selected: true)
+            keystore.set(itemToAdd, forKey: key(forName: recordName))
         }
-        
-        if !items.contains(recordName) {
-            items.append(recordName)
-            keystore.set(items, forKey: ScheduleKey)
-            keystore.synchronize()
-        }
-        
     }
     
     func removeMyScheduleItem(withRecordName recordName: String) {
         let keystore = NSUbiquitousKeyValueStore.default
         
-        if var storedSchedule = keystore.object(forKey: ScheduleKey) as? [String] {
-            if let index = storedSchedule.firstIndex(of: recordName) {
-                let removedValue = storedSchedule.remove(at: index)
-                print("Removing \(recordName) and removed \(removedValue)")
-                keystore.set(storedSchedule, forKey: ScheduleKey)
-                //keystore.synchronize()
-            }
+        if var item = keystore.object(forKey: key(forName: recordName)) as? [String:Any] {
+            updateSchedule(item: &item, withSelected: false)
+            keystore.set(item, forKey: key(forName: recordName))
         }
     }
     
     func isInMySchedule(withRecordName recordName: String) -> Bool {
         
         let keystore = NSUbiquitousKeyValueStore.default
-        if let storedSchedule = keystore.object(forKey: ScheduleKey) as? [String] {
-            return storedSchedule.contains(recordName)
+        if let item = keystore.object(forKey: key(forName: recordName)) as? [String:Any],
+           let selected = item["selected"] as? Bool {
+            return selected
         }
         
         return false
@@ -72,23 +103,31 @@ class IDUAppSettings: AppSettings {
         
         let keystore = NSUbiquitousKeyValueStore.default
         
+        var selectedItems = [String]()
+        
         let keys = keystore.dictionaryRepresentation.keys
-        for k in keys {
-            if k.starts(with: "sch") {
-                print(k)
+        for key in keys {
+            if key.starts(with: ScheduleKeyPrefix) {
+                if let item = keystore.object(forKey: key) as? [String:Any],
+                   let selected = item["selected"] as? Bool,
+                   let name = item["name"] as? String {
+                    
+                    if(selected) {
+                        selectedItems.append(name)
+                    }
+                }
             }
             else {
-                print("\(k) does not begin with sch")
+                print("\(key) does not begin with \(ScheduleKeyPrefix)")
             }
         }
         
-        return keystore.object(forKey: ScheduleKey) as? [String]
+        return selectedItems
         
     }
     
     func synchronize() {
-        let keystore = NSUbiquitousKeyValueStore.default
-        keystore.synchronize()
+        NSUbiquitousKeyValueStore.default.synchronize()
     }
     
 }

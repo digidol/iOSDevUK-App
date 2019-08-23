@@ -118,6 +118,35 @@ class IDUAppDataWrapper {
         return sessionItemList
     }
     
+    func sessions(filteredWith filter: (IDUSession) throws -> Bool, sortedBy sorter: (IDUSession, IDUSession) throws -> Bool) -> [IDUSession]? {
+        
+        var sessionList = [IDUSession]()
+        dayList.forEach { day in
+            day.sections.forEach { section in
+                section.sessions.forEach { session in
+                    
+                    do {
+                        if try filter(session) {
+                            sessionList.append(session)
+                        }
+                    }
+                    catch let error as NSError {
+                        print("unable to filter \(session.recordName) - error \(error)")
+                    }
+                }
+            }
+        }
+        
+        do {
+            return try sessionList.sorted(by: sorter)
+        }
+        catch let error as NSError {
+            print("Error during sort \(error)")
+            return nil
+        }
+        
+    }
+    
     func speakerList(addingLinks webLinks: [String:IDUWebLink]) -> [IDUSpeaker] {
         
         return serverData.speakers.map { speaker -> IDUSpeaker in

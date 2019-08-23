@@ -19,38 +19,6 @@ class SponsorTableViewController: IDUTableViewController, SFSafariViewController
     
     var sponsors: [ServerSponsor]?
     
-    /* FIXME
-    var dataManager: DataManager? {
-        didSet {
-            initialiseFetchedResultsController()
-        }
-    }
-    
-    var fetchedResultsController: NSFetchedResultsController<Sponsor>?
-        
-    func initialiseFetchedResultsController() {
-        if let dataManager = dataManager {
-           
-            let fetchRequest: NSFetchRequest<Sponsor> = Sponsor.fetchRequest()
-            let sortDescriptor = NSSortDescriptor(key: "sponsorOrder", ascending: true)
-            fetchRequest.sortDescriptors = [sortDescriptor]
-            
-            fetchedResultsController = NSFetchedResultsController(
-                fetchRequest: fetchRequest,
-                managedObjectContext: dataManager.persistentContainer.viewContext,
-                sectionNameKeyPath: nil,
-                cacheName: nil)
-            
-            do {
-                try fetchedResultsController?.performFetch()
-            }
-            catch {
-                print("Unable to fetch list of sponsors.")
-            }
-        }
-    }
- */
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -60,7 +28,6 @@ class SponsorTableViewController: IDUTableViewController, SFSafariViewController
         self.headerImage.displayImage(named: "DefaultImage")
         self.headerImage.addBorderWithCorner(radius: 8.0)
      
-        // FIXME initialiseFetchedResultsController()
         
     }
 
