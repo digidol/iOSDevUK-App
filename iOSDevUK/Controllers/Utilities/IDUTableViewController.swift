@@ -22,7 +22,7 @@ class IDUTableViewController: UITableViewController {
 
     func initialiseAutomaticTableCellHeight(_ estimatedHeight: CGFloat) {
         tableView.estimatedRowHeight = estimatedHeight
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
     }
     
 }

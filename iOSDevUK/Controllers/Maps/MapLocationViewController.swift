@@ -101,7 +101,7 @@ class MapLocationViewController: UIViewController, MKMapViewDelegate, SFSafariVi
         self.mapView.addAnnotation(annotation)
         self.mapView.selectAnnotation(annotation, animated: true)
         
-        let boundingRegion = MKCoordinateRegionMakeWithDistance(coordinate, 400, 300)
+        let boundingRegion = MKCoordinateRegion.init(center: coordinate, latitudinalMeters: 400, longitudinalMeters: 300)
         self.mapView.setRegion(boundingRegion, animated: false)
         self.mapView.regionThatFits(boundingRegion)
     }
@@ -140,7 +140,7 @@ class MapLocationViewController: UIViewController, MKMapViewDelegate, SFSafariVi
         mapItem.name = location!.name
         
         
-        let boundingRegion = MKCoordinateRegionMakeWithDistance(coordinate, 400, 300)
+        let boundingRegion = MKCoordinateRegion.init(center: coordinate, latitudinalMeters: 400, longitudinalMeters: 300)
         let launchOptions: [String:AnyObject] = [
             MKLaunchOptionsMapTypeKey: mapTypeValue() as AnyObject,
             MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: boundingRegion.center),

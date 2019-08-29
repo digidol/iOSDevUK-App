@@ -35,7 +35,7 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
         initialiseSections(forDay: nil)
         
         tableView.estimatedRowHeight = 400.0
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
     }
     
     override func didReceiveMemoryWarning() {

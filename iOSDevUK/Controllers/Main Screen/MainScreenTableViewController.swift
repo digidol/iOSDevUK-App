@@ -3,7 +3,7 @@
 //  iOSDevUK
 //
 //  Created by Neil Taylor on 28/07/2018.
-//  Copyright © 2018 Aberystwyth University. All rights reserved.
+//  Copyright © 2018-2019 Aberystwyth University. All rights reserved.
 //
 
 import UIKit
@@ -30,30 +30,25 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
      */
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        initialiseData()
         
         initialiseAutomaticTableCellHeight(50.0)
+        
+        loadLocalData()
+        checkForServerData()
         
         configureRefreshControl()
         
         //setAlternativeTime(time: "2019-09-02T18:00:00+01:00")
     }
     
+    /**
+     Configure the table to ahve a refresh control. This will call the updateData
+     function when activated.
+     */
     func configureRefreshControl () {
         tableView.refreshControl = UIRefreshControl()
-        tableView.refreshControl?.addTarget(self, action: #selector(updateData),
+        tableView.refreshControl?.addTarget(self, action: #selector(checkForServerData),
                                             for: .valueChanged)
-    }
-    
-    @objc func updateData() {
-        // Update your content…
-        
-        print("Updating content...")
-        initialiseData()
-        
-        // Dismiss the refresh control.
-        endRefreshControlDisplay()
     }
     
     func endRefreshControlDisplay() {
@@ -62,20 +57,41 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
         }
     }
     
-    func initialiseData() {
+    func reloadData() {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+    
+    func loadLocalData() {
         if let manager = appDataManager {
-            manager.initialiseData() { success, message in
+            manager.loadLocalData { () -> Void in
+                print("handle image load for local data")
+                self.reloadData()
+            }
+        }
+    }
+    
+    @objc func checkForServerData() {
+        if let manager = appDataManager {
+            
+            let dataCallback = { (success: Bool, message: String?) -> Void in
                 print("success: \(success) and message \(String(describing: message))")
                 if success {
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                    }
+                    self.reloadData()
                 } else {
                     print("there was a problem accessing the data.")
                 }
                 
                 self.endRefreshControlDisplay()
             }
+            
+            let imageCallback = { () -> Void in
+                self.reloadData()
+            }
+            
+            manager.initialiseData(onCompletion: dataCallback, afterImageDownload: imageCallback)
+            
         }
     }
     
@@ -151,8 +167,6 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
                 
                 }
                 
-                //cell.nowSession = Session.nowSession(forDate: dataManager!.currentTime(), inContext: dataManager!.persistentContainer.viewContext)
-                //cell.nextSession = Session.nextSession(forDate: dataManager!.currentTime(), inContext: dataManager!.persistentContainer.viewContext)
                 cell.collectionView.reloadData()
                 return cell
             }

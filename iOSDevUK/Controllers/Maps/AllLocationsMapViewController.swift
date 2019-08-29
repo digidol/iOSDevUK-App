@@ -142,7 +142,7 @@ class AllLocationsMapViewController: UIViewController, UITableViewDelegate, UITa
         let southCentrePoint = CLLocation(latitude: box.minimum.latitude, longitude: center.coordinate.longitude)
         let eastCentrePoint = CLLocation(latitude: center.coordinate.latitude, longitude: box.maximum.longitude)
         
-        return MKCoordinateRegionMakeWithDistance(center.coordinate, center.distance(from: southCentrePoint) + 1000, center.distance(from: eastCentrePoint) + 1000)
+        return MKCoordinateRegion.init(center: center.coordinate, latitudinalMeters: center.distance(from: southCentrePoint) + 1000, longitudinalMeters: center.distance(from: eastCentrePoint) + 1000)
     }
     
     /**

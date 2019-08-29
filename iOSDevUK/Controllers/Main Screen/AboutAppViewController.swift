@@ -3,7 +3,7 @@
 //  iOSDevUK
 //
 //  Created by Neil Taylor on 13/08/2018.
-//  Copyright © 2018 Aberystwyth University. All rights reserved.
+//  Copyright © 2018-2019 Aberystwyth University. All rights reserved.
 //
 
 import UIKit
@@ -47,7 +47,12 @@ class AboutAppViewController: UIViewController, MFMailComposeViewControllerDeleg
     }
     
     @IBAction func showTwitter(_ sender: AnyObject) {
-        UIApplication.shared.open(URL(string: "https://twitter.com/digidol")!, options: [:], completionHandler: nil)
+        UIApplication.shared.open(URL(string: "https://twitter.com/digidol")!, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: nil)
     }
 
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToUIApplicationOpenExternalURLOptionsKeyDictionary(_ input: [String: Any]) -> [UIApplication.OpenExternalURLOptionsKey: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (UIApplication.OpenExternalURLOptionsKey(rawValue: key), value)})
 }

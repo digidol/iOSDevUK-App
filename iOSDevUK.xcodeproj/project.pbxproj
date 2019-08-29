@@ -462,6 +462,7 @@
 				TargetAttributes = {
 					6B52DB31210C913B004B5C4E = {
 						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 1030;
 						SystemCapabilities = {
 							com.apple.Push = {
 								enabled = 1;
@@ -473,6 +474,7 @@
 					};
 					6BF3C3CB211F7D8500806319 = {
 						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 1030;
 						TestTargetID = 6B52DB31210C913B004B5C4E;
 					};
 				};
@@ -650,7 +652,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -704,7 +706,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -719,7 +721,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = iOSDevUK/iOSDevUK.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2019.08.16.1;
+				CURRENT_PROJECT_VERSION = 2019.08.30.1;
 				DEVELOPMENT_TEAM = NNN4GFZ9C2;
 				INFOPLIST_FILE = iOSDevUK/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -727,10 +729,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.2;
+				MARKETING_VERSION = 6.2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = uk.ac.aber.iOSDevUK;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -741,7 +743,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = iOSDevUK/iOSDevUK.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2019.08.16.1;
+				CURRENT_PROJECT_VERSION = 2019.08.30.1;
 				DEVELOPMENT_TEAM = NNN4GFZ9C2;
 				INFOPLIST_FILE = iOSDevUK/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -749,10 +751,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.2;
+				MARKETING_VERSION = 6.2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = uk.ac.aber.iOSDevUK;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -764,6 +766,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = NNN4GFZ9C2;
 				INFOPLIST_FILE = iOSDevUKTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -771,7 +774,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = uk.ac.aber.iOSDevUKTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iOSDevUK.app/iOSDevUK";
 			};
@@ -784,6 +787,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = NNN4GFZ9C2;
 				INFOPLIST_FILE = iOSDevUKTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -791,7 +795,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = uk.ac.aber.iOSDevUKTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iOSDevUK.app/iOSDevUK";
 			};

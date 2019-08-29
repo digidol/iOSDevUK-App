@@ -3,7 +3,7 @@
 //  iOSDevUK
 //
 //  Created by Neil Taylor on 06/08/2018.
-//  Copyright © 2018 Aberystwyth University. All rights reserved.
+//  Copyright © 2018-2019 Aberystwyth University. All rights reserved.
 //
 
 import Foundation
@@ -43,6 +43,9 @@ extension UIImageView {
             }
             else if let assetImage = UIImage(named: name) {
                self.image = assetImage
+            }
+            else {
+                self.image = nil
             }
         }
         

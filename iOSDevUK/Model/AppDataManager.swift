@@ -8,9 +8,6 @@
 
 import Foundation
 
-/**
- 
- */
 protocol AppDataManager {
     
     func settings() -> AppSettings
@@ -33,7 +30,7 @@ protocol AppDataManager {
     
     func setAlternativeDate(_ date: Date)
     
-    func initialiseData(onCompletion callback: @escaping (Bool, String?) -> Void)
+    func initialiseData(onCompletion callback: @escaping (Bool, String?) -> Void, afterImageDownload imageCallback: @escaping () -> Void)
     
     func days() -> [IDUDay]
     
@@ -51,40 +48,20 @@ protocol AppDataManager {
     
     func isDataLoaded() -> Bool
     
-    func addObserver(_ observer: AppDataObserver)
-    
-    func removeObserver(_ observer: AppDataObserver)
-    
-    func image(recordName: String) -> URL?
-    
     func nowSession(forDate date: Date) -> IDUSession?
     
     func nextSession(forDate date: Date) -> IDUSession?
-}
-
-
-protocol AppDataObserver: class {
     
-    /**
-     Called when the data has been updated. Any responding function can then initiate an update to the UI.
-     */
-    func appDataUpdated()
-
-    /**
-     Called if there is a problem loading the data.
-     */
-    func appDataFailedToLoad(withReason reason: String)
+    func loadLocalData(withImageCallback imageCallback: @escaping () -> Void)
 }
-
-
-
-
 
 class ServerAppDataManager: AppDataManager {
     
-    func image(recordName: String) -> URL? {
-        return nil
-    }
+    private var appSettings = IDUAppSettings()
+    
+    private var appDataWrapper: IDUAppDataWrapper?
+    
+    private var data: ServerAppData?
     
     
     
@@ -92,16 +69,25 @@ class ServerAppDataManager: AppDataManager {
         return appDataWrapper?.sessionItemDictionary ?? [:]
     }
     
-    private var appSettings = IDUAppSettings()
-    
     func settings() -> AppSettings {
         return appSettings
     }
     
-    private var appDataWrapper: IDUAppDataWrapper?
+    // MARK: - Date and Now/Next functions
+    
+    private var alternativeTime: Date?
     
     func startDate() -> Date? {
         return data?.startDate ?? nil
+    }
+    
+    /**
+     Returns the end date from the data that has been loaded.
+     
+     - Returns: A date is returned or, if the conference data is not yet available, the value `nil` is returned.
+     */
+    func endDate() -> Date? {
+        return data?.endDate ?? nil
     }
     
     
@@ -146,20 +132,6 @@ class ServerAppDataManager: AppDataManager {
     
     
     
-    
-    /**
-     Returns the end date from the data that has been loaded.
-          
-     - Returns: A date is returned or, if the conference data is not yet available, the value `nil` is returned.
-     */
-    func endDate() -> Date? {
-        return data?.endDate ?? nil
-    }
-    
-    private var data: ServerAppData?
-    
-    var alternativeTime: Date?
-        
     func currentTime() -> Date {
         return alternativeTime ?? Date()
     }
@@ -168,19 +140,40 @@ class ServerAppDataManager: AppDataManager {
         alternativeTime = date
     }
     
+    func setupData(_ data: ServerAppData, withImageCallback imageCallback: @escaping () -> Void) {
+        self.data = data
+        self.appDataWrapper = IDUAppDataWrapper(serverData: data)
+        self.processImages(withCallback: imageCallback)
+    }
+    
     /**
-     Initialise the database by
+     Loads local data if it is present.
+     
+     - Returns: `true` is returned if local data exists and is loaded ready to use. Otherwise, `false` is returned.
      */
-    func initialiseData(onCompletion callback: @escaping (Bool, String?) -> Void) {
+    func loadLocalData(withImageCallback imageCallback: @escaping () -> Void) {
+        let client = AppDataClient()
+        if let localData = client.loadExistingCopyFromLocalStore() {
+            setupData(localData, withImageCallback: imageCallback)
+        }
+    }
+    
+    /**
+     Initialise the conference data by starting process to check if there is new data. If there is, it is downloaded and a check is made to determine if an images need to be downloaded.
+     
+     - Parameters:
+         - callback: A function that is called when the data load operation is completed. This can be used by calling code to determine if there is data to load or any error messages should be displayed.
+         - success: `true` if the data was downloaded. This only confirms that there is new data, not that any associated images have been successfully retrieved. `false` is returned if no data was returned, e.g. lack of network access.
+         - message: an optional message. There won't be a message is the success parameter is `true`. There will be a message if there success parameter is `false`.
+         - imageCallback: A function that is called when images have been downloaded. This can be used to refresh the display.
+     */
+    func initialiseData(onCompletion callback: @escaping (_ success: Bool, _ message: String?) -> Void,  afterImageDownload imageCallback: @escaping () -> Void) {
         
         let client = AppDataClient()
         
         client.loadData { appData in
             if let data = appData {
-                self.data = data
-                self.appDataWrapper = IDUAppDataWrapper(serverData: data)
-                self.processSpeakerImages()
-                self.processSponsorImages()
+                self.setupData(data, withImageCallback: imageCallback)
                 callback(true, nil)
             }
             else {
@@ -190,8 +183,10 @@ class ServerAppDataManager: AppDataManager {
         }
     }
     
-    
-    func processSpeakerImages() {
+    /**
+     Start process to determine if ...
+     */
+    func processImages(withCallback callback: @escaping () -> Void) {
         
         var imagesToLoad = [String]()
         let appDataClient = AppDataClient()
@@ -203,15 +198,6 @@ class ServerAppDataManager: AppDataManager {
             }
         }
         
-        appDataClient.downloadImages(imagesToLoad)
-        
-    }
-    
-    func processSponsorImages() {
-        
-        var imagesToLoad = [String]()
-        let appDataClient = AppDataClient()
-        
         sponsors().forEach { sponsor in
             
             if sponsor.imageVersion != 0 && !appDataClient.imageExists(forName: sponsor.recordName) {
@@ -219,9 +205,10 @@ class ServerAppDataManager: AppDataManager {
             }
         }
         
-        appDataClient.downloadImages(imagesToLoad)
+        appDataClient.downloadImages(imagesToLoad, withCallback: callback)
         
     }
+    
     
     func days() -> [IDUDay] {
         return appDataWrapper?.dayList ?? []
@@ -255,34 +242,6 @@ class ServerAppDataManager: AppDataManager {
         return data != nil
     }
     
-    /**
-     A set of observers who would like to be notiifed when there are relevant
-     changes to the data.
-     */
-    private var observers = [ObjectIdentifier : Observation]()
-    
-    func addObserver(_ observer: AppDataObserver) {
-        let id = ObjectIdentifier(observer)
-        observers[id] = Observation(observer: observer)
-    }
-    
-    func removeObserver(_ observer: AppDataObserver) {
-        let id = ObjectIdentifier(observer)
-        observers.removeValue(forKey: id)
-    }
-    
-    
-}
-
-private extension ServerAppDataManager {
-    
-    /**
-     An observation that can be placed on the ServerAppDataManager.
-     */
-    struct Observation {
-        weak var observer: AppDataObserver?
-    }
-
 }
 
 

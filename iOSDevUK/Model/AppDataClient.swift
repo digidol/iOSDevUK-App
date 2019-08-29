@@ -223,7 +223,7 @@ class AppDataClient {
     /**
      
      */
-    func downloadImages(_ images: [String]) {
+    func downloadImages(_ images: [String], withCallback callback: @escaping () -> Void) {
         
         images.forEach { name in
             
@@ -245,7 +245,7 @@ class AppDataClient {
                                 let imageData = try Data(contentsOf: downloadUrl)
                                 
                                 if let image = UIImage(data: imageData),
-                                    let pngData = UIImagePNGRepresentation(image) {
+                                    let pngData = image.pngData() {
                                     let cachesUrl = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
                                     let destinationUrl = cachesUrl.appendingPathComponent("\(name).png", isDirectory: false)
                                     try pngData.write(to: destinationUrl)
@@ -258,6 +258,10 @@ class AppDataClient {
                         // remove the task, even if we failed on the copy. We can try again later on.
                         self.pendingDataTasks.removeValue(forKey: name)
                         print("Number of pending tasks: \(self.pendingDataTasks.count)")
+                        
+                        if self.pendingDataTasks.count == 0 {
+                            callback()
+                        }
                     })
                     
                     self.pendingDataTasks[name] = task
