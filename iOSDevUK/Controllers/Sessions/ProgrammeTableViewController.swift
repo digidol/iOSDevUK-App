@@ -21,6 +21,8 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
     
     var selectedSessionItem: SessionItem?
     
+    var shouldScrollToCurrent: Bool = true
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -43,6 +45,16 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
         super.didReceiveMemoryWarning()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if shouldScrollToCurrent {
+            // We'd rather not animate, but how can we know when the table view knows the correct
+            // size for all the cells in order to scroll to the right place, before the view appears?
+            scrollToCurrentSession(animated: true)
+        }
+    }
+    
     // MARK: - Data Initialisation
     
     func accessDayList(withContext context: NSManagedObjectContext) -> [Day] {
@@ -84,6 +96,30 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
                 print("Unable to fetch list of sections.")
             }
         }
+    }
+    
+    /// Find the current or next session for the current set of sessions and scroll to it.
+    func scrollToCurrentSession(animated: Bool) {
+        guard let fetchedResultsController = fetchedResultsController else {
+            return
+        }
+        
+        /// Find the session in the already-fetched results
+        let nextOrCurrentSession = fetchedResultsController.fetchedObjects?.first { session in
+            guard let endTime = session.endTime else {
+                return false
+            }
+            return endTime.timeIntervalSinceNow > 0
+        }
+        
+        /// If we found one, resolve it to a section index and row
+        if let sessionToScrollTo = nextOrCurrentSession {
+            if let indexPathOfSessionToScrollTo = fetchedResultsController.indexPath(forObject: sessionToScrollTo) {
+                tableView.scrollToRow(at: indexPathOfSessionToScrollTo, at: .top, animated: animated)
+            }
+        }
+        
+        shouldScrollToCurrent = false
     }
     
     // MARK: - Segmented Control
