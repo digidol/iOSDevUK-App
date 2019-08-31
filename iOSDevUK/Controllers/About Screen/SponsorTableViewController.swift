@@ -52,8 +52,10 @@ class SponsorTableViewController: IDUTableViewController, SFSafariViewController
         cell.sponsorCategory.textColor = self.view.tintColor
         
         if let _ = sponsor.url {
-            cell.sponsorUrl.text = "Click for careers info"
+            cell.sponsorUrl.text = sponsor.urlText ?? "Click for careers info"
         }
+        
+        cell.note.text = sponsor.note
         
         cell.sponsorLogo.displayImage(named: sponsor.recordName)
         cell.tagline.text = sponsor.tagline

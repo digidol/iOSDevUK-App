@@ -3,7 +3,7 @@
 //  iOSDevUK
 //
 //  Created by Neil Taylor on 08/08/2017.
-//  Copyright © 2017 Aberystwyth University. All rights reserved.
+//  Copyright © 2017-2019 Aberystwyth University. All rights reserved.
 //
 
 import UIKit
@@ -16,6 +16,7 @@ class SponsorTableViewCell: UITableViewCell {
     @IBOutlet var sponsorCategoryImage: UIImageView!
     @IBOutlet var sponsorLogo: UIImageView!
     @IBOutlet var tagline: UILabel!
+    @IBOutlet var note: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -16,6 +16,8 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
     /** Table view that displays the programme outline */
     @IBOutlet weak var tableView: UITableView!
     
+    var shouldScrollToCurrent = true
+    
     var appSettings: AppSettings?
     
     /** List of days for the programme. These will be in date order when they are passed to this controller. */
@@ -25,6 +27,8 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
     var selectedSessionItem: IDUSessionItem?
     
     var sectionsToDisplay: [IDUSection]?
+    
+    var appDataManager: AppDataManager?
     
     // MARK: - Lifecycle
     
@@ -36,6 +40,53 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
         
         tableView.estimatedRowHeight = 400.0
         tableView.rowHeight = UITableView.automaticDimension
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        if shouldScrollToCurrent {
+            if let manager = appDataManager,
+               let session = manager.nowSession(forDate: manager.currentTime()) {
+                
+                if let path = indexPath(forSession: session) {
+                    tableView.scrollToRow(at: path, at: .top, animated: true)
+                }
+                
+                shouldScrollToCurrent = false
+                
+            }
+        }
+    }
+    
+    func indexPath(forSession session: IDUSession) -> IndexPath? {
+        
+        if let sections = sectionsToDisplay {
+            
+            var sectionIndex = -1
+            var rowIndex = -1
+            
+            var currentSectionPosition = 0
+            
+            sections.forEach { section -> Void in
+                if let sessionIndex = section.sessions.firstIndex(where: { $0.recordName == session.recordName }) {
+                    rowIndex = sessionIndex
+                    sectionIndex = currentSectionPosition
+                }
+                else {
+                    currentSectionPosition += 1
+                }
+            }
+            
+            if sectionIndex >= 0 && rowIndex >= 0 {
+                return IndexPath(row: rowIndex, section: sectionIndex)
+            }
+            else {
+                return nil
+            }
+        }
+        
+        return nil
     }
     
     override func didReceiveMemoryWarning() {
@@ -52,32 +103,6 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
         else {
             self.sectionsToDisplay = days.flatMap { $0.sections }
         }
-        
-        
-        /*if let dataManager = dataManager {
-            
-            let fetchRequest: NSFetchRequest<Session> = Session.fetchRequest()
-            
-            if let selectedDay = day {
-                fetchRequest.predicate = NSPredicate(format: "section.day = %@", selectedDay)
-            }
-            
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "startTime", ascending: true)]
-            
-            
-            fetchedResultsController = NSFetchedResultsController(
-                fetchRequest: fetchRequest,
-                managedObjectContext: dataManager.persistentContainer.viewContext,
-                sectionNameKeyPath: "section.recordName",
-                cacheName: nil)
-            
-            do {
-                try fetchedResultsController?.performFetch()
-            }
-            catch {
-                print("Unable to fetch list of sections.")
-            }
-        }*/
     }
     
     // MARK: - Segmented Control

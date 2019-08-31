@@ -38,11 +38,11 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
         
         configureRefreshControl()
         
-        //setAlternativeTime(time: "2019-09-02T18:00:00+01:00")
+        //setAlternativeTime(time: "2019-09-04T15:10:00+01:00")
     }
     
     /**
-     Configure the table to ahve a refresh control. This will call the updateData
+     Configure the table to have a refresh control. This will call the updateData
      function when activated.
      */
     func configureRefreshControl () {
@@ -108,7 +108,12 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
      */
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tableView.reloadData()
+        
+        if let manager = appDataManager {
+            if manager.shouldTryRemoteUpdate() {
+                checkForServerData()
+            }
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -306,6 +311,7 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
         }
         else if let programmeController = segue.destination as? ProgrammeTableViewController {
             programmeController.appSettings = appDataManager?.settings()
+            programmeController.appDataManager = appDataManager
             programmeController.days = appDataManager?.days() ?? []
         }
         else if let myScheduleController = segue.destination as? MyScheduleTableViewController {

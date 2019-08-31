@@ -172,6 +172,7 @@ class ServerSponsor: Codable {
     var tagline: String
     var sponsorOrder: Int
     var url: URL?
+    var urlText: String?
     var sponsorCategory: SponsorCategory
     var cellType: SponsorCellType
     var note: String

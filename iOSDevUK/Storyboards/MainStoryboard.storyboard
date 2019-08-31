@@ -64,19 +64,19 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lighthouseSunset" translatesAutoresizingMaskIntoConstraints="NO" id="6hQ-ch-w37">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="967.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="16"/>
                                         </imageView>
                                         <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z0x-6o-19C">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="967.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="16"/>
                                             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="VSM-Cd-Ett">
-                                                <rect key="frame" x="0.0" y="0.0" width="375" height="967.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="375" height="16"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bxj-Z7-rPV">
-                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="967"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="375" height="16"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" id="fsp-UL-kuC">
-                                                            <rect key="frame" x="0.0" y="0.0" width="375" height="967"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="375" height="16"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         </view>
                                                         <vibrancyEffect>
@@ -2804,8 +2804,8 @@ Some of the artwork uses icons from @glyphish (www.glyphish.com).</string>
                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="a6h-wl-Jpo">
                                             <rect key="frame" x="34" y="8" width="299" height="120"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="1T4-Nf-31O">
-                                                    <rect key="frame" x="0.0" y="0.0" width="169" height="81"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="1T4-Nf-31O">
+                                                    <rect key="frame" x="0.0" y="0.0" width="169" height="82.5"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sponsor Name" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M2x-OK-EfB">
                                                             <rect key="frame" x="0.0" y="0.0" width="169" height="24"/>
@@ -2813,20 +2813,26 @@ Some of the artwork uses icons from @glyphish (www.glyphish.com).</string>
                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Level" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6bM-CU-2Yt">
-                                                            <rect key="frame" x="0.0" y="24" width="169" height="20.5"/>
+                                                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Level" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6bM-CU-2Yt">
+                                                            <rect key="frame" x="0.0" y="25" width="169" height="0.0"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tagline" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hjM-r8-IkC">
-                                                            <rect key="frame" x="0.0" y="44.5" width="169" height="20.5"/>
+                                                            <rect key="frame" x="0.0" y="26" width="169" height="20.5"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UWq-Tg-Zfu" userLabel="Note">
+                                                            <rect key="frame" x="0.0" y="48.5" width="169" height="16"/>
+                                                            <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="URL" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e8R-rM-I46">
-                                                            <rect key="frame" x="0.0" y="65" width="169" height="16"/>
+                                                            <rect key="frame" x="0.0" y="66.5" width="169" height="16"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                             <nil key="highlightedColor"/>
@@ -2854,6 +2860,7 @@ Some of the artwork uses icons from @glyphish (www.glyphish.com).</string>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="note" destination="UWq-Tg-Zfu" id="5fD-c1-V0F"/>
                                     <outlet property="sponsorCategory" destination="6bM-CU-2Yt" id="MWu-XA-9Mh"/>
                                     <outlet property="sponsorCategoryImage" destination="3it-TJ-ySd" id="5iA-bD-nWW"/>
                                     <outlet property="sponsorLogo" destination="PW7-B5-fU8" id="Vch-jb-EBz"/>
@@ -2875,8 +2882,8 @@ Some of the artwork uses icons from @glyphish (www.glyphish.com).</string>
                                                 <constraint firstAttribute="width" constant="20" id="Al0-cF-AEZ"/>
                                             </constraints>
                                         </imageView>
-                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="aT4-fr-mgx">
-                                            <rect key="frame" x="34" y="8" width="299" height="167"/>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="aT4-fr-mgx">
+                                            <rect key="frame" x="34" y="8" width="299" height="170.5"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Fix-Sz-gDh">
                                                     <rect key="frame" x="0.0" y="0.0" width="299" height="86"/>
@@ -2885,25 +2892,31 @@ Some of the artwork uses icons from @glyphish (www.glyphish.com).</string>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sponsor Name" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UyL-X5-J8D">
-                                                    <rect key="frame" x="0.0" y="86" width="299" height="24"/>
+                                                    <rect key="frame" x="0.0" y="88" width="299" height="24"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Level" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k6a-Bo-skR">
-                                                    <rect key="frame" x="0.0" y="110" width="299" height="20.5"/>
+                                                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Level" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k6a-Bo-skR">
+                                                    <rect key="frame" x="0.0" y="113" width="299" height="0.0"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tagline" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q91-7M-Y5W">
-                                                    <rect key="frame" x="0.0" y="130.5" width="299" height="20.5"/>
+                                                    <rect key="frame" x="0.0" y="114" width="299" height="20.5"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S7C-7D-IBy" userLabel="Note">
+                                                    <rect key="frame" x="0.0" y="136.5" width="299" height="16"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="URL" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3xK-Pw-OjV">
-                                                    <rect key="frame" x="0.0" y="151" width="299" height="16"/>
+                                                    <rect key="frame" x="0.0" y="154.5" width="299" height="16"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
@@ -2922,6 +2935,7 @@ Some of the artwork uses icons from @glyphish (www.glyphish.com).</string>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="note" destination="S7C-7D-IBy" id="BAs-fP-Sak"/>
                                     <outlet property="sponsorCategory" destination="k6a-Bo-skR" id="IzD-Re-YWg"/>
                                     <outlet property="sponsorCategoryImage" destination="vgN-As-e8o" id="SP7-cf-eVn"/>
                                     <outlet property="sponsorLogo" destination="Fix-Sz-gDh" id="3Ce-fQ-e4N"/>

@@ -10,6 +10,8 @@ import Foundation
 
 protocol AppDataManager {
     
+    func shouldTryRemoteUpdate() -> Bool
+    
     func settings() -> AppSettings
     
     func currentTime() -> Date
@@ -46,8 +48,6 @@ protocol AppDataManager {
     
     func sessionItemDictionary() -> [String:IDUSessionItem]
     
-    func isDataLoaded() -> Bool
-    
     func nowSession(forDate date: Date) -> IDUSession?
     
     func nextSession(forDate date: Date) -> IDUSession?
@@ -64,6 +64,16 @@ class ServerAppDataManager: AppDataManager {
     private var data: ServerAppData?
     
     
+    func shouldTryRemoteUpdate() -> Bool {
+        if let time = UserDefaults.standard.object(forKey: "lastUpdatedTime") as? Date {
+            let minutesAgo = Date().addingTimeInterval(-3660)
+            print("Checking for remote update? \(time) and \(minutesAgo)")
+            
+            return time < minutesAgo
+        }
+        
+        return true
+    }
     
     func sessionItemDictionary() -> [String : IDUSessionItem] {
         return appDataWrapper?.sessionItemDictionary ?? [:]
@@ -236,10 +246,6 @@ class ServerAppDataManager: AppDataManager {
     
     func locationTypes() -> [IDULocationType] {
         return appDataWrapper?.locationTypeList ?? []
-    }
-    
-    func isDataLoaded() -> Bool {
-        return data != nil
     }
     
 }

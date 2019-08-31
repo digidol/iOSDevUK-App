@@ -38,30 +38,35 @@ class AppDataClient {
         self.apiBaseUrl = URL(string: "https://teaching.dcs.aber.ac.uk/iosdevuk/api/")
     }
     
-    func loadData(withCallback callback: @escaping (ServerAppData?) -> Void) {
+    /**
+     Starts a download. It checks to see if there is local data.
+     
+     If there is, it will check if there is more recent data on the server.
+     If there is no local data, or there is more recent data on the servder, an attempt
+     is made to download the remote version.
+ 
+     - Parameters:
+     
+         - callback: Here is a callback that we can work with.
+         - data: The data that has been returned. It might be the data from the server, or
+                 the fallback data or `nil` if no data was accessed.
+     */
+    func loadData(withCallback callback: @escaping (_ data: ServerAppData?) -> Void) {
         if let appData = loadExistingCopyFromLocalStore() {
             downloadMetadata { serverMetadata in
                 if let metadata = serverMetadata {
                     if appData.dataVersion < metadata.dataVersion {
                         self.downloadUpdate(withFallback: appData, processor: callback)
                     }
-                    else {
-                        // no need to download, use the local version
-                        callback(appData)
-                    }
-                }
-                else {
-                    // use data from the local store
-                    callback(appData)
                 }
             }
         }
         else {
             // No local store is available, so start the download
-            print("starting download")
             downloadUpdate(withFallback: nil, processor: callback)
         }
         
+        UserDefaults.standard.set(Date(), forKey: "lastUpdatedTime")
     }
     
     /**
