@@ -74,7 +74,6 @@ class SpeakerNameAndProfileDetailsTableViewCell: UITableViewCell {
             UIApplication.shared.open(URL(string: "https://www.linkedin.com/in/\(linkedIn)")!, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: nil)
         }
     }
-    
 }
 
 // Helper function inserted by Swift 4.2 migrator.

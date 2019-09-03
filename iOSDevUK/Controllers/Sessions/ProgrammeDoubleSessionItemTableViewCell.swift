@@ -42,17 +42,6 @@ class ProgrammeDoubleSessionItemTableViewCell: ProgrammeSingleSessionItemTableVi
         sessionTwoLocation.text = item.location?.shortName
     }
     
-    /*override func configure(withSession session: IDUSession, withSessionItems: [IDUSessionItem]) {
-        super.configure(withSession: session)
-        
-        let item = session.sessionItems[1]
-        sessionTwoTitle.text = item.title
-        sessionTwoNames.text = item.speakerNames()
-        sessionTwoLocation.text = item.location?.shortName
-    }*/
-    
-    
-    
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let notify = notifySessionItemSelected,
            let touch = touches.first {

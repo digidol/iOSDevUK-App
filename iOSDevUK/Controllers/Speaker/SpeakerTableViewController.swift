@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import SafariServices
 
-class SpeakerTableViewController: IDUTableViewController, IDUDataManager {
+class SpeakerTableViewController: IDUTableViewController, IDUDataManager, SFSafariViewControllerDelegate {
     
     @IBOutlet weak var speakerImage: UIImageView!
 
@@ -55,17 +56,19 @@ class SpeakerTableViewController: IDUTableViewController, IDUDataManager {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 3
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
+        
+        switch section {
+        case 0:
             return 2
-        }
-        else if section == 1 {
+        case 1:
             return speaker?.sessionItems.count ?? 0
-        }
-        else {
+        case 2:
+            return speaker?.webLinks.count ?? 0
+        default:
             return 0
         }
     }
@@ -111,6 +114,17 @@ class SpeakerTableViewController: IDUTableViewController, IDUDataManager {
             return cell
         }
         
+        if indexPath.section == 2 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "linkCell", for: indexPath)
+            
+            if let links = speaker?.webLinks {
+                cell.textLabel?.text = links[indexPath.row].name
+                cell.detailTextLabel?.text = links[indexPath.row].url.absoluteString
+            }
+            
+            return cell
+        }
+        
         // else situation...
         let cell = tableView.dequeueReusableCell(withIdentifier: "biography", for: indexPath)
         cell.textLabel?.text = "missing info"
@@ -118,10 +132,36 @@ class SpeakerTableViewController: IDUTableViewController, IDUDataManager {
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 1 {
+        
+        switch section {
+        case 1:
             return "Session(s)"
+        case 2:
+            if let links = speaker?.webLinks {
+                if links.count > 0 {
+                    return "See also"
+                }
+            }
+            
+            return nil
+            
+        default:
+            return nil
         }
-        return nil
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 2 {
+            if let links = speaker?.webLinks {
+                let webViewController = SFSafariViewController(url: links[indexPath.row].url)
+                webViewController.delegate = self
+                self.present(webViewController, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    func safariViewControllerDidFinish(_ controller: SFSafariViewController) {
+        controller.dismiss(animated: true, completion: nil)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

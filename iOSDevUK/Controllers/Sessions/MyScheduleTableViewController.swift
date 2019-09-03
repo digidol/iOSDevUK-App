@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CoreData
 
 class ScheduleSection {
     var recordName: String
@@ -57,6 +56,7 @@ class ScheduleSession {
         return sessionItems.filter( { $0.location != nil } )
                            .sorted(by: { $0.location!.recordName > $1.location!.recordName })
     }
+
 }
 
 
@@ -64,20 +64,34 @@ class MyScheduleTableViewController: IDUTableViewController {
 
     @IBOutlet weak var headerImage: UIImageView!
     
-    private var settings: AppSettings?
+    private var appSettings: AppSettings?
     
     private var scheduleItems: [IDUSessionItem]?
     
     private var scheduleSections: [ScheduleSection]?
     
-    func setup(sessionItems: [String:IDUSessionItem], withSettings appSettings: AppSettings) {
+    /** The item that has been selected. Used to allow selection and then passing to the next screen via the segue. */
+    var selectedSessionItem: IDUSessionItem?
+    
+    
+    var sessionItems: [String:IDUSessionItem]?
+    
+    
+    func setup(sessionItems items: [String:IDUSessionItem], withSettings appSettings: AppSettings) {
         
-        if let recordNames = appSettings.scheduleItems() {
+        self.appSettings = appSettings
+        self.sessionItems = items
+        buildScheduleSections()
+    }
+    
+    func buildScheduleSections() {
+        if let settings = appSettings,
+           let recordNames = settings.scheduleItems() {
             
             var sections = [String:ScheduleSection]()
             
             recordNames.forEach( { name in
-                if let sessionItem = sessionItems[name] {
+                if let sessionItem = sessionItems?[name] {
                     
                     let parentSession = sessionItem.session
                     let parentSection = parentSession.section
@@ -101,7 +115,6 @@ class MyScheduleTableViewController: IDUTableViewController {
             })
             
             scheduleSections = sections.values.sorted(by: { $0.date < $1.date })
-            
         }
         
     }
@@ -124,6 +137,16 @@ class MyScheduleTableViewController: IDUTableViewController {
         configureRefreshControl()
     }
     
+    /**
+     Rebuild the schedule sections in case the user has removed something
+     from their schedule when they looked at the schedule details.
+     */
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        buildScheduleSections()
+        tableView.reloadData()
+    }
+    
     func configureRefreshControl () {
         tableView.refreshControl = UIRefreshControl()
         tableView.refreshControl?.addTarget(self, action: #selector(synchronizeKeystore), for: .valueChanged)
@@ -131,7 +154,8 @@ class MyScheduleTableViewController: IDUTableViewController {
     
     @objc func synchronizeKeystore() {
         
-        settings?.synchronize()
+        // FIXME - this line is probably not needed.
+        appSettings?.synchronize()
         
         DispatchQueue.main.async {
             self.tableView.refreshControl?.endRefreshing()
@@ -191,9 +215,7 @@ class MyScheduleTableViewController: IDUTableViewController {
                 let cell = tableView.dequeueReusableCell(withIdentifier: labels[count - 1], for: indexPath) as! ProgrammeBaseSessionItemTableViewCell
                 
                 cell.configure(startTime: session.startTime, endTime: session.endTime, sessionItems: session.orderedSessionItems())
-                
-                //cell.configure(withSession: session, whereUserSelected: true)
-                
+                cell.notifySessionItemSelected = notify(withSelectedItem:atPoint:inCell:)
                 return cell
             }
         }
@@ -202,18 +224,35 @@ class MyScheduleTableViewController: IDUTableViewController {
         fatalError()
     }
     
+    /**
+     Called when a cell is tapped on the screen. This function will resolve which sessionItem was
+     selected in the row and then activate a segue to show the details for that session.
+     
+     - Parameters:
+         - position: The selection index for the cell, indexed from 0.
+         - point: The touch point, which is used to determine which row was selected.
+         - cell: The cell which received the touch event.
+     */
+    func notify(withSelectedItem position: Int, atPoint point: CGPoint, inCell cell: UITableViewCell) {
+        if let indexPath = tableView.indexPathForRow(at: tableView.convert(point, from: cell)),
+            let session = scheduleSections?[indexPath.section - 1].orderedSessions()[indexPath.row] {
+            selectedSessionItem = session.orderedSessionItems()[position]
+            performSegue(withIdentifier: "myScheduleSessionItemDetailSegue", sender: self)
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if let sessionItemController = segue.destination as? SessionItemTableViewController {
+            sessionItemController.appSettings = appSettings
+            sessionItemController.sessionItem = selectedSessionItem
+        }
+    }
+    
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return false // indexPath.section > 0
     }
-    
-    //fileprivate func loadUserSettings() -> IDUUserSettings? {
-        /*if let viewContext = dataManager?.persistentContainer.viewContext {
-            return UserSettings.retrieveInstance(inContext: viewContext)
-        }
-        */
-    //    return nil
-    //}
     
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -238,10 +277,7 @@ class MyScheduleTableViewController: IDUTableViewController {
                     if commitDelete {
                         tableView.deleteRows(at: [indexPath], with: .fade)
                     }
-                
                 }
-                
-                
             }*/
         }
     }

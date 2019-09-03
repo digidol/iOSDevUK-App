@@ -72,15 +72,16 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
         }
     }
     
+    /**
+     If the data manager is set for this screen, start the process to check if
+     updated data is on the server and, if so, download it.
+     */
     @objc func checkForServerData() {
         if let manager = appDataManager {
             
-            let dataCallback = { (success: Bool, message: String?) -> Void in
-                print("success: \(success) and message \(String(describing: message))")
+            let dataCallback = { (success: Bool) -> Void in
                 if success {
                     self.reloadData()
-                } else {
-                    print("there was a problem accessing the data.")
                 }
                 
                 self.endRefreshControlDisplay()
@@ -95,16 +96,15 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
         }
     }
     
-    func setAlternativeTime(time: String) {
-        if let manager = appDataManager {
-            let dateFormatter = ISO8601DateFormatter()
-            dateFormatter.timeZone = TimeZone(identifier: "Europe/London")
-            manager.setAlternativeDate(dateFormatter.date(from: time)!)
-        }
-    }
-    
     /**
-     Show the screen, making sure that the table data is re-displayed.
+     Show the screen, making sure that the table data is re-displayed. This will
+     check if a period of time has passed since the most recent update. If it has,
+     start the process to check if there is more recent data on the server.
+     
+     Calls `super` implementation before checking if an update is required.
+     
+     - Parameters:
+      - animated: If true, the view is being added to the window using an animation.
      */
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -113,6 +113,14 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
             if manager.shouldTryRemoteUpdate() {
                 checkForServerData()
             }
+        }
+    }
+    
+    func setAlternativeTime(time: String) {
+        if let manager = appDataManager {
+            let dateFormatter = ISO8601DateFormatter()
+            dateFormatter.timeZone = TimeZone(identifier: "Europe/London")
+            manager.setAlternativeDate(dateFormatter.date(from: time)!)
         }
     }
     
@@ -166,10 +174,12 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
                 let cell = tableView.dequeueReusableCell(withIdentifier: "nowNextItems", for: indexPath) as! NowAndNextTableViewCell
                 
                 if let dataManager = appDataManager {
-                
                    cell.nowSession = dataManager.nowSession(forDate: dataManager.currentTime())
                    cell.nextSession = dataManager.nextSession(forDate: dataManager.currentTime())
-                
+                   cell.selectedItem = { item in
+                        self.selectedCollectionViewItem = item
+                        self.performSegue(withIdentifier: "sessionItemSegue", sender: self)
+                   }
                 }
                 
                 cell.collectionView.reloadData()
@@ -205,8 +215,7 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
         
         if let manager = appDataManager {
             speakerCell.speakers = manager.speakers()
-            speakerCell.selectedItem = {
-                item in
+            speakerCell.selectedItem = { item in
                 self.selectedCollectionViewItem = item
                 self.performSegue(withIdentifier: "mainSpeakerSegue", sender: self)
             }

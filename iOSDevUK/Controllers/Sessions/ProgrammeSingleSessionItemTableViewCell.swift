@@ -39,14 +39,4 @@ class ProgrammeSingleSessionItemTableViewCell: ProgrammeBaseSessionItemTableView
         sessionOneLocation.text = item.location?.shortName
         
     }
-    
-    /*override func configure(withSession session: IDUSession, whereUserSelected isUserSelected: Bool) {
-        super.configure(withSession: session)
-        
-        let item = session.sessionItems[0]
-        sessionOneTitle.text = item.title
-        sessionOneNames.text = item.speakerNames()
-        sessionOneLocation.text = item.location?.shortName
-    }*/
-
 }

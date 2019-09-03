@@ -32,7 +32,7 @@ protocol AppDataManager {
     
     func setAlternativeDate(_ date: Date)
     
-    func initialiseData(onCompletion callback: @escaping (Bool, String?) -> Void, afterImageDownload imageCallback: @escaping () -> Void)
+    func initialiseData(onCompletion callback: @escaping (Bool) -> Void, afterImageDownload imageCallback: @escaping () -> Void)
     
     func days() -> [IDUDay]
     
@@ -66,7 +66,7 @@ class ServerAppDataManager: AppDataManager {
     
     func shouldTryRemoteUpdate() -> Bool {
         if let time = UserDefaults.standard.object(forKey: "lastUpdatedTime") as? Date {
-            let minutesAgo = Date().addingTimeInterval(-3660)
+            let minutesAgo = Date().addingTimeInterval(-3600)
             print("Checking for remote update? \(time) and \(minutesAgo)")
             
             return time < minutesAgo
@@ -177,18 +177,18 @@ class ServerAppDataManager: AppDataManager {
          - message: an optional message. There won't be a message is the success parameter is `true`. There will be a message if there success parameter is `false`.
          - imageCallback: A function that is called when images have been downloaded. This can be used to refresh the display.
      */
-    func initialiseData(onCompletion callback: @escaping (_ success: Bool, _ message: String?) -> Void,  afterImageDownload imageCallback: @escaping () -> Void) {
+    func initialiseData(onCompletion callback: @escaping (_ success: Bool) -> Void,
+                        afterImageDownload imageCallback: @escaping () -> Void) {
         
         let client = AppDataClient()
         
         client.loadData { appData in
             if let data = appData {
                 self.setupData(data, withImageCallback: imageCallback)
-                callback(true, nil)
+                callback(true)
             }
             else {
-                print("Unable to retrieve the app data")
-                callback(false, "Unable to access app data.")
+                callback(false)
             }
         }
     }

@@ -23,7 +23,6 @@ class AppDataClient {
      */
     private var apiBaseUrl: URL?
     
-    
     /**
      Initilaises the client with the current data version number.
      
@@ -54,10 +53,19 @@ class AppDataClient {
     func loadData(withCallback callback: @escaping (_ data: ServerAppData?) -> Void) {
         if let appData = loadExistingCopyFromLocalStore() {
             downloadMetadata { serverMetadata in
+                var executeCallback = true
+                
                 if let metadata = serverMetadata {
                     if appData.dataVersion < metadata.dataVersion {
                         self.downloadUpdate(withFallback: appData, processor: callback)
+                        executeCallback = false
                     }
+                }
+                
+                // we don't need to download an update, so we can
+                // run the callback here with no data to pass in
+                if executeCallback {
+                    callback(nil)
                 }
             }
         }

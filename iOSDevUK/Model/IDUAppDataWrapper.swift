@@ -152,6 +152,7 @@ class IDUAppDataWrapper {
         return serverData.speakers.map { speaker -> IDUSpeaker in
             let iduSpeaker = IDUSpeaker(recordName: speaker.recordName, name: speaker.name, biography: speaker.biography)
             iduSpeaker.twitterId = speaker.twitterId
+            iduSpeaker.linkedIn = speaker.linkedIn
             iduSpeaker.imageVersion = speaker.imageVersion
             
             if let recordNames = speaker.webLinkRecordNames {

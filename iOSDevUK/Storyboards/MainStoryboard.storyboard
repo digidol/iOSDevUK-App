@@ -1216,7 +1216,7 @@ Information</string>
                                     <segue destination="7eW-HS-5kd" kind="show" id="8WJ-YO-YIN"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="link" textLabel="LSa-p0-B9K" detailTextLabel="UTk-69-peo" style="IBUITableViewCellStyleSubtitle" id="1dc-lm-Nk1">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="linkCell" textLabel="LSa-p0-B9K" detailTextLabel="UTk-69-peo" style="IBUITableViewCellStyleSubtitle" id="1dc-lm-Nk1">
                                 <rect key="frame" x="0.0" y="317" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1dc-lm-Nk1" id="Ame-jm-0Zy">
@@ -1584,9 +1584,6 @@ Information</string>
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="7eW-HS-5kd" kind="show" id="ECB-J6-Ept"/>
-                                </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="messageCell" rowHeight="168" id="lgF-Yf-bUe">
                                 <rect key="frame" x="0.0" y="172" width="375" height="168"/>
@@ -2317,6 +2314,7 @@ Information</string>
                     </tableView>
                     <connections>
                         <outlet property="headerImage" destination="NsI-Wd-bq0" id="dnk-E3-q9K"/>
+                        <segue destination="7eW-HS-5kd" kind="show" identifier="myScheduleSessionItemDetailSegue" id="dm9-Qz-SHT"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="V91-5H-U7x" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4185,12 +4183,12 @@ Some of the artwork uses icons from @glyphish (www.glyphish.com).</string>
         <image name="lighthouseSunset" width="2000" height="967"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="8vr-Wc-Euq"/>
-        <segue reference="YQD-eM-jzz"/>
-        <segue reference="wtk-lG-RoZ"/>
+        <segue reference="8WJ-YO-YIN"/>
+        <segue reference="ue2-4x-M2h"/>
+        <segue reference="aMJ-d4-Hm3"/>
         <segue reference="9CP-tm-WrT"/>
         <segue reference="m0d-P8-JIJ"/>
-        <segue reference="W1y-Wf-Fuq"/>
+        <segue reference="mgu-fW-wGC"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.2543674111366272" green="0.40975379943847656" blue="0.50812226533889771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
 </document>

@@ -14,6 +14,8 @@ class NowAndNextTableViewCell: UITableViewCell {
     
     var nextSession: IDUSession?
     
+    var selectedItem: ((Any) -> Void)?
+    
     @IBOutlet weak var collectionView: UICollectionView!
     
     override func awakeFromNib() {
@@ -30,6 +32,28 @@ class NowAndNextTableViewCell: UITableViewCell {
 
 extension NowAndNextTableViewCell: UICollectionViewDelegate {
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+
+        var selectedSession: IDUSession?
+        
+        switch indexPath.section {
+        case 0:
+            selectedSession = nowSession
+            break
+        case 1:
+            selectedSession = nextSession
+            break
+        default:
+            selectedSession = nil
+            break
+        }
+        
+        if let sessionItem = selectedSession?.sessionItems[indexPath.row],
+           let selectedItem = selectedItem {
+            
+            selectedItem(sessionItem)
+        }
+    }
 }
 
 extension NowAndNextTableViewCell: UICollectionViewDataSource {

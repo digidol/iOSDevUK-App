@@ -26,7 +26,6 @@ class AboutTableViewController: ExpandedTextCellTableViewController, SFSafariVie
         headerView.backgroundColor = UIColor.iOSDevUKDarkBlue()
     }
     
-    
     /**
  
      */
@@ -112,7 +111,7 @@ class AboutTableViewController: ExpandedTextCellTableViewController, SFSafariVie
         else {
             let expandableCell = tableView.dequeueReusableCell(withIdentifier: "Block", for: indexPath) as! ExpandableSubtitleTableViewCell
             
-            expandableCell.cellTitle.text = "The conference is organised by Aberystwyth University and it is now in its eigth year. iOS, iPhone, iPad, Apple Watch, watchOS, Apple TV and tvOS are trademarks of Apple Inc. For the avoidance of doubt, Apple Inc. has no association with this conference."
+            expandableCell.cellTitle.text = "The conference is organised by Aberystwyth University and it is now in its ninth year. iOS, iPhone, iPad, Apple Watch, watchOS, Apple TV and tvOS are trademarks of Apple Inc. For the avoidance of doubt, Apple Inc. has no association with this conference."
             
             cell = expandableCell
         }
@@ -150,7 +149,6 @@ class AboutTableViewController: ExpandedTextCellTableViewController, SFSafariVie
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
        
         if let sponsorView = segue.destination as? SponsorTableViewController {
-            //sponsorView.dataManager = dataManager
             sponsorView.sponsors = sponsors
         }
     }
