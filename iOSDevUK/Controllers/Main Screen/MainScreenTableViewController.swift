@@ -114,6 +114,8 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
                 checkForServerData()
             }
         }
+        
+        tableView.reloadData()
     }
     
     func setAlternativeTime(time: String) {
