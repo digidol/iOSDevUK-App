@@ -33,8 +33,8 @@ class AppDataClient {
          - apiBaseUrl: The base URL that is used to access the API functions.
      */
     init() {
-        //self.apiBaseUrl = URL(string: "http://localhost/iosdevuk_server/api/")
-        self.apiBaseUrl = URL(string: "https://teaching.dcs.aber.ac.uk/iosdevuk/api/")
+        self.apiBaseUrl = URL(string: "http://localhost/iosdevuk_server/api/")
+        //self.apiBaseUrl = URL(string: "https://teaching.dcs.aber.ac.uk/iosdevuk/api/")
     }
     
     /**
