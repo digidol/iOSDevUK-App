@@ -11,14 +11,11 @@
 		6B448693212D3A3B00CD5335 /* SessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B448692212D3A3B00CD5335 /* SessionTests.swift */; };
 		6B47C6EA230AA4ED005AE255 /* AppDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B47C6E5230AA4ED005AE255 /* AppDataManager.swift */; };
 		6B47C6EE230AA4ED005AE255 /* AppDataClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B47C6E9230AA4ED005AE255 /* AppDataClient.swift */; };
-		6B512BB1230221400090B1B4 /* ServerAppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B512BB0230221400090B1B4 /* ServerAppData.swift */; };
 		6B52DB36210C913B004B5C4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B52DB35210C913B004B5C4E /* AppDelegate.swift */; };
 		6B52DB40210C913C004B5C4E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6B52DB3F210C913C004B5C4E /* Assets.xcassets */; };
 		6B52DB5B210C94CC004B5C4E /* MainScreenTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B52DB5A210C94CC004B5C4E /* MainScreenTableViewController.swift */; };
 		6B52DB62210C9714004B5C4E /* IDUTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B52DB61210C9714004B5C4E /* IDUTableViewController.swift */; };
 		6B52DB75210CCF32004B5C4E /* Bundle+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B52DB74210CCF32004B5C4E /* Bundle+extension.swift */; };
-		6B57C2E52309E6FF00A952C7 /* IDUAppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B57C2E42309E6FF00A952C7 /* IDUAppData.swift */; };
-		6B57C2E72309EB9300A952C7 /* IDUAppDataWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B57C2E62309EB9300A952C7 /* IDUAppDataWrapper.swift */; };
 		6B72197921166BCE00F23784 /* NowAndNextCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B72197821166BCE00F23784 /* NowAndNextCollectionViewCell.swift */; };
 		6B7219812117407A00F23784 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6B72197C2117407900F23784 /* LaunchScreen.storyboard */; };
 		6B7219822117407A00F23784 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6B72197D2117407900F23784 /* MainStoryboard.storyboard */; };
@@ -47,7 +44,10 @@
 		6BB68B742118605E00AE2823 /* SessionHeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB68B732118605E00AE2823 /* SessionHeaderTableViewCell.swift */; };
 		6BB68B7621189ABC00AE2823 /* UIImageView+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB68B7521189ABC00AE2823 /* UIImageView+extension.swift */; };
 		6BB68B782118A4DE00AE2823 /* AlternativeBasicTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB68B772118A4DE00AE2823 /* AlternativeBasicTableViewCell.swift */; };
-		6BBDAFB6230B6325000B9F24 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BBDAFB5230B6325000B9F24 /* AppSettings.swift */; };
+		6BC6AD02287F0EE6003974DB /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BC6ACFE287F0EE5003974DB /* AppSettings.swift */; };
+		6BC6AD03287F0EE6003974DB /* IDUAppDataWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BC6ACFF287F0EE5003974DB /* IDUAppDataWrapper.swift */; };
+		6BC6AD04287F0EE6003974DB /* ServerAppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BC6AD00287F0EE5003974DB /* ServerAppData.swift */; };
+		6BC6AD05287F0EE6003974DB /* IDUAppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BC6AD01287F0EE6003974DB /* IDUAppData.swift */; };
 		6BC8D450213FC58100CDA67B /* UIColor+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BC8D44F213FC58000CDA67B /* UIColor+extension.swift */; };
 		6BF3C3C5211F084E00806319 /* ProgrammeTripleSessionItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF3C3C4211F084E00806319 /* ProgrammeTripleSessionItemTableViewCell.swift */; };
 		6BF3C3C7211F78BB00806319 /* ConferenceDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF3C3C6211F78BB00806319 /* ConferenceDate.swift */; };
@@ -87,7 +87,6 @@
 		6B448692212D3A3B00CD5335 /* SessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionTests.swift; sourceTree = "<group>"; };
 		6B47C6E5230AA4ED005AE255 /* AppDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDataManager.swift; sourceTree = "<group>"; };
 		6B47C6E9230AA4ED005AE255 /* AppDataClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDataClient.swift; sourceTree = "<group>"; };
-		6B512BB0230221400090B1B4 /* ServerAppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ServerAppData.swift; path = "../../../../../../System/Volumes/Data/Users/neiltaylor/GitRepositories/iOSDevUK-App/iOSDevUK/Model/ServerAppData.swift"; sourceTree = "<group>"; };
 		6B52DB32210C913B004B5C4E /* iOSDevUK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOSDevUK.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B52DB35210C913B004B5C4E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6B52DB3D210C913B004B5C4E /* iOSDevUK.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = iOSDevUK.xcdatamodel; sourceTree = "<group>"; };
@@ -96,8 +95,6 @@
 		6B52DB5A210C94CC004B5C4E /* MainScreenTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenTableViewController.swift; sourceTree = "<group>"; };
 		6B52DB61210C9714004B5C4E /* IDUTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDUTableViewController.swift; sourceTree = "<group>"; };
 		6B52DB74210CCF32004B5C4E /* Bundle+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+extension.swift"; sourceTree = "<group>"; };
-		6B57C2E42309E6FF00A952C7 /* IDUAppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IDUAppData.swift; path = "../../../../../../System/Volumes/Data/Users/neiltaylor/GitRepositories/iOSDevUK-App/iOSDevUK/Model/IDUAppData.swift"; sourceTree = "<group>"; };
-		6B57C2E62309EB9300A952C7 /* IDUAppDataWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IDUAppDataWrapper.swift; path = "../../../../../../System/Volumes/Data/Users/neiltaylor/GitRepositories/iOSDevUK-App/iOSDevUK/Model/IDUAppDataWrapper.swift"; sourceTree = "<group>"; };
 		6B72197821166BCE00F23784 /* NowAndNextCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowAndNextCollectionViewCell.swift; sourceTree = "<group>"; };
 		6B72197C2117407900F23784 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6B72197D2117407900F23784 /* MainStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainStoryboard.storyboard; sourceTree = "<group>"; };
@@ -126,7 +123,10 @@
 		6BB68B732118605E00AE2823 /* SessionHeaderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionHeaderTableViewCell.swift; sourceTree = "<group>"; };
 		6BB68B7521189ABC00AE2823 /* UIImageView+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+extension.swift"; sourceTree = "<group>"; };
 		6BB68B772118A4DE00AE2823 /* AlternativeBasicTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlternativeBasicTableViewCell.swift; sourceTree = "<group>"; };
-		6BBDAFB5230B6325000B9F24 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppSettings.swift; path = "../../../../../../System/Volumes/Data/Users/neiltaylor/GitRepositories/iOSDevUK-App/iOSDevUK/Model/AppSettings.swift"; sourceTree = "<group>"; };
+		6BC6ACFE287F0EE5003974DB /* AppSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		6BC6ACFF287F0EE5003974DB /* IDUAppDataWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IDUAppDataWrapper.swift; sourceTree = "<group>"; };
+		6BC6AD00287F0EE5003974DB /* ServerAppData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerAppData.swift; sourceTree = "<group>"; };
+		6BC6AD01287F0EE6003974DB /* IDUAppData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IDUAppData.swift; sourceTree = "<group>"; };
 		6BC8D44F213FC58000CDA67B /* UIColor+extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+extension.swift"; sourceTree = "<group>"; };
 		6BF3C3C4211F084E00806319 /* ProgrammeTripleSessionItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgrammeTripleSessionItemTableViewCell.swift; sourceTree = "<group>"; };
 		6BF3C3C6211F78BB00806319 /* ConferenceDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConferenceDate.swift; sourceTree = "<group>"; };
@@ -285,12 +285,12 @@
 		6B52DB63210C97A0004B5C4E /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				6B512BB0230221400090B1B4 /* ServerAppData.swift */,
-				6B57C2E42309E6FF00A952C7 /* IDUAppData.swift */,
-				6B57C2E62309EB9300A952C7 /* IDUAppDataWrapper.swift */,
+				6BC6AD01287F0EE6003974DB /* IDUAppData.swift */,
+				6BC6AD00287F0EE5003974DB /* ServerAppData.swift */,
 				6B47C6E9230AA4ED005AE255 /* AppDataClient.swift */,
 				6B47C6E5230AA4ED005AE255 /* AppDataManager.swift */,
-				6BBDAFB5230B6325000B9F24 /* AppSettings.swift */,
+				6BC6ACFE287F0EE5003974DB /* AppSettings.swift */,
+				6BC6ACFF287F0EE5003974DB /* IDUAppDataWrapper.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -474,15 +474,17 @@
 				6BF46A97211C9FD8006E337A /* LocationViewController.swift in Sources */,
 				6BF3C3E22121DA8300806319 /* AboutAppViewController.swift in Sources */,
 				6BB68B692118416100AE2823 /* SponsorTableViewCell.swift in Sources */,
-				6B57C2E72309EB9300A952C7 /* IDUAppDataWrapper.swift in Sources */,
+				6BC6AD04287F0EE6003974DB /* ServerAppData.swift in Sources */,
 				6B8454AA2116245900D1063B /* SessionItemCollectionViewCell.swift in Sources */,
 				6B8454A62116242F00D1063B /* ImageTextCollectionViewCell.swift in Sources */,
 				6B7219882117594A00F23784 /* SpeakerTableViewController.swift in Sources */,
 				6B52DB75210CCF32004B5C4E /* Bundle+extension.swift in Sources */,
 				6BB68B6A2118416100AE2823 /* SponsorTableViewController.swift in Sources */,
+				6BC6AD05287F0EE6003974DB /* IDUAppData.swift in Sources */,
 				6B045D17212390F800A68B48 /* InclusivityViewController.swift in Sources */,
 				6B8454B32116678D00D1063B /* NowAndNextTableViewCell.swift in Sources */,
 				6B52DB36210C913B004B5C4E /* AppDelegate.swift in Sources */,
+				6BC6AD02287F0EE6003974DB /* AppSettings.swift in Sources */,
 				6B7219852117448400F23784 /* IDUDataManager.swift in Sources */,
 				6BB68B782118A4DE00AE2823 /* AlternativeBasicTableViewCell.swift in Sources */,
 				6BB68B7621189ABC00AE2823 /* UIImageView+extension.swift in Sources */,
@@ -496,7 +498,6 @@
 				6BB68B7221185FE200AE2823 /* SessionItemTableViewController.swift in Sources */,
 				6BF46A9D211DB8B5006E337A /* ProgrammeDoubleSessionItemTableViewCell.swift in Sources */,
 				6BF3C3DD21203AE100806319 /* MainScreenMessageTableViewCell.swift in Sources */,
-				6B512BB1230221400090B1B4 /* ServerAppData.swift in Sources */,
 				6B72199021179B4400F23784 /* SpeakerSessionItemTableViewCell.swift in Sources */,
 				6B8454B02116253200D1063B /* SessionItemsTableViewCell.swift in Sources */,
 				6BF46A86211C785B006E337A /* LocationsTableViewCell.swift in Sources */,
@@ -504,6 +505,7 @@
 				6BF46A99211DA77A006E337A /* ProgrammeTableViewController.swift in Sources */,
 				6BF46AA1211DB97C006E337A /* ProgrammeBaseSessionItemTableViewCell.swift in Sources */,
 				6B52DB5B210C94CC004B5C4E /* MainScreenTableViewController.swift in Sources */,
+				6BC6AD03287F0EE6003974DB /* IDUAppDataWrapper.swift in Sources */,
 				6BC8D450213FC58100CDA67B /* UIColor+extension.swift in Sources */,
 				6BB68B672118416100AE2823 /* InclusivityTableViewController.swift in Sources */,
 				6BB68B742118605E00AE2823 /* SessionHeaderTableViewCell.swift in Sources */,
@@ -515,9 +517,7 @@
 				6B7219942117C93000F23784 /* SpeakersCollectionViewController.swift in Sources */,
 				6BF46A9B211DB88B006E337A /* ProgrammeSingleSessionItemTableViewCell.swift in Sources */,
 				6BF46A82211C6581006E337A /* Annotation.swift in Sources */,
-				6BBDAFB6230B6325000B9F24 /* AppSettings.swift in Sources */,
 				6B72199221179BF700F23784 /* SpeakerNameAndProfileDetailsTableViewCell.swift in Sources */,
-				6B57C2E52309E6FF00A952C7 /* IDUAppData.swift in Sources */,
 				6BF3C3C5211F084E00806319 /* ProgrammeTripleSessionItemTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
