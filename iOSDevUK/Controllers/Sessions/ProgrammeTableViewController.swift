@@ -200,7 +200,7 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
     func notify(withSelectedItem position: Int, atPoint point: CGPoint, inCell cell: UITableViewCell) {
         if let indexPath = tableView.indexPathForRow(at: tableView.convert(point, from: cell)),
            let session = sectionsToDisplay?[indexPath.section].sessions[indexPath.row] {
-            selectedSessionItem = session.sessionItem(atPosition: position)
+            selectedSessionItem = session.sessionItems[position] //(atPosition: position)
             performSegue(withIdentifier: "programmeSessionItemDetailSegue", sender: self)
         }
     }

@@ -20,10 +20,10 @@ class SessionItemTableViewController: IDUTableViewController {
     var sessionItem: IDUSessionItem?
     
     fileprivate func setupButtonState() {
-        print("about to check app settings")
+        debugPrint("about to check app settings")
         
         if let settings = appSettings, let item = sessionItem {
-            print("Checking for \(item.recordName): \(settings.isInMySchedule(withRecordName: item.recordName))")
+            debugPrint("Checking for \(item.recordName): \(settings.isInMySchedule(withRecordName: item.recordName))")
             
             if settings.isInMySchedule(withRecordName: item.recordName) {
                 toggleAddRemoveButtonTitle()
@@ -79,7 +79,7 @@ class SessionItemTableViewController: IDUTableViewController {
         }
         else if indexPath.section == 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "sessionItemContentCell", for: indexPath) as! ExpandingTextLabelTableViewCell
-            cell.content.text = sessionItem?.content
+            cell.content.text = sessionItem?.content.replacingOccurrences(of: "\n", with: "\n\n")
             return cell
         }
         else if indexPath.section == 2 {
@@ -142,7 +142,6 @@ class SessionItemTableViewController: IDUTableViewController {
                 toggleAddRemoveButtonTitle()
             }
         }
-        
     }
     
     func toggleAddRemoveButtonTitle() {

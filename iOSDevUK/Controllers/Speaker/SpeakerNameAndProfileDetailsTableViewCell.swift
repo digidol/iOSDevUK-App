@@ -71,7 +71,7 @@ class SpeakerNameAndProfileDetailsTableViewCell: UITableViewCell {
     
     @IBAction func goToLinkedIn(_ sender: AnyObject) {
         if let linkedIn = speaker?.linkedIn {
-            UIApplication.shared.open(URL(string: "https://www.linkedin.com/in/\(linkedIn)")!, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: nil)
+            UIApplication.shared.open(URL(string: linkedIn)!, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: nil)
         }
     }
 }

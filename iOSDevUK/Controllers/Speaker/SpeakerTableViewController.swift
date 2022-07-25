@@ -86,7 +86,7 @@ class SpeakerTableViewController: IDUTableViewController, IDUDataManager, SFSafa
                 let cell = tableView.dequeueReusableCell(withIdentifier: "biography", for: indexPath)
                 
                 if let speaker = speaker {
-                    cell.textLabel?.text = speaker.biography
+                    cell.textLabel?.text = speaker.biography.replacingOccurrences(of: "\n", with: "\n\n")
                 }
                 
                 return cell

@@ -38,7 +38,7 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
         
         configureRefreshControl()
         
-        //setAlternativeTime(time: "2019-09-04T15:10:00+01:00")
+        //setAlternativeTime(time: "2022-07-15T15:10:00+01:00")
     }
     
     /**

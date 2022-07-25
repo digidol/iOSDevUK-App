@@ -34,7 +34,8 @@ class AppDataClient {
      */
     init() {
         //self.apiBaseUrl = URL(string: "http://localhost/iosdevuk_server/api/")
-        self.apiBaseUrl = URL(string: "https://teaching.dcs.aber.ac.uk/iosdevuk/api/")
+        //self.apiBaseUrl = URL(string: "https://teaching.dcs.aber.ac.uk/iosdevuk/api/")
+        self.apiBaseUrl = URL(string: "https://blue-ocean-0c74f0b03.1.azurestaticapps.net")
     }
     
     /**
@@ -157,7 +158,7 @@ class AppDataClient {
          - processor: A closure that will be called when the network access has completed and an attempt has been made to extract the data. If the data was successfully extracted, it is passed to the processor. If there was a problem accessing the metadata, then `nil` is passed as a parameter.
      */
     func downloadMetadata(withProcessor processor: @escaping (ServerMetadata?) -> Void) {
-        guard let url = URL(string: "metadata", relativeTo: self.apiBaseUrl) else {
+        guard let url = URL(string: "data/metadata.json", relativeTo: self.apiBaseUrl) else {
             print("unable to build URL")
             return
         }
@@ -198,7 +199,7 @@ class AppDataClient {
      */
     func downloadUpdate(withFallback fallbackData: ServerAppData?, processor: @escaping (ServerAppData?) -> Void) {
         
-        guard let url = URL(string: "schedule", relativeTo: self.apiBaseUrl) else {
+        guard let url = URL(string: "data/data.json", relativeTo: self.apiBaseUrl) else {
             print("unable to build URL")
             return
         }
