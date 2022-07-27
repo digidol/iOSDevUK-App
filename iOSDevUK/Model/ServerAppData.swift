@@ -7,8 +7,54 @@
 
 import Foundation
 
-class ServerMetadata: Codable {
+/**
+   Holds information about the current versions of the data types that can be accessed from the server.
+ 
+   This is used to offer a small optimisation of not transferring other data across the network if the local data
+   is already up to date.
+ */
+struct ServerMetadata: Codable, CustomStringConvertible {
+    
+    /** Version number for the schedule information. */
     var dataVersion: Int
+    
+    /** Version number of the locations data. */
+    var locationsVersion: Int
+    
+    init() {
+        dataVersion = 0
+        locationsVersion = 0
+    }
+    
+    var description: String {
+        return "ServerMetadata data: \(dataVersion) locations: \(locationsVersion)"
+    }
+}
+
+class ServerLocationsData: Codable, CustomStringConvertible {
+    
+    var dataVersion: Int
+    
+    /** List of location types. */
+    var locationTypes: [ServerLocationType]
+    
+    /** List of locations. */
+    var locations: [ServerLocation]
+    
+    /** List of web links. */
+    var webLinks: [ServerWebLink]
+    
+    var description: String {
+        return "ServerLocationsData counts for location types: \(locationTypes.count), locations: \(locations.count), web links: \(webLinks.count)"
+    }
+}
+
+class CombinedServerAppData {
+    
+    var schedule: ServerAppData?
+    
+    var locations: ServerLocationsData?
+    
 }
 
 /**
@@ -32,22 +78,13 @@ class ServerAppData: Codable, CustomStringConvertible {
     /** List of speakers. */
     var speakers: [ServerSpeaker]
     
-    /** List of location types. */
-    var locationTypes: [ServerLocationType]
-    
-    /** List of locations. */
-    var locations: [ServerLocation]
-    
     /** List of web links. */
     var webLinks: [ServerWebLink]
     
-    var sponsors: [ServerSponsor]
-    
     var description: String {
-        return "ServerAppData counts for days: \(days.count), speakers: \(speakers.count), location types: \(locationTypes.count), locations: \(locations.count), web links: \(webLinks.count) sponsors: \(sponsors.count)"
+        return "ServerAppData counts for days: \(days.count), speakers: \(speakers.count), web links: \(webLinks.count)"
     }    
 }
-
 
 class ServerDay: Codable, CustomStringConvertible {
     

@@ -9,7 +9,7 @@ import Foundation
 
 class IDUAppDataWrapper {
 
-    private var serverData: ServerAppData
+    private var serverData: CombinedServerAppData
     
     var dayList = [IDUDay]()
     
@@ -19,7 +19,7 @@ class IDUAppDataWrapper {
     
     var locationList = [IDULocation]()
     
-    init(serverData: ServerAppData) {
+    init(serverData: CombinedServerAppData) {
         self.serverData = serverData
         let webLinks = webLinkDictionary()
         
@@ -36,7 +36,7 @@ class IDUAppDataWrapper {
     func processDays(withSpeakers speakers: [String:IDUSpeaker], withLocations locations: [String:IDULocation]) -> [IDUDay] {
         var days = [IDUDay]()
         
-        serverData.days.forEach { serverDay in
+        serverData.schedule?.days.forEach { serverDay in
             let day = IDUDay(recordName: serverDay.recordName, date: serverDay.date)
             day.sections = process(sections: serverDay.sections, inDay: day, speakers: speakers, locations: locations)
             days.append(day)
@@ -147,8 +147,11 @@ class IDUAppDataWrapper {
     }
     
     func speakerList(addingLinks webLinks: [String:IDUWebLink]) -> [IDUSpeaker] {
+        guard let speakers = serverData.schedule?.speakers else {
+            return []
+        }
         
-        return serverData.speakers.map { speaker -> IDUSpeaker in
+        return speakers.map { speaker -> IDUSpeaker in
             let iduSpeaker = IDUSpeaker(recordName: speaker.recordName, name: speaker.name, biography: speaker.biography)
             iduSpeaker.twitterId = speaker.twitterId
             iduSpeaker.linkedIn = speaker.linkedIn
@@ -181,7 +184,7 @@ class IDUAppDataWrapper {
         
         var webLinkDictionary = [String:IDUWebLink]()
         
-        serverData.webLinks.forEach { webLink in
+        serverData.schedule?.webLinks.forEach { webLink in
             webLinkDictionary[webLink.recordName] = IDUWebLink(name: webLink.name, url: webLink.url)
         }
         
@@ -189,7 +192,11 @@ class IDUAppDataWrapper {
     }
     
     lazy var locationTypeList: [IDULocationType] = {
-        return serverData.locationTypes.map { locationType -> IDULocationType in
+        guard let locationTypes = serverData.locations?.locationTypes else {
+            return []
+        }
+        
+        return locationTypes.map { locationType -> IDULocationType in
             return IDULocationType(recordName: locationType.recordName,
                                    name: locationType.name,
                                    order: locationType.order)
@@ -204,7 +211,11 @@ class IDUAppDataWrapper {
             dictionary[locationType.recordName] = locationType
         }
         
-        return serverData.locations.map { location -> IDULocation in
+        guard let locations = serverData.locations?.locations else {
+            return []
+        }
+        
+        return locations.map { location -> IDULocation in
             
             let iduLocation = IDULocation(recordName: location.recordName,
                                name: location.name,

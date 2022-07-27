@@ -3,7 +3,7 @@
 //  iOSDevUK
 //
 //  Created by Neil Taylor on 17/08/2019.
-//  Copyright © 2019 Aberystwyth University. All rights reserved.
+//  Copyright © 2019-2022 Aberystwyth University. All rights reserved.
 //
 
 import Foundation
@@ -61,7 +61,9 @@ class ServerAppDataManager: AppDataManager {
     
     private var appDataWrapper: IDUAppDataWrapper?
     
-    private var data: ServerAppData?
+    //private var data: ServerAppData?
+    
+    private var data: CombinedServerAppData?
     
     
     func shouldTryRemoteUpdate() -> Bool {
@@ -88,7 +90,7 @@ class ServerAppDataManager: AppDataManager {
     private var alternativeTime: Date?
     
     func startDate() -> Date? {
-        return data?.startDate ?? nil
+        return data?.schedule?.startDate ?? nil
     }
     
     /**
@@ -97,7 +99,7 @@ class ServerAppDataManager: AppDataManager {
      - Returns: A date is returned or, if the conference data is not yet available, the value `nil` is returned.
      */
     func endDate() -> Date? {
-        return data?.endDate ?? nil
+        return data?.schedule?.endDate ?? nil
     }
     
     
@@ -139,9 +141,6 @@ class ServerAppDataManager: AppDataManager {
         return nil
     }
     
-    
-    
-    
     func currentTime() -> Date {
         return alternativeTime ?? Date()
     }
@@ -150,7 +149,8 @@ class ServerAppDataManager: AppDataManager {
         alternativeTime = date
     }
     
-    func setupData(_ data: ServerAppData, withImageCallback imageCallback: @escaping () -> Void) {
+    // FIXME
+    func setupData(_ data: CombinedServerAppData, withImageCallback imageCallback: @escaping () -> Void) {
         self.data = data
         self.appDataWrapper = IDUAppDataWrapper(serverData: data)
         self.processImages(withCallback: imageCallback)
@@ -163,9 +163,10 @@ class ServerAppDataManager: AppDataManager {
      */
     func loadLocalData(withImageCallback imageCallback: @escaping () -> Void) {
         let client = AppDataClient()
-        if let localData = client.loadExistingCopyFromLocalStore() {
-            setupData(localData, withImageCallback: imageCallback)
-        }
+        // FIXME - investigate what this affects
+//        if let localData = client.loadExistingScheduleDataFromLocalStore() {
+//            setupData(localData, withImageCallback: imageCallback)
+//        }
     }
     
     /**
@@ -180,8 +181,19 @@ class ServerAppDataManager: AppDataManager {
     func initialiseData(onCompletion callback: @escaping (_ success: Bool) -> Void,
                         afterImageDownload imageCallback: @escaping () -> Void) {
         
-        let client = AppDataClient()
+        Task {
+            let client = AppDataClient()
+            if let combinedData = await client.loadData() {
+                setupData(combinedData, withImageCallback: imageCallback)
+                debugPrint("Data is setup!")
+                callback(true)
+            }
+            else {
+                callback(false)
+            }
+        }
         
+        /*
         client.loadData { appData in
             if let data = appData {
                 self.setupData(data, withImageCallback: imageCallback)
@@ -190,7 +202,7 @@ class ServerAppDataManager: AppDataManager {
             else {
                 callback(false)
             }
-        }
+        }*/
     }
     
     /**
@@ -229,7 +241,9 @@ class ServerAppDataManager: AppDataManager {
     }
     
     func sponsors() -> [ServerSponsor] {
-        return data?.sponsors ?? []
+        // FIXME
+        //return data?.sponsors ?? []
+        return []
     }
     
     func speakers() -> [IDUSpeaker] {

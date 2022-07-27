@@ -3,7 +3,7 @@
 //  iOSDevUK
 //
 //  Created by Neil Taylor on 18/08/2019.
-//  Copyright © 2019 Aberystwyth University. All rights reserved.
+//  Copyright © 2019-2022 Aberystwyth University. All rights reserved.
 
 import Foundation
 
