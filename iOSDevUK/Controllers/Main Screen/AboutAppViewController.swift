@@ -13,9 +13,15 @@ class AboutAppViewController: UIViewController, MFMailComposeViewControllerDeleg
 
     @IBOutlet weak var versionLabel: UILabel!
     
+    @IBOutlet weak var logo: UIImageView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        logo.layer.cornerRadius = 20
+        logo.layer.cornerCurve = .continuous
+        logo.layer.masksToBounds = true
+        
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         let buildDateTime = formatter.date(from: String(Bundle.main.buildVersionNumber.prefix(10)))
