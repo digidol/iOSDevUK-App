@@ -52,7 +52,7 @@ protocol AppDataManager {
     
     func nextSession(forDate date: Date) -> IDUSession?
     
-    func loadLocalData(withImageCallback imageCallback: @escaping () -> Void)
+    //func loadLocalData(withImageCallback imageCallback: @escaping () -> Void)
 }
 
 class ServerAppDataManager: AppDataManager {
@@ -60,8 +60,6 @@ class ServerAppDataManager: AppDataManager {
     private var appSettings = IDUAppSettings()
     
     private var appDataWrapper: IDUAppDataWrapper?
-    
-    //private var data: ServerAppData?
     
     private var data: CombinedServerAppData?
     
@@ -149,7 +147,6 @@ class ServerAppDataManager: AppDataManager {
         alternativeTime = date
     }
     
-    // FIXME
     func setupData(_ data: CombinedServerAppData, withImageCallback imageCallback: @escaping () -> Void) {
         self.data = data
         self.appDataWrapper = IDUAppDataWrapper(serverData: data)
@@ -160,14 +157,14 @@ class ServerAppDataManager: AppDataManager {
      Loads local data if it is present.
      
      - Returns: `true` is returned if local data exists and is loaded ready to use. Otherwise, `false` is returned.
-     */
+     
     func loadLocalData(withImageCallback imageCallback: @escaping () -> Void) {
         let client = AppDataClient()
         // FIXME - investigate what this affects
 //        if let localData = client.loadExistingScheduleDataFromLocalStore() {
 //            setupData(localData, withImageCallback: imageCallback)
 //        }
-    }
+    }*/
     
     /**
      Initialise the conference data by starting process to check if there is new data. If there is, it is downloaded and a check is made to determine if an images need to be downloaded.
@@ -192,17 +189,6 @@ class ServerAppDataManager: AppDataManager {
                 callback(false)
             }
         }
-        
-        /*
-        client.loadData { appData in
-            if let data = appData {
-                self.setupData(data, withImageCallback: imageCallback)
-                callback(true)
-            }
-            else {
-                callback(false)
-            }
-        }*/
     }
     
     /**
@@ -227,7 +213,13 @@ class ServerAppDataManager: AppDataManager {
             }
         }
         
-        appDataClient.downloadImages(imagesToLoad, withCallback: callback)
+        let images = imagesToLoad
+        
+        Task {
+            await appDataClient.downloadImages(images)
+        }
+        
+        callback()
         
     }
     

@@ -18,13 +18,17 @@ enum AppDataClientError: Error {
 
 class AppDataClient {
     
-    private let session = URLSession(configuration: .default)
-    
+    /** The name for the metadata file. */
     private let metadataFile = "metadata.json"
     
+    /** The name for the file with the schdule data (days, sessions, session items, speakers, web links. */
     private let scheduleFile = "schedule.json"
     
+    /** The name for the file with the locations data (location types and locations). */
     private let locationsFile = "locations.json"
+    
+    /** URL of the server that hosts the data. */
+    private let serverURL = "https://blue-ocean-0c74f0b03.1.azurestaticapps.net"
     
     /**
      The version for the data file that the app is using.
@@ -42,46 +46,25 @@ class AppDataClient {
     private var serverBaseUrl: URL?
     
     /**
-     Initilaises the client with the current data version number.
-     
-     - Parameters:
-     
-         - dataVersion: The number of the data that is currently stored in this application. If nil is specified, then no data is currently stored in this app.
-     
-         - apiBaseUrl: The base URL that is used to access the API functions.
+     Initilaises the client ready to access remote data.
      */
     init() {
-        self.serverBaseUrl = URL(string: "https://blue-ocean-0c74f0b03.1.azurestaticapps.net")
+        self.serverBaseUrl = URL(string: serverURL)
     }
     
     /**
-     Starts a download. It checks to see if there is local data.
+     Loads the data for the app. A local version is loaded, if it exists. If it is an earlier version, or there is no local version, then
+       the data is loaded from the server.
      
-     If there is, it will check if there is more recent data on the server.
-     If there is no local data, or there is more recent data on the servder, an attempt
-     is made to download the remote version.
- 
-     - Parameters:
-     
-         - callback: Here is a callback that we can work with.
-         - data: The data that has been returned. It might be the data from the server, or
-                 the fallback data or `nil` if no data was accessed.
+      - Returns: If data was loaded, then it is returned in the compound object that collects the data for use in the app. If there was an error thrown during the process, `nil` will be returned. The code aims to trap common problems and return `nil` for the relevant part in the compound object. If `nil` is returned from this method, a more significiant problem has happened.
      */
-    func loadData(withCallback callback: @escaping (_ data: ServerAppData?) -> Void) {
-    }
-    
     func loadData() async -> CombinedServerAppData? {
-       do {
-           
+        do {
             defer {
                 UserDefaults.standard.set(Date(), forKey: "lastUpdatedTime")
             }
            
-            var metadata = ServerMetadata()
-            if let data = try await fetchMetadata() {
-                metadata = data
-            }
-            
+            let metadata = await fetchMetadata()
             debugPrint("\(String(describing: metadata))")
             
             let combinedData = CombinedServerAppData()
@@ -93,7 +76,6 @@ class AppDataClient {
             debugPrint("\(String(describing: combinedData.locations))")
             
             return combinedData
-            
         }
         catch let error as NSError {
             debugPrint("error with the main work \(error)")
@@ -102,18 +84,18 @@ class AppDataClient {
     }
     
     /**
-           Load data from a URL and return the data. The source is a .json file that corresponds to a decoable type.
+     Load data from a URL and return the data. The source is a .json file that corresponds to a decoable type.
      
-            Any failure is returned as an Error, see `Throws` below. Otherwise, the downloaded data is returned.
+     Any failure is returned as an Error, see `Throws` below. Otherwise, the downloaded data is returned.
      
-         - Parameter type: The data type to decode and return.
-         - Parameter source: The path that will be added to the server URL for the json resource.
-     
-         - Throws: `AppDataClientError.invalidUrl` if there is a problem building the URL with the given source
-         - Throws: `AppDataClientError.invalidServerResponse` if the server does not return a 200 success code
-         - Throws: `DecodingError.dataCorrupted(_:)` if there is a problem decoding the data from the server
-     
-         - Returns: The downloaded data for the given type.
+     - Parameter type: The data type to decode and return.
+     - Parameter source: The path that will be added to the server URL for the json resource.
+ 
+     - Throws: `AppDataClientError.invalidUrl` if there is a problem building the URL with the given source
+     - Throws: `AppDataClientError.invalidServerResponse` if the server does not return a 200 success code
+     - Throws: `DecodingError.dataCorrupted(_:)` if there is a problem decoding the data from the server
+ 
+     - Returns: The downloaded data for the given type.
      */
     func fetchData<T>(withType type: T.Type, fromSource source: String) async throws -> T where T : Decodable {
         guard let url = URL(string: source, relativeTo: self.serverBaseUrl) else {
@@ -160,22 +142,15 @@ class AppDataClient {
     }
     
     /**
-        Returns the current version of the schedule, which is either loaded from the local store or retrieved from the server.
+     Returns the current version of the schedule, which is either loaded from the local store or retrieved from the server.
      
-        If there is a local version stored, the version number is checked against the parameter. If the server version is greater, then it is downloaded.
-        If there is a problem during the download, and there is a local version, then the local version is returned. If there is a problem with the download
-        but there is no local version, then nil is returned.
+     If there is a local version stored, the version number is checked against the parameter. If the server version is greater, then it is downloaded. If there is a problem during the download, and there is a local version, then the local version is returned. If there is a problem with the download but there is no local version, then nil is returned.
      
-       - Parameter serverVersion: The version number for the data on the server. Used to check if the server
+     - Parameter serverVersion: The version number for the data on the server. Used to check if the server
                              version needs to be downloaded.
      
-       - Returns: If a local version or update from the server is available, that is returned. If neither is available
+     - Returns: If a local version or update from the server is available, that is returned. If neither is available
            then `nil` is returned.
-     
-       - Throws: `AppDataClientError.invalidServerResponse` if there was a problem accessing ... ?
-     
-       - Throws: `AppDataClientError.fileStorageError` if there was a problem accessing ... ?
-        
      */
     func fetchSchedule(serverVersion: Int) async throws -> ServerAppData? {
         
@@ -204,8 +179,21 @@ class AppDataClient {
         }
     }
     
-    func fetchMetadata() async throws -> ServerMetadata? {
-        return try await fetchData(withType: ServerMetadata.self, fromSource: "data/\(metadataFile)")
+    /**
+     Fetches the metadata from the server. 
+     */
+    func fetchMetadata() async -> ServerMetadata {
+        
+        var metadata = ServerMetadata()
+       
+        do {
+            metadata = try await fetchData(withType: ServerMetadata.self, fromSource: "data/\(metadataFile)")
+        }
+        catch let error as NSError {
+            debugPrint("Unable to access metadata. Default version to be used. \(error)")
+        }
+        
+        return metadata
     }
     
     /**
@@ -297,57 +285,61 @@ class AppDataClient {
     
     var pendingDataTasks = [String:URLSessionDownloadTask]()
     
-    /**
-     
-     */
-    func downloadImages(_ images: [String], withCallback callback: @escaping () -> Void) {
+    func processImage(withName name: String, for url: URL) {
         
-        images.forEach { name in
-            
-            if let url = serverBaseUrl?.appendingPathComponent("image", isDirectory: false),
-               var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false) {
-                urlComponents.query = "n=\(name)"
-                
-                if let url = urlComponents.url {
-                    
-                    let task = session.downloadTask(with: URLRequest(url: url), completionHandler: {
-                        url, response, error in
-                        
-                        debugPrint("finished task for \(name)")
-                        debugPrint(String(describing: url))
-                        
-                        do {
-                            if let downloadUrl = url {
-                                
-                                let imageData = try Data(contentsOf: downloadUrl)
-                                
-                                if let image = UIImage(data: imageData),
-                                    let pngData = image.pngData() {
-                                    let cachesUrl = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-                                    let destinationUrl = cachesUrl.appendingPathComponent("\(name).png", isDirectory: false)
-                                    try pngData.write(to: destinationUrl)
-                                }
-                            }
-                        } catch let error as NSError {
-                            print("Error copying file: \(error)")
-                        }
-                        
-                        // remove the task, even if we failed on the copy. We can try again later on.
-                        self.pendingDataTasks.removeValue(forKey: name)
-                        print("Number of pending tasks: \(self.pendingDataTasks.count)")
-                        
-                        if self.pendingDataTasks.count == 0 {
-                            callback()
-                        }
-                    })
-                    
-                    self.pendingDataTasks[name] = task
-                    print("starting task for \(name) (of \(self.pendingDataTasks.count) tasks)")
-                    task.resume()
+        Task {
+            do {
+                let (location, response) = try await URLSession.shared.download(from: url)
+                guard let httpResponse = response as? HTTPURLResponse,
+                      httpResponse.statusCode == 200 else {
+                    debugPrint("unable to access data for \(url)")
+                    return
                 }
+                
+                let imageData = try Data(contentsOf: location)
+                    
+                if let image = UIImage(data: imageData),
+                    let pngData = image.pngData() {
+                    let cachesUrl = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+                    let destinationUrl = cachesUrl.appendingPathComponent("\(name).png", isDirectory: false)
+                    try pngData.write(to: destinationUrl)
+                }
+            }
+            catch let error as NSError {
+                debugPrint("Error accessing image file \(error)")
             }
         }
     }
     
+    func processImageAsync(withName name: String, for url: URL) async {
+        
+        do {
+            let (location, response) = try await URLSession.shared.download(from: url)
+            guard let httpResponse = response as? HTTPURLResponse,
+                  httpResponse.statusCode == 200 else {
+                debugPrint("unable to access data for \(url)")
+                return
+            }
+            
+            let imageData = try Data(contentsOf: location)
+                
+            if let image = UIImage(data: imageData), let pngData = image.pngData() {
+                let cachesUrl = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+                let destinationUrl = cachesUrl.appendingPathComponent("\(name).png", isDirectory: false)
+                try pngData.write(to: destinationUrl)
+                debugPrint("stored data for: \(url)")
+            }
+        }
+        catch let error as NSError {
+            debugPrint("Error accessing image file \(error)")
+        }
+    }
     
+    func downloadImages(_ images: [String]) async {
+        for name in images {
+            if let url = serverBaseUrl?.appendingPathComponent("images/speakers/\(name).jpg", isDirectory: false) {
+                await processImageAsync(withName: name, for: url)
+            }
+        }
+    }
 }

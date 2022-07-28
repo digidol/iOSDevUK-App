@@ -33,7 +33,7 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
         
         initialiseAutomaticTableCellHeight(50.0)
         
-        loadLocalData()
+        //loadLocalData()
         checkForServerData()
         
         configureRefreshControl()
@@ -63,14 +63,14 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
         }
     }
     
-    func loadLocalData() {
+    /*func loadLocalData() {
         if let manager = appDataManager {
             manager.loadLocalData { () -> Void in
                 print("handle image load for local data")
                 self.reloadData()
             }
         }
-    }
+    }*/
     
     /**
      If the data manager is set for this screen, start the process to check if
