@@ -18,7 +18,7 @@ class AboutAppViewController: UIViewController, MFMailComposeViewControllerDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        logo.layer.cornerRadius = 20
+        logo.layer.cornerRadius = 20
         logo.layer.cornerCurve = .continuous
         logo.layer.masksToBounds = true
         
