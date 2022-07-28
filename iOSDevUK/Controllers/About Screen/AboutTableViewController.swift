@@ -74,7 +74,7 @@ class AboutTableViewController: ExpandedTextCellTableViewController, SFSafariVie
             
             let expandableCell = tableView.dequeueReusableCell(withIdentifier: "Block", for: indexPath) as! ExpandableSubtitleTableViewCell
             
-            expandableCell.cellTitle.text = "iOSDevUK is the UK conference for iOS developers. It takes place in Aberystwyth, on the mid-Wales coast, from 2nd to the 5th September 2019.\n\nGreat talks • Great get-togethers • optional workshops on the Monday and Thursday."
+            expandableCell.cellTitle.text = "iOSDevUK is the UK conference for iOS developers. It takes place in Aberystwyth, on the mid-Wales coast, from 5th to the 8th September 2022.\n\nGreat talks • Great get-togethers • optional workshops on the Monday and Thursday."
             
             cell = expandableCell
         }

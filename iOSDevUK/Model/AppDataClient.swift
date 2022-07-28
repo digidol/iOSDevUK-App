@@ -3,7 +3,7 @@
 //  iOSDevUK
 //
 //  Created by Neil Taylor on 13/08/2019.
-//  Copyright © 2019 Aberystwyth University. All rights reserved.
+//  Copyright © 2019-2022 Aberystwyth University. All rights reserved.
 //
 
 import Foundation
@@ -99,30 +99,6 @@ class AppDataClient {
             debugPrint("error with the main work \(error)")
             return nil
         }
-            
-//            downloadMetadata { serverMetadata in
-//                var executeCallback = true
-//
-//                if let metadata = serverMetadata {
-//                    if appData.dataVersion < metadata.dataVersion {
-//                        self.downloadUpdate(withFallback: appData, processor: callback)
-//                        executeCallback = false
-//                    }
-//                }
-//
-//                // we don't need to download an update, so we can
-//                // run the callback here with no data to pass in
-//                if executeCallback {
-//                    callback(nil)
-//                }
-//            }
-//        }
-//        else {
-//            // No local store is available, so start the download
-//            downloadUpdate(withFallback: nil, processor: callback)
-//        }
-        
-        
     }
     
     /**
@@ -231,36 +207,6 @@ class AppDataClient {
     func fetchMetadata() async throws -> ServerMetadata? {
         return try await fetchData(withType: ServerMetadata.self, fromSource: "data/\(metadataFile)")
     }
-        
-//        guard let url = URL(string: "data/metadata.json", relativeTo: self.serverBaseUrl) else {
-//            print("unable to build URL")
-//            return
-//        }
-//
-//        let task = session.dataTask(with: url) {
-//                    (data: Data?, response: URLResponse?, error: Error?) -> Void in
-//
-//            if let downloadedData = data {
-//                do {
-//                    let decoder = JSONDecoder()
-//                    decoder.dateDecodingStrategy = .iso8601
-//                    let decodedData = try decoder.decode(ServerMetadata.self, from: downloadedData)
-//                    processor(decodedData)
-//                }
-//                catch let error as NSError {
-//                    print("There was an error: \(error)")
-//                    processor(nil)
-//                }
-//            }
-//            else {
-//                print("hmm, unable to access the data")
-//                processor(nil)
-//            }
-//
-//        }
-//
-//        task.resume()
-//    }
     
     /**
      Get the location for the documents directory.
@@ -280,23 +226,7 @@ class AppDataClient {
         return FileManager.default.fileExists(atPath: fileUrl.path)
     }
     
-    /**
-          Returns the local copy of the schedule, if it is been downloaded. Otherwise, `nil` is returned.
-     */
-    /*func loadExistingScheduleDataFromLocalStore() -> ServerAppData? {
-        
-        let dataFile = getDocumentsDirectory().appendingPathComponent(scheduleFile)
-        
-        if FileManager.default.fileExists(atPath: dataFile.path) {
-            if let content = FileManager.default.contents(atPath: dataFile.path) {
-                return decodeData(withType: ServerAppData.self, fromData: content)
-            }
-        }
-        
-        debugPrint("Unable to access local file with schedule data")
-        return nil
-    }*/
-    
+
     func loadExistingDataFromLocalStore<T>(withType type: T.Type, inFile file: String) -> T? where T : Decodable {
         let dataFile = getDocumentsDirectory().appendingPathComponent(file)
         
@@ -345,45 +275,6 @@ class AppDataClient {
         return true
     }
     
-    /*func storeScheduleToLocalStore(appData: ServerAppData) -> Bool {
-        let dataFile = getDocumentsDirectory().appendingPathComponent(scheduleFile)
-        
-        if FileManager.default.fileExists(atPath: dataFile.path) {
-            do {
-                try FileManager.default.removeItem(at: dataFile)
-            }
-            catch let error as NSError {
-                debugPrint("Error deleting file: \(error)")
-                return false
-            }
-        }
-        
-        do {
-            let encoder = JSONEncoder()
-            encoder.dateEncodingStrategy = .iso8601
-            let data = try encoder.encode(appData)
-            FileManager.default.createFile(atPath: dataFile.path, contents: data, attributes: nil)
-        }
-        catch let error as NSError {
-            debugPrint("Unable to store file: \(error)")
-            return false
-        }
-        
-        return true
-    }*/
-    
-    /*private func decodeAppData(data: Data) -> ServerAppData? {
-        do {
-            let decoder = JSONDecoder()
-            decoder.dateDecodingStrategy = .iso8601
-            return try decoder.decode(ServerAppData.self, from: data)
-        }
-        catch let error as NSError {
-            print("There was an error: \(error)")
-            return nil
-        }
-    }*/
-    
     /**
       Decodes a set of data to data of the given type, `T`.
      
@@ -403,88 +294,6 @@ class AppDataClient {
             return nil
         }
     }
-    
-    /**
-     Access the metadata information.
-     
-     - Parameters:
-     
-         - processor: A closure that will be called when the network access has completed and an attempt has been made to extract the data. If the data was successfully extracted, it is passed to the processor. If there was a problem accessing the metadata, then `nil` is passed as a parameter.
-     */
-    /*func downloadMetadata(withProcessor processor: @escaping (ServerMetadata?) -> Void) {
-        guard let url = URL(string: "data/metadata.json", relativeTo: self.serverBaseUrl) else {
-            print("unable to build URL")
-            return
-        }
-                
-        let task = session.dataTask(with: url) {
-                    (data: Data?, response: URLResponse?, error: Error?) -> Void in
-        
-            if let downloadedData = data {
-                do {
-                    let decoder = JSONDecoder()
-                    decoder.dateDecodingStrategy = .iso8601
-                    let decodedData = try decoder.decode(ServerMetadata.self, from: downloadedData)
-                    processor(decodedData)
-                }
-                catch let error as NSError {
-                    print("There was an error: \(error)")
-                    processor(nil)
-                }
-            }
-            else {
-                print("hmm, unable to access the data")
-                processor(nil)
-            }
-        
-        }
-        
-        task.resume()
-    }*/
-    
-    /**
-     Requests the most recent update. When the data has been successfully downloaded, the
-     processor is called. If it is called with data, it is the data that was downloaded. If it is called with the
-     value `nil` then there was a problem accessing the file.
-     
-     - Parameters:
-         - fallbackData: If there is a problem accessing the remote data, this data is passed to the `processor()`.
-         - processor: Called when the download operation has completed.
-     */
-    /*func downloadUpdate(withFallback fallbackData: ServerAppData?, processor: @escaping (ServerAppData?) -> Void) {
-        
-        guard let url = URL(string: "data/schedule.json", relativeTo: self.serverBaseUrl) else {
-            debugPrint("unable to build URL")
-            return
-        }
-        
-        let task = session.dataTask(with: url) {
-                    (data: Data?, response: URLResponse?, error: Error?) -> Void in
-        
-            if let downloadedData = data {
-                debugPrint("data accessed: \(downloadedData)")
-                
-                if let appData = self.decodeAppData(data: downloadedData) {
-                    // successfully accessed data from a remote source
-                    // store a copy in the documents directory
-                    if !self.storeScheduleToLocalStore(appData: appData) {
-                        debugPrint("Error storing file")
-                    }
-                    processor(appData)
-                }
-                else {
-                    debugPrint("Unable to access remote data, returning any fallback data")
-                    processor(fallbackData)
-                }
-            }
-            else {
-                debugPrint("hmm, unable to access the data, returning any fallback data")
-                processor(fallbackData)
-            }
-        }
-        
-        task.resume()
-    }*/
     
     var pendingDataTasks = [String:URLSessionDownloadTask]()
     
