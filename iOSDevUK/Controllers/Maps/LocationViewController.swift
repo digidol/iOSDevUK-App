@@ -55,7 +55,6 @@ class LocationViewController: UIViewController, SFSafariViewControllerDelegate {
                 webLinkButton.setTitle("View \(location.webLink?.name ?? "More Information")", for: .normal)
             }
         }
-        
     }
     
     

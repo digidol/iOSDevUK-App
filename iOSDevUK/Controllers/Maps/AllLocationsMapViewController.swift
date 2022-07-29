@@ -16,7 +16,7 @@ class AllLocationsMapViewController: UIViewController, UITableViewDelegate, UITa
     /// Types of location that are shown in the table
     var locationTypes: [IDULocationType]?
     
-    /// The map on display
+    /** The map on display. */
     @IBOutlet var mapView: MKMapView!
     
     /// The segmented control that determine if satellite view is shown
@@ -27,6 +27,9 @@ class AllLocationsMapViewController: UIViewController, UITableViewDelegate, UITa
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let path = IndexPath(row: 0, section: 0)
+        tableView.selectRow(at: path, animated: true, scrollPosition: .none)
+        showMapLocations(forIndexPath: path)
     }
     
     override func didReceiveMemoryWarning() {
@@ -35,9 +38,6 @@ class AllLocationsMapViewController: UIViewController, UITableViewDelegate, UITa
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        let path = IndexPath(row: 0, section: 0)
-        tableView.selectRow(at: path, animated: true, scrollPosition: .none)
-        showMapLocations(forIndexPath: path)
     }
     
     
@@ -56,11 +56,6 @@ class AllLocationsMapViewController: UIViewController, UITableViewDelegate, UITa
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        /*guard let section = fetchedResultsController?.sections?[section] else {
-            return 0
-        }
-        
-        return section.numberOfObjects*/
         return locationTypes?.count ?? 0
     }
     

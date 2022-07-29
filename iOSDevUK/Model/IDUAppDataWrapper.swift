@@ -75,8 +75,6 @@ class IDUAppDataWrapper {
         
         var iduSessionItems = [IDUSessionItem]()
         
-        //let locations = locationDictionary()
-        
         sessionItems.forEach { sessionItem in
             let iduSessionItem = IDUSessionItem(recordName: sessionItem.recordName, title: sessionItem.title, content: sessionItem.content, type: sessionItem.type, session: session)
             
@@ -234,8 +232,9 @@ class IDUAppDataWrapper {
                 iduLocation.locationType = type
             }
             
-            if let linkName = location.webLinkRecordName {
-                iduLocation.webLink = webLinks[linkName]
+            if let link = location.webLink {
+                let webLink = IDUWebLink(name: link.name, url: link.url)
+                iduLocation.webLink = webLink
             }
             
             return iduLocation

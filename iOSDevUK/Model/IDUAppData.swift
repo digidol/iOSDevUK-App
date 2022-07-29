@@ -236,7 +236,7 @@ class IDULocation {
     
     var note: String?
     
-    weak var webLink: IDUWebLink?
+    var webLink: IDUWebLink?
     
     var imageVersion: Int?
     
@@ -253,6 +253,8 @@ class IDULocation {
     deinit {
         print("de-initialising IDULocation \(recordName)")
     }
+    
+    
     
 }
 

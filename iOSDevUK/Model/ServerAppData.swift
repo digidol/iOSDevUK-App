@@ -41,11 +41,8 @@ class ServerLocationsData: Codable, CustomStringConvertible {
     /** List of locations. */
     var locations: [ServerLocation]
     
-    /** List of web links. */
-    var webLinks: [ServerWebLink]
-    
     var description: String {
-        return "ServerLocationsData counts for location types: \(locationTypes.count), locations: \(locations.count), web links: \(webLinks.count)"
+        return "ServerLocationsData counts for location types: \(locationTypes.count), locations: \(locations.count)s"
     }
 }
 
@@ -207,7 +204,7 @@ class ServerLocation: Codable {
     var longitude: Double
     var locationTypeRecordName: String
     var note: String?
-    var webLinkRecordName: String?
+    var webLink: ServerWebLink?
     var imageVersion: Int?
 }
 
