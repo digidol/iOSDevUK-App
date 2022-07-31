@@ -3,13 +3,18 @@
 //  iOSDevUK
 //
 //  Created by Neil Taylor on 10/08/2018.
-//  Copyright © 2018-2019 Aberystwyth University. All rights reserved.
+//  Copyright © 2018-2022s Aberystwyth University. All rights reserved.
 //
 
 import UIKit
 
-class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-
+class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UISearchControllerDelegate {
+    
+    /*func updateSearchResults(for searchController: UISearchController) {
+        print("updating")
+    }*/
+    
+    
     /** Segmented control to select the different days */
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     
@@ -28,6 +33,88 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
     
     var sectionsToDisplay: [IDUSection]?
     
+    /** If there is an active search, any relevant sections will be displayed here. */
+    var filteredSectionsToDisplay: [IDUSection]?
+    
+    func didPresentSearchController(_ searchController: UISearchController) {
+        print("did present")
+    }
+    
+    func didDismissSearchController(_ searchController: UISearchController) {
+        print("dismissed")
+    }
+    
+    func presentSearchController(_ searchController: UISearchController) {
+        print("present")
+    }
+    
+    func willPresentSearchController(_ searchController: UISearchController) {
+        print("will present")
+    }
+    
+    func willDismissSearchController(_ searchController: UISearchController) {
+        print("will dismiss")
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        if searchText.isEmpty {
+            filteredSectionsToDisplay = nil
+            tableView.reloadData()
+            return
+        }
+        
+        filteredSectionsToDisplay = [IDUSection]()
+        
+        
+        /*days.forEach { day in
+            
+            let filteredSections = [IDUSection]()
+            let filteredDay = IDUDay(recordName: day.recordName, date: day.date)
+            print("\(filteredSections) \(filteredDay)")
+            
+            day.sections.forEach { section in
+                
+                var filteredSections = [IDUSections]()
+                let filteredSection = IDUSection(recordName: section.recordName, name: section.name, day: filteredDay)
+                print("\(filteredSections) \(filteredSection)")
+                
+                section.sessions.forEach { session in
+                    
+                    let filteredSession = IDUSession(recordName: session.recordName, start: session.startTime, end: session.endTime, section: filteredSection)
+                    
+                    let filteredSessionItems = session.sessionItems.filter { sessionItem -> Bool in
+                        return (sessionItem.title.lowercased().contains(searchText.lowercased()) ||
+                                sessionItem.content.lowercased().contains(searchText.lowercased()))
+                    }
+                    
+                    print("\(filteredSessionItems) \(filteredSession)")
+                    
+                    if filteredSessionItems.count > 0 {
+                        filteredSession.sessionItems = filteredSessionItems
+                        filteredSessions.append(filteredSession)
+                    }
+                    
+                }
+                
+                if filteredSessions.count > 0 {
+                    filteredSection.sessions = filteredSessions
+                    filteredSections.append(filteredSection)
+                }
+                
+            }
+            
+            
+        }*/
+        
+        tableView.reloadData()
+    }
+    
+    let searchController = UISearchController(searchResultsController: nil)
+    
     var appDataManager: AppDataManager?
     
     // MARK: - Lifecycle
@@ -40,6 +127,24 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
         
         tableView.estimatedRowHeight = 400.0
         tableView.rowHeight = UITableView.automaticDimension
+        
+        self.navigationItem.searchController = searchController
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search for sessions or speakers"
+        searchController.searchBar.delegate = self
+        
+        //searchController.delegate = self
+        //searchController.searchResultsUpdater = self
+        
+        self.navigationItem.hidesSearchBarWhenScrolling = true
+        definesPresentationContext = true
+        searchController.isActive = true
+        
+        if #available(iOS 15.0, *) {
+              tableView.sectionHeaderTopPadding = 0
+         }
+        
+        tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -54,7 +159,6 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
                 }
                 
                 shouldScrollToCurrent = false
-                
             }
         }
     }
@@ -97,7 +201,10 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
     
     func initialiseSections(forDay day: IDUDay?) {
         
-        if let selectedDay = day {
+        if let filteredSections = filteredSectionsToDisplay {
+            self.sectionsToDisplay = filteredSections
+        }
+        else if let selectedDay = day {
             self.sectionsToDisplay = selectedDay.sections
         }
         else {

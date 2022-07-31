@@ -32,7 +32,7 @@ class MapLocationViewController: UIViewController, MKMapViewDelegate, SFSafariVi
             if self.mapView != nil {
                 self.mapView.showsCompass = true
                 self.mapView.showsBuildings = true
-                self.mapView.showsPointsOfInterest = true
+                self.mapView.pointOfInterestFilter = MKPointOfInterestFilter.includingAll
                 self.mapView.delegate = self
                 
                 showLocation(location)
@@ -62,7 +62,7 @@ class MapLocationViewController: UIViewController, MKMapViewDelegate, SFSafariVi
         
         if let annotation = annotation as? Annotation {
             let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-            imageView.displayImage(named: annotation.identifier, withDefault: "LocationPin")
+            imageView.displayImage(named: annotation.identifier, inCategory: .locations, withDefault: "LocationPin")
             imageView.addBorderWithCorner()
             annotationView!.leftCalloutAccessoryView = imageView
         }

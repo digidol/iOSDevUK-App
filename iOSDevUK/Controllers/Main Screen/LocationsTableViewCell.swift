@@ -3,7 +3,7 @@
 //  iOSDevUK
 //
 //  Created by Neil Taylor on 09/08/2018.
-//  Copyright © 2018 Aberystwyth University. All rights reserved.
+//  Copyright © 2018-2022 Aberystwyth University. All rights reserved.
 //
 
 import UIKit
@@ -53,12 +53,12 @@ extension LocationsTableViewCell: UICollectionViewDataSource {
         
         if let location = locations?[indexPath.row] {
             cell.name.text = location.name
-            cell.image.displayImage(named: location.recordName, withDefault: "LocationPin")
+            cell.image.displayImage(named: location.recordName, inCategory: .locations, withDefault: "LocationPin")
             cell.image.addBorderWithCorner()
         }
         else {
             cell.name.text = "Unknown"
-            cell.image.displayImage(named: "LocationPin")
+            cell.image.displayImage(named: "LocationPin", inCategory: .locations)
         }
         
         cell.twitterId?.text = nil

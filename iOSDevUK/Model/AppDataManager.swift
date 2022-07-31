@@ -196,27 +196,35 @@ class ServerAppDataManager: AppDataManager {
      */
     func processImages(withCallback callback: @escaping () -> Void) {
         
-        var imagesToLoad = [String]()
+        var imagesToLoad = [(String,AppImageCategory, Int)]()
         let appDataClient = AppDataClient()
         
+        let imageManager = appDataClient.imageManager()
+        print(imageManager.speakerImages)
+        print(imageManager.locationImages)
+        
         speakers().forEach { speaker in
-            
-            if speaker.imageVersion != nil && !appDataClient.imageExists(forName: speaker.recordName) {
-               imagesToLoad.append(speaker.recordName)
+            if let version = speaker.imageVersion {
+                imagesToLoad.append((speaker.recordName, .speakers, version))
+            }
+        }
+        
+        locations().forEach { location in
+            if let version = location.imageVersion {
+                imagesToLoad.append((location.recordName, .locations, version))
             }
         }
         
         sponsors().forEach { sponsor in
-            
-            if sponsor.imageVersion != 0 && !appDataClient.imageExists(forName: sponsor.recordName) {
-                imagesToLoad.append(sponsor.recordName)
+            if let version = sponsor.imageVersion {
+                imagesToLoad.append((sponsor.recordName, .sponsors, version))
             }
         }
         
         let images = imagesToLoad
         
         Task {
-            await appDataClient.downloadImages(images)
+            await imageManager.checkAndDownloadIfMissing(images)
         }
         
         callback()
@@ -233,9 +241,7 @@ class ServerAppDataManager: AppDataManager {
     }
     
     func sponsors() -> [ServerSponsor] {
-        // FIXME
-        //return data?.sponsors ?? []
-        return []
+        return data?.sponsors?.sponsors ?? []
     }
     
     func speakers() -> [IDUSpeaker] {

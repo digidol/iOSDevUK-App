@@ -3,7 +3,7 @@
 //  iOSDevUK
 //
 //  Created by Neil Taylor on 04/08/2018.
-//  Copyright © 2018 Aberystwyth University. All rights reserved.
+//  Copyright © 2018-2022 Aberystwyth University. All rights reserved.
 //
 
 import UIKit
@@ -21,7 +21,7 @@ class ImageTextCollectionViewCell: UICollectionViewCell {
                    twitterId: String?,
                    withBorderRadius radius: CGFloat?) {
         self.name.text = name
-        self.image.displayImage(named: imageName)
+        self.image.displayImage(named: imageName, inCategory: .speakers)
         if radius != nil {
             image.addBorderWithCorner(radius: radius!)
         }

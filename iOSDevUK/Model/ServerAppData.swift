@@ -21,13 +21,16 @@ struct ServerMetadata: Codable, CustomStringConvertible {
     /** Version number of the locations data. */
     var locationsVersion: Int
     
+    var sponsorsVersion: Int
+    
     init() {
         dataVersion = 0
         locationsVersion = 0
+        sponsorsVersion = 0
     }
     
     var description: String {
-        return "ServerMetadata data: \(dataVersion) locations: \(locationsVersion)"
+        return "ServerMetadata data: \(dataVersion) locations: \(locationsVersion) sponsors: \(sponsorsVersion)"
     }
 }
 
@@ -46,11 +49,24 @@ class ServerLocationsData: Codable, CustomStringConvertible {
     }
 }
 
+class ServerSponsorsData: Codable, CustomStringConvertible {
+    
+    var dataVersion: Int
+    
+    var sponsors: [ServerSponsor]
+    
+    var description: String {
+        return "ServerSponsorsData \(sponsors.count)"
+    }
+}
+
 class CombinedServerAppData {
     
     var schedule: ServerAppData?
     
     var locations: ServerLocationsData?
+    
+    var sponsors: ServerSponsorsData?
     
 }
 
@@ -235,5 +251,5 @@ class ServerSponsor: Codable {
     var sponsorCategory: SponsorCategory
     var cellType: SponsorCellType
     var note: String
-    var imageVersion: Int
+    var imageVersion: Int?
 }

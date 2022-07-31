@@ -3,7 +3,7 @@
 //  iOSDevUK
 //
 //  Created by Neil Taylor on 04/08/2018.
-//  Copyright © 2018 Aberystwyth University. All rights reserved.
+//  Copyright © 2018-2022 Aberystwyth University. All rights reserved.
 //
 
 import UIKit
@@ -61,9 +61,9 @@ extension SessionItemsTableViewCell: UICollectionViewDataSource {
             cell.speaker.text = sessionItem.speakerNames()
                 
             if sessionItem.speakers.count > 0 {
-                cell.speakerOneImage.displayImage(named: sessionItem.speakers[0].recordName)
+                cell.speakerOneImage.displayImage(named: sessionItem.speakers[0].recordName, inCategory: .speakers)
                 if sessionItem.speakers.count == 2 {
-                    cell.speakerTwoImage.displayImage(named: sessionItem.speakers[1].recordName)
+                    cell.speakerTwoImage.displayImage(named: sessionItem.speakers[1].recordName, inCategory: .speakers)
                 }
             }
             

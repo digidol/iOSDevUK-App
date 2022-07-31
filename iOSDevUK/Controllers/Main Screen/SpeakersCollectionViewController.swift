@@ -8,14 +8,74 @@
 
 import UIKit
 
-class SpeakersCollectionViewController: UICollectionViewController {
-
+class SpeakersCollectionViewController: UICollectionViewController, UISearchBarDelegate {
+    
+    func search(searchBar: UISearchBar, text: String, selectedScope: Int) {
+        if text.isEmpty {
+            filteredSpeakers = nil
+        }
+        else {
+            let searchName = selectedScope == 0 || selectedScope == 1
+            
+            let searchBiography = selectedScope == 0 || selectedScope == 2
+            
+            filteredSpeakers = speakers?.filter({ speaker in
+                if searchName && speaker.name.lowercased().contains(text.lowercased()) {
+                    return true
+                }
+                
+                if searchBiography && speaker.biography.lowercased().contains(text.lowercased()) {
+                    return true
+                }
+                
+                return false
+            })
+        }
+        
+        collectionView?.reloadData()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        
+        guard let text = searchBar.text else {
+            filteredSpeakers = nil
+            collectionView?.reloadData()
+            return
+        }
+        
+        search(searchBar: searchBar, text: text, selectedScope: selectedScope)
+        
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        search(searchBar: searchBar, text: searchText, selectedScope: searchBar.selectedScopeButtonIndex)
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        filteredSpeakers = nil
+        
+        collectionView?.reloadData()
+    }
+    
+    /** List of speakers to display when search is not used. */
     var speakers: [IDUSpeaker]?
+    
+    /** Contains any matches to be displayed when searching for content. */
+    var filteredSpeakers: [IDUSpeaker]?
     
     var appSettings: AppSettings?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let searchController = UISearchController()
+        searchController.searchBar.delegate = self
+        searchController.searchBar.scopeButtonTitles = ["All", "Name", "Biography"]
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Who do you want to search for?"
+        
+        self.navigationItem.searchController = searchController
+        self.navigationItem.hidesSearchBarWhenScrolling = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -36,14 +96,15 @@ class SpeakersCollectionViewController: UICollectionViewController {
 
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return speakers?.count ?? 0
+        let count =  filteredSpeakers?.count ?? (speakers?.count ?? 0)
+        return count
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "speakersCollectionCell2", for: indexPath) as! ImageTextCollectionViewCell
         
-        if let speaker = speakers?[indexPath.row] {
+        if let speaker = filteredSpeakers?[indexPath.row] ?? speakers?[indexPath.row] {
             cell.configure(name: speaker.name, imageName: speaker.recordName, twitterId: speaker.twitterId, withBorderRadius: 4.0)
         }
         
@@ -57,7 +118,7 @@ class SpeakersCollectionViewController: UICollectionViewController {
             
             if let indexPaths = collectionView?.indexPathsForSelectedItems,
                let indexPath = indexPaths.first,
-               let speaker = speakers?[indexPath.row] {
+               let speaker = filteredSpeakers?[indexPath.row] ?? speakers?[indexPath.row] {
                
                 speakerController.appSettings = appSettings
                 speakerController.speaker = speaker

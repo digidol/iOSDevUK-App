@@ -16,6 +16,8 @@ enum AppDataClientError: Error {
     case fileStorageError
 }
 
+
+
 class AppDataClient {
     
     /** The name for the metadata file. */
@@ -27,18 +29,11 @@ class AppDataClient {
     /** The name for the file with the locations data (location types and locations). */
     private let locationsFile = "locations.json"
     
+    /** The name for the file with the sponsors data. */
+    private let sponsorsFile = "sponsors.json"
+    
     /** URL of the server that hosts the data. */
     private let serverURL = "https://blue-ocean-0c74f0b03.1.azurestaticapps.net"
-    
-    /**
-     The version for the data file that the app is using.
-     */
-    private var dataVersion: Int?
-    
-    /**
-     The version of the locations information, used by the app.
-     */
-    private var locationsVersion: Int?
     
     /**
      The base URL for the different server that holds the metadata, data, locations, sponsor and image data.
@@ -50,6 +45,15 @@ class AppDataClient {
      */
     init() {
         self.serverBaseUrl = URL(string: serverURL)
+        self.imagesManager = IDUImageManager(serverURL: serverURL)
+    }
+    
+    static let shared = AppDataClient()
+    
+    private let imagesManager: IDUImageManager
+    
+    func imageManager() -> IDUImageManager {
+        return self.imagesManager
     }
     
     /**
@@ -74,6 +78,9 @@ class AppDataClient {
             
             combinedData.locations = try await fetchLocations(serverVersion: metadata.locationsVersion)
             debugPrint("\(String(describing: combinedData.locations))")
+            
+            combinedData.sponsors = try await fetchSponsors(serverVersion: metadata.sponsorsVersion)
+            debugPrint("\(String(describing: combinedData.sponsors))")
             
             return combinedData
         }
@@ -141,6 +148,32 @@ class AppDataClient {
         }
     }
     
+    func fetchSponsors(serverVersion: Int) async throws -> ServerSponsorsData? {
+        do {
+            
+            let localData = loadExistingDataFromLocalStore(withType: ServerSponsorsData.self, inFile: sponsorsFile)
+            
+            if let local = localData {
+                if local.dataVersion >= serverVersion {
+                    return localData
+                }
+            }
+            
+            let data = try await fetchData(withType: ServerSponsorsData.self, fromSource: "data/\(sponsorsFile)")
+            
+            let success = storeDataToLocalStore(data: data, inFile: sponsorsFile)
+            if !success {
+                return nil
+            }
+            
+            return data
+        }
+        catch let error as NSError {
+            debugPrint("Error raised when fetching the sponsors: \(error)")
+            return nil
+        }
+    }
+    
     /**
      Returns the current version of the schedule, which is either loaded from the local store or retrieved from the server.
      
@@ -155,7 +188,6 @@ class AppDataClient {
     func fetchSchedule(serverVersion: Int) async throws -> ServerAppData? {
         
         do {
-            
             let localSchedule = loadExistingDataFromLocalStore(withType: ServerAppData.self, inFile: scheduleFile)
             
             if let local = localSchedule {
@@ -206,12 +238,6 @@ class AppDataClient {
     func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         return paths[0]
-    }
-    
-    func imageExists(forName name: String) -> Bool {
-        let cachesDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-        let fileUrl = cachesDirectory.appendingPathComponent("\(name).png", isDirectory: false)
-        return FileManager.default.fileExists(atPath: fileUrl.path)
     }
     
 
@@ -282,64 +308,10 @@ class AppDataClient {
             return nil
         }
     }
-    
-    var pendingDataTasks = [String:URLSessionDownloadTask]()
-    
-    func processImage(withName name: String, for url: URL) {
-        
-        Task {
-            do {
-                let (location, response) = try await URLSession.shared.download(from: url)
-                guard let httpResponse = response as? HTTPURLResponse,
-                      httpResponse.statusCode == 200 else {
-                    debugPrint("unable to access data for \(url)")
-                    return
-                }
-                
-                let imageData = try Data(contentsOf: location)
-                    
-                if let image = UIImage(data: imageData),
-                    let pngData = image.pngData() {
-                    let cachesUrl = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-                    let destinationUrl = cachesUrl.appendingPathComponent("\(name).png", isDirectory: false)
-                    try pngData.write(to: destinationUrl)
-                }
-            }
-            catch let error as NSError {
-                debugPrint("Error accessing image file \(error)")
-            }
-        }
-    }
-    
-    func processImageAsync(withName name: String, for url: URL) async {
-        
-        do {
-            let (location, response) = try await URLSession.shared.download(from: url)
-            guard let httpResponse = response as? HTTPURLResponse,
-                  httpResponse.statusCode == 200 else {
-                debugPrint("unable to access data for \(url)")
-                return
-            }
-            
-            let imageData = try Data(contentsOf: location)
-                
-            if let image = UIImage(data: imageData), let pngData = image.pngData() {
-                let cachesUrl = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
-                let destinationUrl = cachesUrl.appendingPathComponent("\(name).png", isDirectory: false)
-                try pngData.write(to: destinationUrl)
-                debugPrint("stored data for: \(url)")
-            }
-        }
-        catch let error as NSError {
-            debugPrint("Error accessing image file \(error)")
-        }
-    }
-    
-    func downloadImages(_ images: [String]) async {
-        for name in images {
-            if let url = serverBaseUrl?.appendingPathComponent("images/speakers/\(name).jpg", isDirectory: false) {
-                await processImageAsync(withName: name, for: url)
-            }
-        }
-    }
+}
+
+enum AppImageCategory: String {
+    case speakers = "speakers"
+    case locations = "locations"
+    case sponsors = "sponsors"
 }

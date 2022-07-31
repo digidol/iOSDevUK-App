@@ -3,15 +3,13 @@
 //  iOSDevUK
 //
 //  Created by Neil Taylor on 08/08/2017.
-//  Copyright © 2017 Aberystwyth University. All rights reserved.
+//  Copyright © 2017-2022s Aberystwyth University. All rights reserved.
 //
 
 import UIKit
 import MapKit
-import CoreData
 
 class AllLocationsMapViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, MKMapViewDelegate {
-    
     
     /// Types of location that are shown in the table
     var locationTypes: [IDULocationType]?
@@ -39,7 +37,6 @@ class AllLocationsMapViewController: UIViewController, UITableViewDelegate, UITa
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
-    
     
     // MARK: - Navigation
      
@@ -104,15 +101,13 @@ class AllLocationsMapViewController: UIViewController, UITableViewDelegate, UITa
         
         if let annotation = annotation as? Annotation {
             let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-            imageView.displayImage(named: annotation.identifier, withDefault: "LocationPin")
+            imageView.displayImage(named: annotation.identifier, inCategory: .locations, withDefault: "LocationPin")
             imageView.addBorderWithCorner()
             annotationView!.leftCalloutAccessoryView = imageView
         }
             
         annotationView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
-        
         annotationView!.annotation = annotation
-        
         return annotationView
     }
     

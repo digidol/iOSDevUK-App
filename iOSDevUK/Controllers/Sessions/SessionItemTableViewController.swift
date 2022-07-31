@@ -3,7 +3,7 @@
 //  iOSDevUK
 //
 //  Created by Neil Taylor on 06/08/2018.
-//  Copyright © 2018 Aberystwyth University. All rights reserved.
+//  Copyright © 2018-2022 Aberystwyth University. All rights reserved.
 //
 
 import UIKit
@@ -87,7 +87,7 @@ class SessionItemTableViewController: IDUTableViewController {
             
             if let speakers = sessionItem?.sortedSpeakers() {
                 cell.itemLabel.text = speakers[indexPath.row].name
-                cell.itemImage?.displayImage(named: speakers[indexPath.row].recordName)
+                cell.itemImage?.displayImage(named: speakers[indexPath.row].recordName, inCategory: .speakers)
                             
             }
                 //sessionItem?.speakers?.sortedArray(using: [NSSortDescriptor(key: "name", ascending: true)]) as! [Speaker]
@@ -99,7 +99,7 @@ class SessionItemTableViewController: IDUTableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: "sessionItemLocationCell", for: indexPath) as! AlternativeBasicTableViewCell
             cell.itemLabel.text = sessionItem?.location?.name ?? "To be confirmed"
             
-            cell.itemImage?.displayImage(named: sessionItem?.location?.recordName, withDefault: "LocationPin")
+            cell.itemImage?.displayImage(named: sessionItem?.location?.recordName, inCategory: .locations, withDefault: "LocationPin")
             cell.itemImage?.addBorderWithCorner()
             return cell
         }

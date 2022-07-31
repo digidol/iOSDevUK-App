@@ -43,7 +43,7 @@ class LocationViewController: UIViewController, SFSafariViewControllerDelegate {
         if let location = location,
            let imageView = imageView {
             
-            imageView.displayImage(named: location.recordName, withDefault: "LocationPin")
+            imageView.displayImage(named: location.recordName, inCategory: .locations, withDefault: "LocationPin")
             imageView.addBorderWithCorner()
             
             name.text = location.name

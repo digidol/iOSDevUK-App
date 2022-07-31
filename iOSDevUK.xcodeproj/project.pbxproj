@@ -49,6 +49,7 @@
 		6BC6AD04287F0EE6003974DB /* ServerAppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BC6AD00287F0EE5003974DB /* ServerAppData.swift */; };
 		6BC6AD05287F0EE6003974DB /* IDUAppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BC6AD01287F0EE6003974DB /* IDUAppData.swift */; };
 		6BC8D450213FC58100CDA67B /* UIColor+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BC8D44F213FC58000CDA67B /* UIColor+extension.swift */; };
+		6BDC05C32895DD4500ABCEF8 /* IDUImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BDC05C22895DD4400ABCEF8 /* IDUImageManager.swift */; };
 		6BF3C3C5211F084E00806319 /* ProgrammeTripleSessionItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF3C3C4211F084E00806319 /* ProgrammeTripleSessionItemTableViewCell.swift */; };
 		6BF3C3C7211F78BB00806319 /* ConferenceDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF3C3C6211F78BB00806319 /* ConferenceDate.swift */; };
 		6BF3C3CF211F7D8500806319 /* iOSDevUKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF3C3CE211F7D8500806319 /* iOSDevUKTests.swift */; };
@@ -128,6 +129,7 @@
 		6BC6AD00287F0EE5003974DB /* ServerAppData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerAppData.swift; sourceTree = "<group>"; };
 		6BC6AD01287F0EE6003974DB /* IDUAppData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IDUAppData.swift; sourceTree = "<group>"; };
 		6BC8D44F213FC58000CDA67B /* UIColor+extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+extension.swift"; sourceTree = "<group>"; };
+		6BDC05C22895DD4400ABCEF8 /* IDUImageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDUImageManager.swift; sourceTree = "<group>"; };
 		6BF3C3C4211F084E00806319 /* ProgrammeTripleSessionItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgrammeTripleSessionItemTableViewCell.swift; sourceTree = "<group>"; };
 		6BF3C3C6211F78BB00806319 /* ConferenceDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConferenceDate.swift; sourceTree = "<group>"; };
 		6BF3C3CC211F7D8500806319 /* iOSDevUKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iOSDevUKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -274,6 +276,7 @@
 				6B52DB74210CCF32004B5C4E /* Bundle+extension.swift */,
 				6BF3C3C6211F78BB00806319 /* ConferenceDate.swift */,
 				6B7219842117448400F23784 /* IDUDataManager.swift */,
+				6BDC05C22895DD4400ABCEF8 /* IDUImageManager.swift */,
 				6B52DB61210C9714004B5C4E /* IDUTableViewController.swift */,
 				6BF46A90211C81CD006E337A /* UICollectionViewCell+extension.swift */,
 				6BC8D44F213FC58000CDA67B /* UIColor+extension.swift */,
@@ -496,6 +499,7 @@
 				6BF46A7D211C61B1006E337A /* AllLocationsMapViewController.swift in Sources */,
 				6B8454AC211624F500D1063B /* InformationTableViewCell.swift in Sources */,
 				6BB68B7221185FE200AE2823 /* SessionItemTableViewController.swift in Sources */,
+				6BDC05C32895DD4500ABCEF8 /* IDUImageManager.swift in Sources */,
 				6BF46A9D211DB8B5006E337A /* ProgrammeDoubleSessionItemTableViewCell.swift in Sources */,
 				6BF3C3DD21203AE100806319 /* MainScreenMessageTableViewCell.swift in Sources */,
 				6B72199021179B4400F23784 /* SpeakerSessionItemTableViewCell.swift in Sources */,
@@ -666,7 +670,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOSDevUK/iOSDevUK.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2020.07.18.1;
+				CURRENT_PROJECT_VERSION = 2022.08.01.1;
 				DEVELOPMENT_TEAM = NNN4GFZ9C2;
 				INFOPLIST_FILE = iOSDevUK/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -690,7 +694,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOSDevUK/iOSDevUK.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2020.07.18.1;
+				CURRENT_PROJECT_VERSION = 2022.08.01.1;
 				DEVELOPMENT_TEAM = NNN4GFZ9C2;
 				INFOPLIST_FILE = iOSDevUK/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;

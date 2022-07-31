@@ -3,7 +3,7 @@
 //  iOSDevUK
 //
 //  Created by Neil Taylor on 08/08/2017.
-//  Copyright © 2017 Aberystwyth University. All rights reserved.
+//  Copyright © 2017-2022 Aberystwyth University. All rights reserved.
 //
 
 import UIKit
@@ -25,7 +25,7 @@ class SponsorTableViewController: IDUTableViewController, SFSafariViewController
         initialiseAutomaticTableCellHeight(100.0)
         
         self.headerView.backgroundColor = UIColor.iOSDevUKRedBackground()
-        self.headerImage.displayImage(named: "DefaultImage")
+        self.headerImage.displayImage(named: "DefaultImage", inCategory: .sponsors)
         self.headerImage.addBorderWithCorner(radius: 8.0)
      
         
@@ -35,7 +35,6 @@ class SponsorTableViewController: IDUTableViewController, SFSafariViewController
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
-        
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -57,7 +56,7 @@ class SponsorTableViewController: IDUTableViewController, SFSafariViewController
         
         cell.note.text = sponsor.note
         
-        cell.sponsorLogo.displayImage(named: sponsor.recordName)
+        cell.sponsorLogo.displayImage(named: sponsor.recordName, inCategory: .sponsors)
         cell.tagline.text = sponsor.tagline
         
         cell.sponsorCategoryImage.image = UIImage(named: String(describing: sponsor.sponsorCategory))

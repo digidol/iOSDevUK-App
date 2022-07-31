@@ -19,6 +19,8 @@ class IDUAppDataWrapper {
     
     var locationList = [IDULocation]()
     
+    //var sponsorList = [ServerSponsor]()
+    
     init(serverData: CombinedServerAppData) {
         self.serverData = serverData
         let webLinks = webLinkDictionary()
