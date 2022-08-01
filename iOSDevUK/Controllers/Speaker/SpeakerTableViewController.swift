@@ -153,9 +153,16 @@ class SpeakerTableViewController: IDUTableViewController, IDUDataManager, SFSafa
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 2 {
             if let links = speaker?.webLinks {
-                let webViewController = SFSafariViewController(url: links[indexPath.row].url)
-                webViewController.delegate = self
-                self.present(webViewController, animated: true, completion: nil)
+                if links[indexPath.row].url.scheme == nil {
+                    let alert = UIAlertController(title: "URL Problem", message: "Sorry, but there is a problem with the URL that prevents us showing the link. Please let @iOSDevUK or @digidol know. ", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default))
+                    self.present(alert, animated: true, completion: nil)
+                }
+                else {
+                    let webViewController = SFSafariViewController(url: links[indexPath.row].url)
+                    webViewController.delegate = self
+                    self.present(webViewController, animated: true, completion: nil)
+                }
             }
         }
     }

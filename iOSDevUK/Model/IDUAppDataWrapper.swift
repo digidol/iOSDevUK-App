@@ -3,7 +3,7 @@
 //  iOSDevUK
 //
 //  Created by Neil Taylor on 18/08/2019.
-//  Copyright © 2019 Aberystwyth University. All rights reserved.
+//  Copyright © 2019-2022 Aberystwyth University. All rights reserved.
 
 import Foundation
 
@@ -180,12 +180,25 @@ class IDUAppDataWrapper {
         return speakerDictionary
     }
     
+    private func checkAndFixLinkWithoutScheme(url: URL) -> URL {
+        var resultUrl = url
+        if resultUrl.scheme == nil {
+            print("missing scheme information \(url)")
+            if let httpsUrl = URL(string: "https://\(url)") {
+                resultUrl = httpsUrl
+            }
+            print("updated URL is \(resultUrl)")
+        }
+        return resultUrl
+    }
+    
     func webLinkDictionary() -> [String:IDUWebLink] {
         
         var webLinkDictionary = [String:IDUWebLink]()
         
         serverData.schedule?.webLinks.forEach { webLink in
-            webLinkDictionary[webLink.recordName] = IDUWebLink(name: webLink.name, url: webLink.url)
+            let url = checkAndFixLinkWithoutScheme(url: webLink.url)
+            webLinkDictionary[webLink.recordName] = IDUWebLink(name: webLink.name, url: url)
         }
         
         return webLinkDictionary
@@ -235,7 +248,8 @@ class IDUAppDataWrapper {
             }
             
             if let link = location.webLink {
-                let webLink = IDUWebLink(name: link.name, url: link.url)
+                let url = checkAndFixLinkWithoutScheme(url: link.url)
+                let webLink = IDUWebLink(name: link.name, url: url)
                 iduLocation.webLink = webLink
             }
             
@@ -263,6 +277,4 @@ class IDUAppDataWrapper {
         
         return dictionary
     }()
-    
-    
 }

@@ -49,7 +49,7 @@ class AttendeeInfoTableViewController: ExpandedTextCellTableViewController, SFSa
         
         if indexPath.row == 5 {
             if let noteCell = cell as? ExpandingTextLabelTableViewCell {
-                noteCell.contentText = "There are five minute talks on Wednesday morning and on Thursday morning. If you would like to do five minutes on a topic, please volunteer and we'll add you to the list."
+                noteCell.contentText = "There are five minute talks on Thursday morning. If you would like to do five minutes on a topic, please volunteer and we'll add you to the list."
             }
         }
         return cell
