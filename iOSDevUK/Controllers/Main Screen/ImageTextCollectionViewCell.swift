@@ -29,11 +29,6 @@ class ImageTextCollectionViewCell: UICollectionViewCell {
             image.addBorderWithCorner()
         }
             
-        if let id = twitterId {
-            self.twitterId?.text = "@\(id)"
-        }
-        else {
-            self.twitterId?.text = ""
-        }
+        self.twitterId?.text = twitterId ?? ""
     }
 }
