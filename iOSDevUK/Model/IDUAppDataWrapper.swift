@@ -180,6 +180,16 @@ class IDUAppDataWrapper {
         return speakerDictionary
     }
     
+    /**
+     Checks the given URL to see if it has a scheme (e.g. https). If no scheme is present
+     it attempts to create an equivalent URL using https. The result is returned. If it wasn't possible
+     to add the new scheme, then the original URL is returned.
+     
+     - Parameter url The url to check.
+     
+     - Returns: Either the original URL (if scheme was present), or a new URL with https scheme or,
+       if there was a problem with the new URL using https, the original URL is shown.
+     */
     private func checkAndFixLinkWithoutScheme(url: URL) -> URL {
         var resultUrl = url
         if resultUrl.scheme == nil {
@@ -192,6 +202,12 @@ class IDUAppDataWrapper {
         return resultUrl
     }
     
+    /**
+     Creates a dictionary of the web links from the server data. It performs a check on the URL and
+     attempts to fix any URLs that are missing scheme information.
+     
+     - Returns: A dictionary of webLink names and their associated URL, indexed by the record name.
+     */
     func webLinkDictionary() -> [String:IDUWebLink] {
         
         var webLinkDictionary = [String:IDUWebLink]()

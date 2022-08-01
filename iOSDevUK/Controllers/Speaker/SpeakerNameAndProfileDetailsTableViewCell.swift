@@ -10,6 +10,8 @@ import UIKit
 
 class SpeakerNameAndProfileDetailsTableViewCell: UITableViewCell {
 
+    var alertHandler: IDUAlertHandler?
+    
     /** The name of the speaker, shown as a Title. */
     @IBOutlet weak var speakerName: UILabel!
     
@@ -70,8 +72,30 @@ class SpeakerNameAndProfileDetailsTableViewCell: UITableViewCell {
     }
     
     @IBAction func goToLinkedIn(_ sender: AnyObject) {
+        
         if let linkedIn = speaker?.linkedIn {
-            UIApplication.shared.open(URL(string: linkedIn)!, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: nil)
+            
+            var url: URL?
+            
+            if let urlFromString = URL(string: linkedIn) {
+                if urlFromString.scheme == nil {
+                    if let httpsUrl = URL(string: "https://\(linkedIn)") {
+                        url = httpsUrl
+                    }
+                }
+                else {
+                    url = urlFromString
+                }
+            }
+            
+            if let urlToOpen = url {
+                UIApplication.shared.open(urlToOpen, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: nil)
+            }
+            else {
+                if let handler = alertHandler {
+                    handler.presentAlert(title: "URL Problem", message: "Sorry, but there is a problem with the URL that prevents us showing the Linked In page. Please let @iOSDevUK or @digidol know.")
+                }
+            }
         }
     }
 }

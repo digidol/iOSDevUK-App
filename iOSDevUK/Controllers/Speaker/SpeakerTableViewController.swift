@@ -9,7 +9,7 @@
 import UIKit
 import SafariServices
 
-class SpeakerTableViewController: IDUTableViewController, IDUDataManager, SFSafariViewControllerDelegate {
+class SpeakerTableViewController: IDUTableViewController, IDUDataManager, SFSafariViewControllerDelegate, IDUAlertHandler {
     
     @IBOutlet weak var speakerImage: UIImageView!
 
@@ -80,6 +80,7 @@ class SpeakerTableViewController: IDUTableViewController, IDUDataManager, SFSafa
             if indexPath.row == 0 {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "speakerTitle", for: indexPath) as! SpeakerNameAndProfileDetailsTableViewCell
                 cell.speaker = speaker
+                cell.alertHandler = self
                 return cell
             }
             else if indexPath.row == 1 {
@@ -154,9 +155,7 @@ class SpeakerTableViewController: IDUTableViewController, IDUDataManager, SFSafa
         if indexPath.section == 2 {
             if let links = speaker?.webLinks {
                 if links[indexPath.row].url.scheme == nil {
-                    let alert = UIAlertController(title: "URL Problem", message: "Sorry, but there is a problem with the URL that prevents us showing the link. Please let @iOSDevUK or @digidol know. ", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: .default))
-                    self.present(alert, animated: true, completion: nil)
+                    self.presentAlert(title: "URL Problem", message: "Sorry, but there is a problem with the URL that prevents us showing the link. Please let @iOSDevUK or @digidol know. ")
                 }
                 else {
                     let webViewController = SFSafariViewController(url: links[indexPath.row].url)
@@ -182,5 +181,15 @@ class SpeakerTableViewController: IDUTableViewController, IDUDataManager, SFSafa
             }
         }
     }
+    
+    func presentAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        self.present(alert, animated: true, completion: nil)
+    }
 
+}
+
+protocol IDUAlertHandler {
+    func presentAlert(title:String, message:String)
 }
