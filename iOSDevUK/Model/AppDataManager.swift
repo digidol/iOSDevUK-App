@@ -179,7 +179,7 @@ class ServerAppDataManager: AppDataManager {
                         afterImageDownload imageCallback: @escaping () -> Void) {
         
         Task {
-            let client = AppDataClient()
+            let client = AppDataClient.shared
             if let combinedData = await client.loadData() {
                 setupData(combinedData, withImageCallback: imageCallback)
                 debugPrint("Data is setup!")
@@ -197,7 +197,7 @@ class ServerAppDataManager: AppDataManager {
     func processImages(withCallback callback: @escaping () -> Void) {
         
         var imagesToLoad = [(String,AppImageCategory, Int)]()
-        let appDataClient = AppDataClient()
+        let appDataClient = AppDataClient.shared
         
         let imageManager = appDataClient.imageManager()
         print(imageManager.speakerImages)

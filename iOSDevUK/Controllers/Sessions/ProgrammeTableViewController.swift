@@ -8,12 +8,7 @@
 
 import UIKit
 
-class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UISearchControllerDelegate {
-    
-    /*func updateSearchResults(for searchController: UISearchController) {
-        print("updating")
-    }*/
-    
+class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
     
     /** Segmented control to select the different days */
     @IBOutlet weak var segmentedControl: UISegmentedControl!
@@ -36,26 +31,6 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
     /** If there is an active search, any relevant sections will be displayed here. */
     var filteredSectionsToDisplay: [IDUSection]?
     
-    func didPresentSearchController(_ searchController: UISearchController) {
-        print("did present")
-    }
-    
-    func didDismissSearchController(_ searchController: UISearchController) {
-        print("dismissed")
-    }
-    
-    func presentSearchController(_ searchController: UISearchController) {
-        print("present")
-    }
-    
-    func willPresentSearchController(_ searchController: UISearchController) {
-        print("will present")
-    }
-    
-    func willDismissSearchController(_ searchController: UISearchController) {
-        print("will dismiss")
-    }
-    
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
     }
     
@@ -67,48 +42,40 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
             return
         }
         
-        filteredSectionsToDisplay = [IDUSection]()
-        
-        
-        /*days.forEach { day in
+        var filteredSections = [IDUSection]()
+        days.forEach { day in
             
-            let filteredSections = [IDUSection]()
             let filteredDay = IDUDay(recordName: day.recordName, date: day.date)
-            print("\(filteredSections) \(filteredDay)")
             
             day.sections.forEach { section in
                 
-                var filteredSections = [IDUSections]()
                 let filteredSection = IDUSection(recordName: section.recordName, name: section.name, day: filteredDay)
-                print("\(filteredSections) \(filteredSection)")
                 
                 section.sessions.forEach { session in
                     
                     let filteredSession = IDUSession(recordName: session.recordName, start: session.startTime, end: session.endTime, section: filteredSection)
                     
                     let filteredSessionItems = session.sessionItems.filter { sessionItem -> Bool in
-                        return (sessionItem.title.lowercased().contains(searchText.lowercased()) ||
-                                sessionItem.content.lowercased().contains(searchText.lowercased()))
+                        return sessionItem.matches(text: searchText)
                     }
                     
                     print("\(filteredSessionItems) \(filteredSession)")
                     
                     if filteredSessionItems.count > 0 {
                         filteredSession.sessionItems = filteredSessionItems
-                        filteredSessions.append(filteredSession)
+                        filteredSection.sessions.append(filteredSession)
                     }
-                    
                 }
                 
-                if filteredSessions.count > 0 {
-                    filteredSection.sessions = filteredSessions
+                if filteredSection.sessions.count > 0 {
                     filteredSections.append(filteredSection)
                 }
-                
             }
-            
-            
-        }*/
+        }
+        
+        if filteredSections.count > 0 {
+            filteredSectionsToDisplay = filteredSections
+        }
         
         tableView.reloadData()
     }
@@ -132,9 +99,6 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Search for sessions or speakers"
         searchController.searchBar.delegate = self
-        
-        //searchController.delegate = self
-        //searchController.searchResultsUpdater = self
         
         self.navigationItem.hidesSearchBarWhenScrolling = true
         definesPresentationContext = true
@@ -250,22 +214,42 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
     
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if let filteredSections = filteredSectionsToDisplay {
+            return filteredSections[section].name
+        }
+        
         return sectionsToDisplay?[section].name ?? "Missing"
     }
     
     // MARK: - Table view data source
 
     func numberOfSections(in tableView: UITableView) -> Int {
+        if let filteredSections = filteredSectionsToDisplay {
+            return filteredSections.count
+        }
+        
         return sectionsToDisplay?.count ?? 0
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if let filteredSections = filteredSectionsToDisplay {
+            return filteredSections[section].sessions.count
+        }
+        
         return sectionsToDisplay?[section].sessions.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var sessionToDisplay: IDUSession?
         
-        if let session = sectionsToDisplay?[indexPath.section].sessions[indexPath.row] {
+        if let filteredSections = filteredSectionsToDisplay {
+            sessionToDisplay = filteredSections[indexPath.section].sessions[indexPath.row]
+        }
+        else if let section = sectionsToDisplay {
+            sessionToDisplay = section[indexPath.section].sessions[indexPath.row]
+        }
+        
+        if let session = sessionToDisplay {
            let count = session.sessionItems.count
             
             if count == 1 {
@@ -305,13 +289,22 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
     }
 
     func notify(withSelectedItem position: Int, atPoint point: CGPoint, inCell cell: UITableViewCell) {
-        if let indexPath = tableView.indexPathForRow(at: tableView.convert(point, from: cell)),
-           let session = sectionsToDisplay?[indexPath.section].sessions[indexPath.row] {
-            selectedSessionItem = session.sessionItems[position] //(atPosition: position)
-            performSegue(withIdentifier: "programmeSessionItemDetailSegue", sender: self)
+        if let indexPath = tableView.indexPathForRow(at: tableView.convert(point, from: cell)) {
+            var sessionToDisplay: IDUSession?
+            
+            if let filteredSession = filteredSectionsToDisplay?[indexPath.section].sessions[indexPath.row] {
+                sessionToDisplay = filteredSession
+            }
+            else if let regularSession = sectionsToDisplay?[indexPath.section].sessions[indexPath.row] {
+                sessionToDisplay = regularSession
+            }
+            
+            if let session = sessionToDisplay {
+                selectedSessionItem = session.sessionItems[position]
+                performSegue(withIdentifier: "programmeSessionItemDetailSegue", sender: self)
+            }
         }
     }
-    
     
     // MARK: - Navigation
 

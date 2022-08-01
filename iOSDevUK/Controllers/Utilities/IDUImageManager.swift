@@ -42,7 +42,6 @@ class IDUImageManager {
                     if fileName.hasSuffix(".png") {
                         let name = fileName.replacingOccurrences(of: ".png", with: "")
                         let parts = name.split(separator: "-")
-                        //debugPrint(parts[0], parts[1])
                         imageData[String(parts[0])] = Int(String(parts[1]))
                     }
                 }
@@ -90,8 +89,10 @@ class IDUImageManager {
      */
     func loadImage(withName name: String, inCategory category: AppImageCategory) -> UIImage? {
         if let imageVersion = getImageInformation(forCategory: category)[name] {
+            
             let cachesUrl = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
             let imageUrl = cachesUrl.appendingPathComponent("\(category.rawValue)/\(name)-\(imageVersion).png", isDirectory: false)
+            
            if let data = try? Data(contentsOf: imageUrl),
               let image = UIImage(data: data) {
                 return image

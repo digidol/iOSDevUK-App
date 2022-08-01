@@ -254,6 +254,10 @@ class IDUAppDataWrapper {
                                latitude: location.latitude,
                                longitude: location.longitude)
             
+            if let imageVersion = location.imageVersion {
+                iduLocation.imageVersion = imageVersion
+            }
+            
             if let note = location.note {
                 iduLocation.note = note
             }

@@ -26,30 +26,29 @@ class ProgrammeOtherSessionItemTableViewCell: ProgrammeBaseSessionItemTableViewC
         super.configure(withSession: session)
         
         let sessionItem = session.sessionItems[0]
-        //let sessionItem = session.sessionItems[0] //{
-            sessionTitle.text = sessionItem.title
-            location.text = sessionItem.location?.shortName
-            
-            if sessionItem.type == IDUSessionItemType.coffeeBiscuits {
-                emojiLabel.text = "☕️🍪"
-            }
-            else if sessionItem.type == IDUSessionItemType.coffeeCake {
-                emojiLabel.text = "☕️🍰"
-            }
-            else if sessionItem.type == IDUSessionItemType.registration {
-                emojiLabel.text = "🎫"
-            }
-            else if sessionItem.type == IDUSessionItemType.train {
-                emojiLabel.text = "🚂"
-            }
-            else if sessionItem.type == IDUSessionItemType.lunch {
-                emojiLabel.text = "🍴☕️"
-            }
-            else {
-                emojiLabel.text = ""
-            }
-        //}
         
-        self.backgroundColor = UIColor.iOSDevUKOtherCellBackground()
+        sessionTitle.text = sessionItem.title
+        location.text = sessionItem.location?.shortName
+        
+        if sessionItem.type == IDUSessionItemType.coffeeBiscuits {
+            emojiLabel.text = "☕️🍪"
+        }
+        else if sessionItem.type == IDUSessionItemType.coffeeCake {
+            emojiLabel.text = "☕️🍰"
+        }
+        else if sessionItem.type == IDUSessionItemType.registration {
+            emojiLabel.text = "🎫"
+        }
+        else if sessionItem.type == IDUSessionItemType.train {
+            emojiLabel.text = "🚂"
+        }
+        else if sessionItem.type == IDUSessionItemType.lunch {
+            emojiLabel.text = "🍴☕️"
+        }
+        else {
+            emojiLabel.text = ""
+        }
+        
+        //self.backgroundColor = UIColor.iOSDevUKOtherCellBackground()
     }
 }

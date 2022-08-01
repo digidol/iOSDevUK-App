@@ -194,14 +194,6 @@ class ServerSpeaker: Codable {
     private var speakerSessionItems: [ServerSessionItem]?
     
     private var speakerWebLinks: [ServerWebLink]?
-         
-    /*func sessionItems() -> [ServerSessionItem]? {
-        return []
-    }
-    
-    func webLinks() -> [ServerWebLink]? {
-        return []
-    }*/
 }
 
 class ServerLocationType: Codable {

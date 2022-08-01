@@ -28,12 +28,18 @@ extension UIImageView {
     }
     
     func displayImage(named imageName: String?, inCategory category: AppImageCategory, withDefault defaultName: String?) {
+        
+        // clear any previous image
+        self.image = nil
+        
+        // try to load the requested image
         let imageManager = AppDataClient.shared.imageManager()
         if let name = imageName,
            let displayImage = imageManager.loadImage(withName: name, inCategory: category) {
             self.image = displayImage
         }
         
+        // set a fallback image
         if self.image == nil {
             self.image = UIImage(named: defaultName ?? "DefaultImage")
         }

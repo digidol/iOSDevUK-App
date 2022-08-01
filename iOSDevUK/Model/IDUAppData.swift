@@ -156,6 +156,14 @@ class IDUSessionItem {
     func sortedSpeakers() -> [IDUSpeaker] {
         return self.speakers.sorted(by: { $0.name > $1.name } )
     }
+    
+    func matches(text: String) -> Bool {
+        let lowercasedString = text.lowercased()
+    
+        return title.lowercased().contains(lowercasedString) ||
+               content.lowercased().contains(lowercasedString) ||
+               speakerNames().lowercased().contains(lowercasedString)
+    }
 }
 
 class IDUSpeaker {
