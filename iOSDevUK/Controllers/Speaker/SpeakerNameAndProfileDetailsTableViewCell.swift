@@ -3,28 +3,35 @@
 //  iOSDevUK
 //
 //  Created by Neil Taylor on 17/08/2016.
-//  Copyright © 2016 Aberystwyth University. All rights reserved.
+//  Copyright © 2016-2022 Aberystwyth University. All rights reserved.
 //
 
 import UIKit
 
 class SpeakerNameAndProfileDetailsTableViewCell: UITableViewCell {
 
+    /**
+     Handler to be notified if an alert needs to be displayed. The alert handler will take the details and display
+     the alert in its context as a View Controller. This is done because the Cell cannot present an UIActionController.
+     */
     var alertHandler: IDUAlertHandler?
     
     /** The name of the speaker, shown as a Title. */
     @IBOutlet weak var speakerName: UILabel!
     
     /**
-     
+     The button that will launch the Twitter page in a browser.
      */
     @IBOutlet weak var twitterButton: UIButton!
     
     /**
-  
+     The button that will launch the LinkedIn page in a browser.
      */
     @IBOutlet weak var linkedInButton: UIButton!
     
+    /**
+     The speaker that is shown in the screen.
+     */
     var speaker: IDUSpeaker? {
         didSet {
             setSpeakerInfo()

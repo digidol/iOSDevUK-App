@@ -10,6 +10,9 @@ import UIKit
 
 class SpeakersCollectionViewController: UICollectionViewController, UISearchBarDelegate {
     
+    
+    
+    
     func search(searchBar: UISearchBar, text: String, selectedScope: Int) {
         if text.isEmpty {
             filteredSpeakers = nil
@@ -76,6 +79,12 @@ class SpeakersCollectionViewController: UICollectionViewController, UISearchBarD
         
         self.navigationItem.searchController = searchController
         self.navigationItem.hidesSearchBarWhenScrolling = true
+        
+        if let _ = self.collectionView?.hasAmbiguousLayout {
+            print("ambiguous layout in SpeakersCollectionViewController")
+        }
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -128,5 +137,19 @@ class SpeakersCollectionViewController: UICollectionViewController, UISearchBarD
             }
         }
     }
+    
+    private let cellSize = CGSize(width: 140.0, height: 140.0)
+    private let sectionInsets = UIEdgeInsets(top: 15, left: 30.0, bottom: 15.0, right: 30.0)
+}
 
+// properties above and the following code based on example at https://www.raywenderlich.com/5758454-uiscrollview-tutorial-getting-started
+extension SpeakersCollectionViewController : UICollectionViewDelegateFlowLayout {
+    
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    return cellSize
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+    return sectionInsets
+  }
 }

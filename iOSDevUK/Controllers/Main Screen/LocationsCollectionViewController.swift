@@ -75,6 +75,10 @@ class LocationsCollectionViewController: UICollectionViewController, UISearchBar
         
         self.navigationItem.searchController = searchController
         self.navigationItem.hidesSearchBarWhenScrolling = true
+        
+        if let _ = self.collectionView?.hasAmbiguousLayout {
+            print("ambiguous layout in LocationsCollectionViewController")
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -126,4 +130,19 @@ class LocationsCollectionViewController: UICollectionViewController, UISearchBar
         }
     }
     
+    private let cellSize = CGSize(width: 110.0, height: 140.0)
+    private let sectionInsets = UIEdgeInsets(top: 15, left: 20.0, bottom: 15.0, right: 20.0)
 }
+
+// properties above and the following code based on example at https://www.raywenderlich.com/5758454-uiscrollview-tutorial-getting-started
+extension LocationsCollectionViewController : UICollectionViewDelegateFlowLayout {
+    
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    return cellSize
+  }
+  
+  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+      return sectionInsets
+  }
+}
+

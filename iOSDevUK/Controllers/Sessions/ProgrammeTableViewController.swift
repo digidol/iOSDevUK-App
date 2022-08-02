@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
+class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate, UISearchControllerDelegate {
     
     /** Segmented control to select the different days */
     @IBOutlet weak var segmentedControl: UISegmentedControl!
@@ -31,6 +31,13 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
     /** If there is an active search, any relevant sections will be displayed here. */
     var filteredSectionsToDisplay: [IDUSection]?
     
+    func willDismissSearchController(_ searchController: UISearchController) {
+        searchController.searchBar.text = nil
+        filteredSectionsToDisplay = nil
+        segmentedControl.isEnabled = true
+        tableView.reloadData()
+    }
+    
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
     }
     
@@ -38,11 +45,13 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
         
         if searchText.isEmpty {
             filteredSectionsToDisplay = nil
+            segmentedControl.isEnabled = true
             tableView.reloadData()
             return
         }
         
         var filteredSections = [IDUSection]()
+        segmentedControl.isEnabled = false
         days.forEach { day in
             
             let filteredDay = IDUDay(recordName: day.recordName, date: day.date)
@@ -99,6 +108,7 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Search for sessions or speakers"
         searchController.searchBar.delegate = self
+        searchController.delegate = self
         
         self.navigationItem.hidesSearchBarWhenScrolling = true
         definesPresentationContext = true
