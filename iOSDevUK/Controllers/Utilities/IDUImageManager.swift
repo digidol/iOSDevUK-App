@@ -150,7 +150,6 @@ class IDUImageManager {
                     await processImageAsync(withName: name, category: category, version: version,for: url)
                 }
             }
-            
         }
     }
     

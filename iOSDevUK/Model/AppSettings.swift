@@ -117,7 +117,7 @@ class IDUAppSettings: AppSettings {
                 }
             }
             else {
-                print("\(key) does not begin with \(ScheduleKeyPrefix)")
+                debugPrint("\(key) does not begin with \(ScheduleKeyPrefix)")
             }
         }
         

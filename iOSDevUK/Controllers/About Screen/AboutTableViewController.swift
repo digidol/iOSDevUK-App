@@ -3,7 +3,7 @@
 //  iOSDevUK
 //
 //  Created by Neil Taylor on 12/07/2016.
-//  Copyright © 2016 Aberystwyth University. All rights reserved.
+//  Copyright © 2016-2022 Aberystwyth University. All rights reserved.
 //
 
 import UIKit
@@ -22,8 +22,6 @@ class AboutTableViewController: ExpandedTextCellTableViewController, SFSafariVie
         self.refreshControl?.addTarget(self,
                                        action: #selector(AboutTableViewController.handleRefresh),
                                        for: .valueChanged)
-
-        headerView.backgroundColor = UIColor.iOSDevUKDarkBlue()
     }
     
     /**

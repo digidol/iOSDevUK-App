@@ -179,8 +179,7 @@ class ServerAppDataManager: AppDataManager {
                         afterImageDownload imageCallback: @escaping () -> Void) {
         
         Task {
-            let client = AppDataClient.shared
-            if let combinedData = await client.loadData() {
+            if let combinedData = await AppDataClient.shared.loadData() {
                 setupData(combinedData, withImageCallback: imageCallback)
                 debugPrint("Data is setup!")
                 callback(true)
@@ -225,9 +224,8 @@ class ServerAppDataManager: AppDataManager {
         
         Task {
             await imageManager.checkAndDownloadIfMissing(images)
+            callback()
         }
-        
-        callback()
         
     }
     

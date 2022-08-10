@@ -168,7 +168,7 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
             }
             else if date.conferenceDateStatus() == .afterConference {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "outOfConferenceMessage", for: indexPath) as! MainScreenMessageTableViewCell
-                cell.messageLabel.text = "iOSDevUK 9 has finished. Follow @iOSDevUK for details about next year"
+                cell.messageLabel.text = "iOSDevUK 10 has finished. Follow @iOSDevUK for details about next year"
                 cell.logoView.image = UIImage(named: "DefaultImage")
                 return cell
             }
