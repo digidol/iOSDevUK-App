@@ -17,37 +17,10 @@ class AboutTableViewController: ExpandedTextCellTableViewController, SFSafariVie
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.refreshControl = UIRefreshControl()
-        self.refreshControl?.addTarget(self,
-                                       action: #selector(AboutTableViewController.handleRefresh),
-                                       for: .valueChanged)
-    }
-    
-    /**
- 
-     */
-    @objc func handleRefresh() {
-        print("handle refresh")
-        
-        //let cloudDataAccess = CloudDataAccess()
-        //cloudDataAccess.reloadAllUpdates(self.refreshEnded)
-    }
-    
-    /**
-  
-     */
-    func refreshEnded(_ success: Bool) {
-        self.refreshControl?.endRefreshing()
-        print("Ended with success: \(success)")
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-    }
-
-    @IBAction func closeView(_ sender: AnyObject?) {
-        dismiss(animated: true, completion: nil)
     }
     
     // MARK: - Table View Delegate 

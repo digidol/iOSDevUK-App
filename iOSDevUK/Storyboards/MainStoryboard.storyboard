@@ -801,17 +801,17 @@ Information</string>
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="top" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="adA-Vl-VYp">
+                                        <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" distribution="fillProportionally" alignment="top" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="adA-Vl-VYp">
                                             <rect key="frame" x="16" y="8" width="288" height="84"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yn4-DT-rst">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yn4-DT-rst">
                                                     <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="40" id="Zll-hm-ICJ"/>
                                                         <constraint firstAttribute="height" constant="40" id="cHh-sb-oFh"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cEP-sV-JTN">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cEP-sV-JTN">
                                                     <rect key="frame" x="49" y="0.0" width="239" height="17"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -2630,6 +2630,35 @@ The policy applies at all conference and workshop venues and conference-related 
             </objects>
             <point key="canvasLocation" x="-9386" y="-3037"/>
         </scene>
+        <!--Table View Controller-->
+        <scene sceneID="nUV-Lg-q6d">
+            <objects>
+                <tableViewController id="pa9-cC-bls" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="lik-r2-t5V">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="C82-nS-IvD">
+                                <rect key="frame" x="0.0" y="44.5" width="320" height="43.5"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="C82-nS-IvD" id="DTL-xN-hgr">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="pa9-cC-bls" id="hMj-Z7-3v0"/>
+                            <outlet property="delegate" destination="pa9-cC-bls" id="Dos-rf-Cvy"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="C5w-xq-5Wx"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xBk-mB-FLl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-10388" y="-3115"/>
+        </scene>
         <!--About App View Controller-->
         <scene sceneID="2NP-Ah-RFn">
             <objects>
@@ -2657,6 +2686,9 @@ The policy applies at all conference and workshop venues and conference-related 
                                                             <constraint firstAttribute="width" constant="120" id="7Ms-rX-vOn"/>
                                                             <constraint firstAttribute="height" constant="120" id="qfQ-ai-pQn"/>
                                                         </constraints>
+                                                        <connections>
+                                                            <outletCollection property="gestureRecognizers" destination="tEl-GF-cbG" appends="YES" id="Wv7-wh-gpr"/>
+                                                        </connections>
                                                     </imageView>
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -2735,8 +2767,9 @@ Other images by Neil &amp; Chris</string>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7hd-l0-uRc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer numberOfTapsRequired="3" id="tEl-GF-cbG"/>
             </objects>
-            <point key="canvasLocation" x="-10727" y="-3037"/>
+            <point key="canvasLocation" x="-11314" y="-3115"/>
         </scene>
         <!--Sponsor Table View Controller-->
         <scene sceneID="eDR-wq-vRz">
@@ -4078,13 +4111,13 @@ Other images by Neil &amp; Chris</string>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" sectionInsetReference="safeArea" id="ZSL-Fk-hzs">
                             <size key="itemSize" width="110" height="140"/>
                             <size key="estimatedItemSize" width="110" height="140"/>
-                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="headerReferenceSize" width="50" height="50"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="locationCollectionCell" id="JdG-Po-TRB" customClass="ImageTextCollectionViewCell" customModule="iOSDevUK" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="110" height="140"/>
+                                <rect key="frame" x="0.0" y="50" width="110" height="140"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                     <rect key="frame" x="0.0" y="0.0" width="110" height="140"/>
@@ -4125,6 +4158,27 @@ Other images by Neil &amp; Chris</string>
                                 </connections>
                             </collectionViewCell>
                         </cells>
+                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="header" id="oH8-2J-nSR" customClass="HeaderCollectionReusableView" customModule="iOSDevUK" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NLU-SA-9ht">
+                                    <rect key="frame" x="8" y="15" width="42" height="21"/>
+                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="secondarySystemFillColor"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="NLU-SA-9ht" secondAttribute="trailing" constant="270" id="2cH-zI-2P1"/>
+                                <constraint firstAttribute="bottom" secondItem="NLU-SA-9ht" secondAttribute="bottom" constant="14" id="CwQ-hH-mfl"/>
+                                <constraint firstItem="NLU-SA-9ht" firstAttribute="top" secondItem="oH8-2J-nSR" secondAttribute="top" constant="15" id="rJ4-Rt-bNp"/>
+                                <constraint firstItem="NLU-SA-9ht" firstAttribute="leading" secondItem="oH8-2J-nSR" secondAttribute="leading" constant="8" id="sNK-kC-wzp"/>
+                            </constraints>
+                            <connections>
+                                <outlet property="titleText" destination="NLU-SA-9ht" id="zhc-aA-I3L"/>
+                            </connections>
+                        </collectionReusableView>
                         <connections>
                             <outlet property="dataSource" destination="tHy-4t-Hjw" id="hht-ep-R0O"/>
                             <outlet property="delegate" destination="tHy-4t-Hjw" id="Rp5-zo-v0y"/>

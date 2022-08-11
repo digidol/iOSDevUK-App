@@ -32,7 +32,7 @@ protocol AppDataManager {
     
     func setAlternativeDate(_ date: Date)
     
-    func initialiseData(onCompletion callback: @escaping (Bool) -> Void, afterImageDownload imageCallback: @escaping () -> Void)
+    func initialiseData()
     
     func days() -> [IDUDay]
     
@@ -51,8 +51,6 @@ protocol AppDataManager {
     func nowSession(forDate date: Date) -> IDUSession?
     
     func nextSession(forDate date: Date) -> IDUSession?
-    
-    //func loadLocalData(withImageCallback imageCallback: @escaping () -> Void)
 }
 
 class ServerAppDataManager: AppDataManager {
@@ -147,24 +145,11 @@ class ServerAppDataManager: AppDataManager {
         alternativeTime = date
     }
     
-    func setupData(_ data: CombinedServerAppData, withImageCallback imageCallback: @escaping () -> Void) {
+    func setupData(_ data: CombinedServerAppData) {
         self.data = data
         self.appDataWrapper = IDUAppDataWrapper(serverData: data)
-        self.processImages(withCallback: imageCallback)
+        self.processImages()
     }
-    
-    /**
-     Loads local data if it is present.
-     
-     - Returns: `true` is returned if local data exists and is loaded ready to use. Otherwise, `false` is returned.
-     
-    func loadLocalData(withImageCallback imageCallback: @escaping () -> Void) {
-        let client = AppDataClient()
-        // FIXME - investigate what this affects
-//        if let localData = client.loadExistingScheduleDataFromLocalStore() {
-//            setupData(localData, withImageCallback: imageCallback)
-//        }
-    }*/
     
     /**
      Initialise the conference data by starting process to check if there is new data. If there is, it is downloaded and a check is made to determine if an images need to be downloaded.
@@ -175,16 +160,15 @@ class ServerAppDataManager: AppDataManager {
          - message: an optional message. There won't be a message is the success parameter is `true`. There will be a message if there success parameter is `false`.
          - imageCallback: A function that is called when images have been downloaded. This can be used to refresh the display.
      */
-    func initialiseData(onCompletion callback: @escaping (_ success: Bool) -> Void,
-                        afterImageDownload imageCallback: @escaping () -> Void) {
+    func initialiseData() {
         
         Task {
             if let combinedData = await AppDataClient.shared.loadData() {
-                setupData(combinedData, withImageCallback: imageCallback)
-                callback(true)
+                setupData(combinedData)
+                NotificationCenter.default.post(name: NSNotification.Name("IDUDataUpdated"), object: true)
             }
             else {
-                callback(false)
+                NotificationCenter.default.post(name: NSNotification.Name("IDUDataUpdated"), object: false)
             }
         }
     }
@@ -192,7 +176,7 @@ class ServerAppDataManager: AppDataManager {
     /**
      Start process to determine if ...
      */
-    func processImages(withCallback callback: @escaping () -> Void) {
+    func processImages() {
         
         var imagesToLoad = [(String,AppImageCategory, Int)]()
         let appDataClient = AppDataClient.shared
@@ -224,7 +208,6 @@ class ServerAppDataManager: AppDataManager {
             
             Task {
                 await imageManager.checkAndDownloadIfMissing(images)
-                callback()
                 NotificationCenter.default.post(name: NSNotification.Name("IDUImagesUpdated"), object: nil)
             }
         }
@@ -258,7 +241,6 @@ class ServerAppDataManager: AppDataManager {
     func locationTypes() -> [IDULocationType] {
         return appDataWrapper?.locationTypeList ?? []
     }
-    
 }
 
 

@@ -31,6 +31,7 @@
 		6B8454AE2116250600D1063B /* SpeakersTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B8454AD2116250600D1063B /* SpeakersTableViewCell.swift */; };
 		6B8454B02116253200D1063B /* SessionItemsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B8454AF2116253200D1063B /* SessionItemsTableViewCell.swift */; };
 		6B8454B32116678D00D1063B /* NowAndNextTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B8454B22116678D00D1063B /* NowAndNextTableViewCell.swift */; };
+		6B857A9F28A58EA10011CE74 /* HeaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B857A9E28A58EA10011CE74 /* HeaderCollectionReusableView.swift */; };
 		6B8DC1C621384A5400C9B394 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B8DC1C521384A5400C9B394 /* CloudKit.framework */; };
 		6BB68B652118416100AE2823 /* AboutTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB68B5E2118416000AE2823 /* AboutTableViewController.swift */; };
 		6BB68B662118416100AE2823 /* ExpandableSubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB68B5F2118416000AE2823 /* ExpandableSubtitleTableViewCell.swift */; };
@@ -111,6 +112,7 @@
 		6B8454AD2116250600D1063B /* SpeakersTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakersTableViewCell.swift; sourceTree = "<group>"; };
 		6B8454AF2116253200D1063B /* SessionItemsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionItemsTableViewCell.swift; sourceTree = "<group>"; };
 		6B8454B22116678D00D1063B /* NowAndNextTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowAndNextTableViewCell.swift; sourceTree = "<group>"; };
+		6B857A9E28A58EA10011CE74 /* HeaderCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCollectionReusableView.swift; sourceTree = "<group>"; };
 		6B8DC1C521384A5400C9B394 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		6BB68B5E2118416000AE2823 /* AboutTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutTableViewController.swift; sourceTree = "<group>"; };
 		6BB68B5F2118416000AE2823 /* ExpandableSubtitleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandableSubtitleTableViewCell.swift; sourceTree = "<group>"; };
@@ -251,6 +253,7 @@
 				6B8454AF2116253200D1063B /* SessionItemsTableViewCell.swift */,
 				6B7219932117C93000F23784 /* SpeakersCollectionViewController.swift */,
 				6B8454AD2116250600D1063B /* SpeakersTableViewCell.swift */,
+				6B857A9E28A58EA10011CE74 /* HeaderCollectionReusableView.swift */,
 			);
 			path = "Main Screen";
 			sourceTree = "<group>";
@@ -468,6 +471,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B857A9F28A58EA10011CE74 /* HeaderCollectionReusableView.swift in Sources */,
 				6BF3C3C7211F78BB00806319 /* ConferenceDate.swift in Sources */,
 				6B72197921166BCE00F23784 /* NowAndNextCollectionViewCell.swift in Sources */,
 				6BF3C3DB211F946200806319 /* MyScheduleTableViewController.swift in Sources */,
@@ -670,7 +674,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOSDevUK/iOSDevUK.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2022.08.11.1;
+				CURRENT_PROJECT_VERSION = 2022.08.11.2;
 				DEVELOPMENT_TEAM = NNN4GFZ9C2;
 				INFOPLIST_FILE = iOSDevUK/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -678,7 +682,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.3.3;
+				MARKETING_VERSION = 6.3.4;
 				PRODUCT_BUNDLE_IDENTIFIER = uk.ac.aber.iOSDevUK;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -694,7 +698,7 @@
 				CODE_SIGN_ENTITLEMENTS = iOSDevUK/iOSDevUK.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2022.08.11.1;
+				CURRENT_PROJECT_VERSION = 2022.08.11.2;
 				DEVELOPMENT_TEAM = NNN4GFZ9C2;
 				INFOPLIST_FILE = iOSDevUK/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -702,7 +706,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 6.3.3;
+				MARKETING_VERSION = 6.3.4;
 				PRODUCT_BUNDLE_IDENTIFIER = uk.ac.aber.iOSDevUK;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

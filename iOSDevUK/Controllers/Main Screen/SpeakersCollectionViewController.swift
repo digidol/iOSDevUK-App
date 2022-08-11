@@ -8,57 +8,7 @@
 
 import UIKit
 
-class SpeakersCollectionViewController: UICollectionViewController, UISearchBarDelegate {
-    
-    
-    
-    
-    func search(searchBar: UISearchBar, text: String, selectedScope: Int) {
-        if text.isEmpty {
-            filteredSpeakers = nil
-        }
-        else {
-            let searchName = selectedScope == 0 || selectedScope == 1
-            
-            let searchBiography = selectedScope == 0 || selectedScope == 2
-            
-            filteredSpeakers = speakers?.filter({ speaker in
-                if searchName && speaker.name.lowercased().contains(text.lowercased()) {
-                    return true
-                }
-                
-                if searchBiography && speaker.biography.lowercased().contains(text.lowercased()) {
-                    return true
-                }
-                
-                return false
-            })
-        }
-        
-        collectionView?.reloadData()
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
-        
-        guard let text = searchBar.text else {
-            filteredSpeakers = nil
-            collectionView?.reloadData()
-            return
-        }
-        
-        search(searchBar: searchBar, text: text, selectedScope: selectedScope)
-        
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        search(searchBar: searchBar, text: searchText, selectedScope: searchBar.selectedScopeButtonIndex)
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        filteredSpeakers = nil
-        
-        collectionView?.reloadData()
-    }
+class SpeakersCollectionViewController: UICollectionViewController {
     
     /** List of speakers to display when search is not used. */
     var speakers: [IDUSpeaker]?
@@ -83,8 +33,6 @@ class SpeakersCollectionViewController: UICollectionViewController, UISearchBarD
         if let _ = self.collectionView?.hasAmbiguousLayout {
             print("ambiguous layout in SpeakersCollectionViewController")
         }
-        
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -102,7 +50,6 @@ class SpeakersCollectionViewController: UICollectionViewController, UISearchBarD
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
-
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let count =  filteredSpeakers?.count ?? (speakers?.count ?? 0)
@@ -152,4 +99,57 @@ extension SpeakersCollectionViewController : UICollectionViewDelegateFlowLayout 
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
     return sectionInsets
   }
+}
+
+/**
+ Manages the search functionality on the screen.
+ */
+extension SpeakersCollectionViewController: UISearchBarDelegate {
+    
+    func search(searchBar: UISearchBar, text: String, selectedScope: Int) {
+        if text.isEmpty {
+            filteredSpeakers = nil
+        }
+        else {
+            let searchName = selectedScope == 0 || selectedScope == 1
+            
+            let searchBiography = selectedScope == 0 || selectedScope == 2
+            
+            filteredSpeakers = speakers?.filter({ speaker in
+                if searchName && speaker.name.lowercased().contains(text.lowercased()) {
+                    return true
+                }
+                
+                if searchBiography && speaker.biography.lowercased().contains(text.lowercased()) {
+                    return true
+                }
+                
+                return false
+            })
+        }
+        
+        collectionView?.reloadData()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        
+        guard let text = searchBar.text else {
+            filteredSpeakers = nil
+            collectionView?.reloadData()
+            return
+        }
+        
+        search(searchBar: searchBar, text: text, selectedScope: selectedScope)
+        
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        search(searchBar: searchBar, text: searchText, selectedScope: searchBar.selectedScopeButtonIndex)
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        filteredSpeakers = nil
+        
+        collectionView?.reloadData()
+    }
 }

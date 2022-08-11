@@ -79,7 +79,7 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
     @objc func checkForServerData() {
         if let manager = appDataManager {
             
-            let dataCallback = { (success: Bool) -> Void in
+            let _ = { (success: Bool) -> Void in
                 if success {
                     self.reloadData()
                 }
@@ -87,11 +87,7 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
                 self.endRefreshControlDisplay()
             }
             
-            let imageCallback = { () -> Void in
-                self.reloadData()
-            }
-            
-            manager.initialiseData(onCompletion: dataCallback, afterImageDownload: imageCallback)
+            manager.initialiseData()
             
         }
     }
@@ -120,7 +116,11 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
         NotificationCenter.default.addObserver(forName: NSNotification.Name("IDUDataUpdated"),
                                                object: nil,
                                                queue: nil) { notification in
+            if let status = notification.object as? Bool {
+                print("got a bool \(status)")
+            }
             self.reloadData()
+            self.endRefreshControlDisplay()
         }
         
         
@@ -336,7 +336,7 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
             speakersController.speakers = appDataManager?.speakers()
         }
         else if let locationsController = segue.destination as? LocationsCollectionViewController {
-            locationsController.locations = appDataManager?.locations() ?? []
+            locationsController.locationTypes = appDataManager?.locationTypes() ?? []
         }
         else if let singleLocationController = segue.destination as? MapLocationViewController {
             singleLocationController.location = selectedCollectionViewItem as? IDULocation
