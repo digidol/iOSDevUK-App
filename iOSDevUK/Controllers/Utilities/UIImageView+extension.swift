@@ -34,6 +34,9 @@ extension UIImageView {
         
         // try to load the requested image
         let imageManager = AppDataClient.shared.imageManager()
+        print("imageManager speakers: \(imageManager.speakerImages)")
+        print("imageManager speakers: \(imageManager.locationImages)")
+        print("imageManager speakers: \(imageManager.sponsorImages)")
         if let name = imageName,
            let displayImage = imageManager.loadImage(withName: name, inCategory: category) {
             self.image = displayImage

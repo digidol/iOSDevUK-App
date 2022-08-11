@@ -148,7 +148,6 @@ class ServerAppDataManager: AppDataManager {
     func setupData(_ data: CombinedServerAppData) {
         self.data = data
         self.appDataWrapper = IDUAppDataWrapper(serverData: data)
-        self.processImages()
     }
     
     /**
@@ -166,6 +165,7 @@ class ServerAppDataManager: AppDataManager {
             if let combinedData = await AppDataClient.shared.loadData() {
                 setupData(combinedData)
                 NotificationCenter.default.post(name: NSNotification.Name("IDUDataUpdated"), object: true)
+                self.processImages()
             }
             else {
                 NotificationCenter.default.post(name: NSNotification.Name("IDUDataUpdated"), object: false)

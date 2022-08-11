@@ -2630,21 +2630,37 @@ The policy applies at all conference and workshop venues and conference-related 
             </objects>
             <point key="canvasLocation" x="-9386" y="-3037"/>
         </scene>
-        <!--Table View Controller-->
+        <!--App Data Table View Controller-->
         <scene sceneID="nUV-Lg-q6d">
             <objects>
-                <tableViewController id="pa9-cC-bls" sceneMemberID="viewController">
+                <tableViewController id="pa9-cC-bls" customClass="AppDataTableViewController" customModule="iOSDevUK" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="lik-r2-t5V">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="C82-nS-IvD">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="dataCell" textLabel="mVi-E2-Ncf" detailTextLabel="AcG-tn-DV5" style="IBUITableViewCellStyleSubtitle" id="C82-nS-IvD">
                                 <rect key="frame" x="0.0" y="44.5" width="320" height="43.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="C82-nS-IvD" id="DTL-xN-hgr">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="mVi-E2-Ncf">
+                                            <rect key="frame" x="16" y="6" width="25" height="14.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Subtitle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="AcG-tn-DV5">
+                                            <rect key="frame" x="16" y="22.5" width="40.5" height="13.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
                                 </tableViewCellContentView>
                             </tableViewCell>
                         </prototypes>
@@ -2680,14 +2696,14 @@ The policy applies at all conference and workshop venues and conference-related 
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qQe-JW-b04">
                                                 <rect key="frame" x="0.0" y="0.0" width="300" height="140"/>
                                                 <subviews>
-                                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DefaultImage" translatesAutoresizingMaskIntoConstraints="NO" id="p1N-sR-Txu">
+                                                    <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DefaultImage" translatesAutoresizingMaskIntoConstraints="NO" id="p1N-sR-Txu">
                                                         <rect key="frame" x="90" y="10" width="120" height="120"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="120" id="7Ms-rX-vOn"/>
                                                             <constraint firstAttribute="height" constant="120" id="qfQ-ai-pQn"/>
                                                         </constraints>
                                                         <connections>
-                                                            <outletCollection property="gestureRecognizers" destination="tEl-GF-cbG" appends="YES" id="Wv7-wh-gpr"/>
+                                                            <outletCollection property="gestureRecognizers" destination="tEl-GF-cbG" appends="YES" id="RoM-ec-X0O"/>
                                                         </connections>
                                                     </imageView>
                                                 </subviews>
@@ -2767,7 +2783,11 @@ Other images by Neil &amp; Chris</string>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7hd-l0-uRc" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer numberOfTapsRequired="3" id="tEl-GF-cbG"/>
+                <tapGestureRecognizer numberOfTapsRequired="2" id="tEl-GF-cbG">
+                    <connections>
+                        <segue destination="pa9-cC-bls" kind="show" id="pcO-gR-wX3"/>
+                    </connections>
+                </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="-11314" y="-3115"/>
         </scene>
@@ -4158,21 +4178,20 @@ Other images by Neil &amp; Chris</string>
                                 </connections>
                             </collectionViewCell>
                         </cells>
-                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="header" id="oH8-2J-nSR" customClass="HeaderCollectionReusableView" customModule="iOSDevUK" customModuleProvider="target">
+                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="header" id="oH8-2J-nSR" customClass="HeaderCollectionReusableView" customModule="iOSDevUK" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NLU-SA-9ht">
-                                    <rect key="frame" x="8" y="15" width="42" height="21"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NLU-SA-9ht">
+                                    <rect key="frame" x="8" y="19" width="304" height="17"/>
                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
                             <color key="backgroundColor" systemColor="secondarySystemFillColor"/>
                             <constraints>
-                                <constraint firstAttribute="trailing" secondItem="NLU-SA-9ht" secondAttribute="trailing" constant="270" id="2cH-zI-2P1"/>
                                 <constraint firstAttribute="bottom" secondItem="NLU-SA-9ht" secondAttribute="bottom" constant="14" id="CwQ-hH-mfl"/>
-                                <constraint firstItem="NLU-SA-9ht" firstAttribute="top" secondItem="oH8-2J-nSR" secondAttribute="top" constant="15" id="rJ4-Rt-bNp"/>
+                                <constraint firstItem="NLU-SA-9ht" firstAttribute="centerX" secondItem="oH8-2J-nSR" secondAttribute="centerX" id="PTr-hx-oGS"/>
                                 <constraint firstItem="NLU-SA-9ht" firstAttribute="leading" secondItem="oH8-2J-nSR" secondAttribute="leading" constant="8" id="sNK-kC-wzp"/>
                             </constraints>
                             <connections>
@@ -4192,11 +4211,11 @@ Other images by Neil &amp; Chris</string>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="8vr-Wc-Euq"/>
+        <segue reference="dm9-Qz-SHT"/>
         <segue reference="YQD-eM-jzz"/>
         <segue reference="wtk-lG-RoZ"/>
         <segue reference="3dR-Pg-iBy"/>
-        <segue reference="RRV-id-LKm"/>
+        <segue reference="m0d-P8-JIJ"/>
         <segue reference="W1y-Wf-Fuq"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.2543674111366272" green="0.40975379943847656" blue="0.50812226533889771" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

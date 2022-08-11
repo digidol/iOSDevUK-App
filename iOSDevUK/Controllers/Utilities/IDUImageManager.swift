@@ -93,14 +93,19 @@ class IDUImageManager {
             let cachesUrl = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
             let imageUrl = cachesUrl.appendingPathComponent("\(category.rawValue)/\(name)-\(imageVersion).png", isDirectory: false)
             
+           print("loadImage: trying to get image for: \(name) at \(imageUrl)")
            if let data = try? Data(contentsOf: imageUrl),
               let image = UIImage(data: data) {
+                print("loadImage: returning the image")
                 return image
            }
            else if let assetImage = UIImage(named: name) {
+                print("loadImage: checking if can retrieve from central store instead")
                 return assetImage
            }
         }
+        
+        print("loadImage: no success getting image for \(name)")
         return nil
     }
     
@@ -138,6 +143,7 @@ class IDUImageManager {
             
             let imageData = getImageInformation(forCategory: category)
             
+            print("Image data for \(name) with version \(version): \(imageData)")
             var download = true
             if let imageVersion = imageData[name] {
                 if imageVersion >= version {
@@ -174,7 +180,9 @@ class IDUImageManager {
     func processImageAsync(withName name: String, category: AppImageCategory, version: Int, for url: URL) async {
         
         do {
+            print("starting data download for \(name)")
             let (data, response) = try await URLSession.shared.download(from: url)
+            print("download complete for \(name)")
             guard let httpResponse = response as? HTTPURLResponse,
                   httpResponse.statusCode == 200 else {
                 debugPrint("unable to access data for \(url)")
@@ -192,6 +200,9 @@ class IDUImageManager {
                 let destinationUrl = cachesUrl.appendingPathComponent("\(category.rawValue)/\(name)-\(version).png", isDirectory: false)
                 
                 try pngData.write(to: destinationUrl)
+                print("data written to disk at: \(destinationUrl)")
+                
+                print("data file exists? \(name): \(FileManager.default.fileExists(atPath: destinationUrl.path))")
                 
                 updateImageInformation(withName: name, category: category, version: version)
             }

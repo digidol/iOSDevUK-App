@@ -32,6 +32,7 @@
 		6B8454B02116253200D1063B /* SessionItemsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B8454AF2116253200D1063B /* SessionItemsTableViewCell.swift */; };
 		6B8454B32116678D00D1063B /* NowAndNextTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B8454B22116678D00D1063B /* NowAndNextTableViewCell.swift */; };
 		6B857A9F28A58EA10011CE74 /* HeaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B857A9E28A58EA10011CE74 /* HeaderCollectionReusableView.swift */; };
+		6B857AA128A59AC90011CE74 /* AppDataTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B857AA028A59AC90011CE74 /* AppDataTableViewController.swift */; };
 		6B8DC1C621384A5400C9B394 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B8DC1C521384A5400C9B394 /* CloudKit.framework */; };
 		6BB68B652118416100AE2823 /* AboutTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB68B5E2118416000AE2823 /* AboutTableViewController.swift */; };
 		6BB68B662118416100AE2823 /* ExpandableSubtitleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BB68B5F2118416000AE2823 /* ExpandableSubtitleTableViewCell.swift */; };
@@ -113,6 +114,7 @@
 		6B8454AF2116253200D1063B /* SessionItemsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionItemsTableViewCell.swift; sourceTree = "<group>"; };
 		6B8454B22116678D00D1063B /* NowAndNextTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowAndNextTableViewCell.swift; sourceTree = "<group>"; };
 		6B857A9E28A58EA10011CE74 /* HeaderCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderCollectionReusableView.swift; sourceTree = "<group>"; };
+		6B857AA028A59AC90011CE74 /* AppDataTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDataTableViewController.swift; sourceTree = "<group>"; };
 		6B8DC1C521384A5400C9B394 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		6BB68B5E2118416000AE2823 /* AboutTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutTableViewController.swift; sourceTree = "<group>"; };
 		6BB68B5F2118416000AE2823 /* ExpandableSubtitleTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandableSubtitleTableViewCell.swift; sourceTree = "<group>"; };
@@ -239,6 +241,7 @@
 			isa = PBXGroup;
 			children = (
 				6BF3C3E12121DA8300806319 /* AboutAppViewController.swift */,
+				6B857AA028A59AC90011CE74 /* AppDataTableViewController.swift */,
 				6BB68B6C2118455900AE2823 /* AttendeeInfoTableViewController.swift */,
 				6B8454A52116242E00D1063B /* ImageTextCollectionViewCell.swift */,
 				6B8454A72116244200D1063B /* InformationCollectionViewCell.swift */,
@@ -488,6 +491,7 @@
 				6B52DB75210CCF32004B5C4E /* Bundle+extension.swift in Sources */,
 				6BB68B6A2118416100AE2823 /* SponsorTableViewController.swift in Sources */,
 				6BC6AD05287F0EE6003974DB /* IDUAppData.swift in Sources */,
+				6B857AA128A59AC90011CE74 /* AppDataTableViewController.swift in Sources */,
 				6B045D17212390F800A68B48 /* InclusivityViewController.swift in Sources */,
 				6B8454B32116678D00D1063B /* NowAndNextTableViewCell.swift in Sources */,
 				6B52DB36210C913B004B5C4E /* AppDelegate.swift in Sources */,

@@ -3,7 +3,7 @@
 //  iOSDevUK
 //
 //  Created by Neil Taylor on 13/08/2018.
-//  Copyright © 2018-2019 Aberystwyth University. All rights reserved.
+//  Copyright © 2018-2022 Aberystwyth University. All rights reserved.
 //
 
 import UIKit
@@ -14,6 +14,8 @@ class AboutAppViewController: UIViewController, MFMailComposeViewControllerDeleg
     @IBOutlet weak var versionLabel: UILabel!
     
     @IBOutlet weak var logo: UIImageView!
+    
+    var appDataClient: AppDataClient?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,6 +56,13 @@ class AboutAppViewController: UIViewController, MFMailComposeViewControllerDeleg
     
     @IBAction func showTwitter(_ sender: AnyObject) {
         UIApplication.shared.open(URL(string: "https://twitter.com/digidol")!, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: nil)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if let controller = segue.destination as? AppDataTableViewController {
+            controller.appDataClient = appDataClient
+        }
     }
 
 }

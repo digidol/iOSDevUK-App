@@ -33,13 +33,15 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
         
         initialiseAutomaticTableCellHeight(50.0)
         
-        //loadLocalData()
+        print("---- checking for server data")
         checkForServerData()
-        
+        didLoadCheckStarted = true
         configureRefreshControl()
         
         //setAlternativeTime(time: "2022-07-15T15:10:00+01:00")
     }
+    
+    var didLoadCheckStarted = false
     
     /**
      Configure the table to have a refresh control. This will call the updateData
@@ -63,32 +65,18 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
         }
     }
     
-    /*func loadLocalData() {
-        if let manager = appDataManager {
-            manager.loadLocalData { () -> Void in
-                print("handle image load for local data")
-                self.reloadData()
-            }
-        }
-    }*/
-    
     /**
      If the data manager is set for this screen, start the process to check if
      updated data is on the server and, if so, download it.
      */
     @objc func checkForServerData() {
+        if didLoadCheckStarted {
+            didLoadCheckStarted = false
+            return
+        }
+        
         if let manager = appDataManager {
-            
-            let _ = { (success: Bool) -> Void in
-                if success {
-                    self.reloadData()
-                }
-                
-                self.endRefreshControlDisplay()
-            }
-            
             manager.initialiseData()
-            
         }
     }
     
@@ -110,12 +98,15 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
         NotificationCenter.default.addObserver(forName: NSNotification.Name("IDUImagesUpdated"),
                                                object: nil,
                                                queue: nil) { notification in
+            print("recevied notification for IDUImagesUpdated")
             self.reloadData()
         }
         
         NotificationCenter.default.addObserver(forName: NSNotification.Name("IDUDataUpdated"),
                                                object: nil,
                                                queue: nil) { notification in
+            
+            print("recevied notification for IDUDataUpdated")
             if let status = notification.object as? Bool {
                 print("got a bool \(status)")
             }
@@ -123,9 +114,9 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
             self.endRefreshControlDisplay()
         }
         
-        
         if let manager = appDataManager {
             if manager.shouldTryRemoteUpdate() {
+                print("+++++ checking for server data")
                 checkForServerData()
             }
         }
@@ -360,6 +351,10 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
         else if let sponsorController = segue.destination as? SponsorTableViewController {
             sponsorController.sponsors = self.appDataManager?.sponsors() ?? []
         }
+        else if let aboutAppController = segue.destination as? AboutAppViewController {
+            aboutAppController.appDataClient = AppDataClient.shared
+        }
+        
     }
     
     /**

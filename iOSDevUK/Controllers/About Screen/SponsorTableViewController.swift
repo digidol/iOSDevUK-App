@@ -8,7 +8,6 @@
 
 import UIKit
 import SafariServices
-import CoreData
 
 class SponsorTableViewController: IDUTableViewController, SFSafariViewControllerDelegate {
 
