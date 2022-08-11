@@ -153,19 +153,23 @@ class IDUImageManager {
         }
     }
     
-    private func updateImageInformation(withName name: String, category: AppImageCategory, version: Int) throws {
+    private func updateImageInformation(withName name: String, category: AppImageCategory, version: Int) {
         var imageInformation = getImageInformation(forCategory: category)
         
         if let previousVersion = imageInformation[name] {
             let cachesUrl = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask)[0]
             let previousUrl = cachesUrl.appendingPathComponent("\(category.rawValue)/\(name)-\(previousVersion).png", isDirectory: false)
-            try FileManager.default.removeItem(at: previousUrl)
+            do {
+                try FileManager.default.removeItem(at: previousUrl)
+            }
+            catch let error as NSError {
+                print("error trying to remove previous version: \(error)")
+            }
         }
         
         imageInformation[name] = version
         setImageInformation(imageInformation, forCategory: category)
     }
-    
     
     func processImageAsync(withName name: String, category: AppImageCategory, version: Int, for url: URL) async {
         
@@ -189,9 +193,7 @@ class IDUImageManager {
                 
                 try pngData.write(to: destinationUrl)
                 
-                try updateImageInformation(withName: name, category: category, version: version)
-                
-                debugPrint("stored data for: \(url)")
+                updateImageInformation(withName: name, category: category, version: version)
             }
         }
         catch let error as NSError {

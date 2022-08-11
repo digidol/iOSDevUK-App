@@ -100,16 +100,6 @@ class SpeakerTableViewController: IDUTableViewController, IDUDataManager, SFSafa
             
             if let sortedItems = speaker?.sessionItems.sorted(by: { $0.session.startTime < $1.session.startTime }) {
                 cell.sessionItem = sortedItems[indexPath.row]
-                /*if let callingItem = callingSessionItem {
-                
-                } callingItem == sortedItems[indexPath.row] {
-                    cell.isUserInteractionEnabled = false
-                    cell.accessoryType = .none
-                }
-                else {
-                    cell.isUserInteractionEnabled = true
-                    cell.accessoryType = .disclosureIndicator
-                }*/
             }
             
             return cell

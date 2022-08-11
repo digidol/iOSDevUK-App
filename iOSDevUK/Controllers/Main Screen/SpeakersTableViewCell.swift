@@ -12,6 +12,7 @@ class SpeakersTableViewCell: UITableViewCell, IDUDataManager {
     
     var speakers: [IDUSpeaker]?
     
+    /** From protocol IDUDataManager */
     var selectedItem: ((_ item: Any) -> Void)?
     
     @IBOutlet weak var collectionView: UICollectionView!

@@ -181,7 +181,6 @@ class ServerAppDataManager: AppDataManager {
         Task {
             if let combinedData = await AppDataClient.shared.loadData() {
                 setupData(combinedData, withImageCallback: imageCallback)
-                debugPrint("Data is setup!")
                 callback(true)
             }
             else {
@@ -220,13 +219,15 @@ class ServerAppDataManager: AppDataManager {
             }
         }
         
-        let images = imagesToLoad
-        
-        Task {
-            await imageManager.checkAndDownloadIfMissing(images)
-            callback()
+        if !imagesToLoad.isEmpty {
+            let images = imagesToLoad
+            
+            Task {
+                await imageManager.checkAndDownloadIfMissing(images)
+                callback()
+                NotificationCenter.default.post(name: NSNotification.Name("IDUImagesUpdated"), object: nil)
+            }
         }
-        
     }
     
     

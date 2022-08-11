@@ -103,11 +103,26 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
      
      Calls `super` implementation before checking if an update is required.
      
+     Adds itself as an observer for the IDUImagesUpdated and IDUDataUpdated notifications.
+     
      - Parameters:
       - animated: If true, the view is being added to the window using an animation.
      */
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        NotificationCenter.default.addObserver(forName: NSNotification.Name("IDUImagesUpdated"),
+                                               object: nil,
+                                               queue: nil) { notification in
+            self.reloadData()
+        }
+        
+        NotificationCenter.default.addObserver(forName: NSNotification.Name("IDUDataUpdated"),
+                                               object: nil,
+                                               queue: nil) { notification in
+            self.reloadData()
+        }
+        
         
         if let manager = appDataManager {
             if manager.shouldTryRemoteUpdate() {
@@ -116,6 +131,15 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
         }
         
         tableView.reloadData()
+    }
+    
+    /**
+     Removes the notification observers for data and images.
+     */
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("IDUImagesUpdated"), object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("IDUDataUpdated"), object: nil)
     }
     
     func setAlternativeTime(time: String) {
