@@ -19,10 +19,10 @@ class SessionItemTableViewController: IDUTableViewController {
     var sessionItem: IDUSessionItem?
     
     fileprivate func setupButtonState() {
-        debugPrint("about to check app settings")
+        //debugPrint("about to check app settings")
         
         if let settings = appSettings, let item = sessionItem {
-            debugPrint("Checking for \(item.recordName): \(settings.isInMySchedule(withRecordName: item.recordName))")
+            //debugPrint("Checking for \(item.recordName): \(settings.isInMySchedule(withRecordName: item.recordName))")
             
             if settings.isInMySchedule(withRecordName: item.recordName) {
                 toggleAddRemoveButtonTitle()

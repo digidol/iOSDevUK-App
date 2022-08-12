@@ -68,7 +68,7 @@ class ProgrammeTableViewController: UIViewController, UITableViewDelegate, UITab
                         return sessionItem.matches(text: searchText)
                     }
                     
-                    print("\(filteredSessionItems) \(filteredSession)")
+                    //print("\(filteredSessionItems) \(filteredSession)")
                     
                     if filteredSessionItems.count > 0 {
                         filteredSession.sessionItems = filteredSessionItems

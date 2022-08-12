@@ -42,7 +42,7 @@ class IDUDay {
     }
     
     deinit {
-        print("de-initialising IDUDay \(recordName)")
+        //print("de-initialising IDUDay \(recordName)")
         sections.removeAll()
     }
 }
@@ -61,7 +61,7 @@ class IDUSection {
     }
     
     deinit {
-        print("de-initialising IDUSection \(recordName)")
+        //print("de-initialising IDUSection \(recordName)")
         sessions.removeAll()
     }
 }
@@ -82,7 +82,7 @@ class IDUSession {
     }
     
     deinit {
-        print("de-initialising IDUSession \(recordName)")
+        //print("de-initialising IDUSession \(recordName)")
         sessionItems.removeAll()
     }
     
@@ -136,7 +136,7 @@ class IDUSessionItem {
     }
     
     deinit {
-        print("de-initialising IDUSessionItem \(recordName)")
+        //print("de-initialising IDUSessionItem \(recordName)")
         speakers.removeAll()
     }
     
@@ -191,7 +191,7 @@ class IDUSpeaker {
     }
     
     deinit {
-        print("de-initialising IDUSpeaker \(recordName)")
+        //print("de-initialising IDUSpeaker \(recordName)")
         sessionItems.removeAll()
         webLinks.removeAll()
     }
@@ -226,7 +226,7 @@ class IDULocationType {
     }
     
     deinit {
-        print("de-initialising IDULocationType \(recordName)")
+        //print("de-initialising IDULocationType \(recordName)")
         locations.removeAll()
     }
 }
@@ -258,11 +258,9 @@ class IDULocation {
         self.longitude = longitude
     }
     
-    deinit {
-        print("de-initialising IDULocation \(recordName)")
-    }
-    
-    
+    //deinit {
+        //print("de-initialising IDULocation \(recordName)")
+    //}
     
 }
 

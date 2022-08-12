@@ -69,18 +69,18 @@ class AppDataClient {
             }
            
             let metadata = await fetchMetadata()
-            debugPrint("\(String(describing: metadata))")
+            //debugPrint("\(String(describing: metadata))")
             
             let combinedData = CombinedServerAppData()
                 
             combinedData.schedule = try await fetchSchedule(serverVersion: metadata.dataVersion)
-            debugPrint("\(String(describing: combinedData.schedule))")
+            //debugPrint("\(String(describing: combinedData.schedule))")
             
             combinedData.locations = try await fetchLocations(serverVersion: metadata.locationsVersion)
-            debugPrint("\(String(describing: combinedData.locations))")
+            //debugPrint("\(String(describing: combinedData.locations))")
             
             combinedData.sponsors = try await fetchSponsors(serverVersion: metadata.sponsorsVersion)
-            debugPrint("\(String(describing: combinedData.sponsors))")
+            //debugPrint("\(String(describing: combinedData.sponsors))")
             
             return combinedData
         }

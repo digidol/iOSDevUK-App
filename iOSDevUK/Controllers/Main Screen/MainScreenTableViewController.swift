@@ -3,7 +3,7 @@
 //  iOSDevUK
 //
 //  Created by Neil Taylor on 28/07/2018.
-//  Copyright © 2018-2019 Aberystwyth University. All rights reserved.
+//  Copyright © 2018-2022 Aberystwyth University. All rights reserved.
 //
 
 import UIKit
@@ -33,7 +33,7 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
         
         initialiseAutomaticTableCellHeight(50.0)
         
-        print("---- checking for server data")
+        //print("---- checking for server data")
         checkForServerData()
         didLoadCheckStarted = true
         configureRefreshControl()
@@ -98,7 +98,7 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
         NotificationCenter.default.addObserver(forName: NSNotification.Name("IDUImagesUpdated"),
                                                object: nil,
                                                queue: nil) { notification in
-            print("recevied notification for IDUImagesUpdated")
+            //print("recevied notification for IDUImagesUpdated")
             self.reloadData()
         }
         
@@ -106,17 +106,17 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
                                                object: nil,
                                                queue: nil) { notification in
             
-            print("recevied notification for IDUDataUpdated")
-            if let status = notification.object as? Bool {
-                print("got a bool \(status)")
-            }
+            //print("recevied notification for IDUDataUpdated")
+//            if let status = notification.object as? Bool {
+//                print("got a bool \(status)")
+//            }
             self.reloadData()
             self.endRefreshControlDisplay()
         }
         
         if let manager = appDataManager {
             if manager.shouldTryRemoteUpdate() {
-                print("+++++ checking for server data")
+                //print("+++++ checking for server data")
                 checkForServerData()
             }
         }
