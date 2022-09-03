@@ -102,7 +102,8 @@ class ServerAppDataManager: AppDataManager {
     func nowSession(forDate date: Date) -> IDUSession? {
         
         let filter = { (session: IDUSession) throws -> Bool in
-            return session.startTime <= date && session.endTime >= date
+            //print("\(session.startTime) \(session.endTime) \(session.startTime <= date && session.endTime.addingTimeInterval(-1.0) >= date)")
+            return session.startTime <= date && session.endTime.addingTimeInterval(-1.0) >= date
         }
         
         let sorter = { (session1: IDUSession, session2: IDUSession) throws -> Bool in

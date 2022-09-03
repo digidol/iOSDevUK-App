@@ -3,7 +3,7 @@
 //  iOSDevUK
 //
 //  Created by Neil Taylor on 11/08/2018.
-//  Copyright © 2018 Aberystwyth University. All rights reserved.
+//  Copyright © 2018-2022 Aberystwyth University. All rights reserved.
 //
 
 import Foundation
@@ -64,16 +64,29 @@ public class ConferenceDate {
         
         if let (days, hours, minutes, _) = timeToStartOfConference() {
             if days > 0 {
-                result = "\(days) days"
+                if days == 1 {
+                    if hours > 12 {
+                        return "just under 2 days"
+                    }
+                    else {
+                        return "just over \(days) day 🎉"
+                    }
+                }
+                else {
+                    result = "\(days) days"
+                }
+                
             }
             else if hours > 0 {
-                result = "\(hours) hours"
+                let hour = (hours == 1) ? "hour" : "hours"
+                result = "about \(hours) \(hour) 🥳"
             }
             else if minutes > 0 {
-                result = "\(minutes) minutes"
+                let min = (minutes == 1) ? "minute" : "minutes"
+                result = "about \(minutes) \(min) 🎉🥳"
             }
             else {
-                result = "about a minute"
+                result = "about a minute 🎉🎉🎉"
             }
         }
         

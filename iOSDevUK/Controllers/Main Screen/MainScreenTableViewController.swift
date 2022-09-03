@@ -8,6 +8,7 @@
 
 import UIKit
 import SafariServices
+import SwiftUI
 
 /**
  Manages the opening screen in the app, which provides access to all other screens.
@@ -33,12 +34,11 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
         
         initialiseAutomaticTableCellHeight(50.0)
         
-        //print("---- checking for server data")
         checkForServerData()
         didLoadCheckStarted = true
         configureRefreshControl()
         
-        //setAlternativeTime(time: "2022-07-15T15:10:00+01:00")
+        //setAlternativeTime(time: "2022-09-04T14:58:00+01:00")
     }
     
     var didLoadCheckStarted = false
@@ -70,8 +70,10 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
      updated data is on the server and, if so, download it.
      */
     @objc func checkForServerData() {
+        print("didLoadCheckStarted \(didLoadCheckStarted)")
         if didLoadCheckStarted {
             didLoadCheckStarted = false
+            self.endRefreshControlDisplay()
             return
         }
         
@@ -98,25 +100,19 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
         NotificationCenter.default.addObserver(forName: NSNotification.Name("IDUImagesUpdated"),
                                                object: nil,
                                                queue: nil) { notification in
-            //print("recevied notification for IDUImagesUpdated")
             self.reloadData()
+            self.endRefreshControlDisplay()
         }
         
         NotificationCenter.default.addObserver(forName: NSNotification.Name("IDUDataUpdated"),
                                                object: nil,
                                                queue: nil) { notification in
-            
-            //print("recevied notification for IDUDataUpdated")
-//            if let status = notification.object as? Bool {
-//                print("got a bool \(status)")
-//            }
             self.reloadData()
             self.endRefreshControlDisplay()
         }
         
         if let manager = appDataManager {
             if manager.shouldTryRemoteUpdate() {
-                //print("+++++ checking for server data")
                 checkForServerData()
             }
         }
@@ -357,6 +353,13 @@ class MainScreenTableViewController: IDUTableViewController, SFSafariViewControl
         
     }
     
+    
+    
+    @IBSegueAction func navigateToAboutAppView(_ coder: NSCoder) -> UIViewController? {
+        var view = AboutAppView()
+        view.appDataClient = AppDataClient.shared
+        return UIHostingController(coder: coder, rootView: view)
+    }
     /**
      Starts process to show the iOSDevUK twitter details.
      

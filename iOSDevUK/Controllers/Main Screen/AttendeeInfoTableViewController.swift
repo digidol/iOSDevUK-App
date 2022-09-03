@@ -11,7 +11,7 @@ import SafariServices
 
 class AttendeeInfoTableViewController: ExpandedTextCellTableViewController, SFSafariViewControllerDelegate {
 
-    let cellIdentifiers = ["tickets", "joining", "accommodation", "parking"]
+    let cellIdentifiers = ["tickets", "joining", "accommodation", "parking", "university"]
     
     
     override func viewDidLoad() {
@@ -41,13 +41,13 @@ class AttendeeInfoTableViewController: ExpandedTextCellTableViewController, SFSa
 
         let cell = tableView.dequeueReusableCell(withIdentifier: "note", for: indexPath)
         
-        if indexPath.row == 4 {
+        if indexPath.row == 5 {
             if let noteCell = cell as? ExpandingTextLabelTableViewCell {
                 noteCell.contentText = "Twitter: please tweet with #iosdevuk, and we'll be tweeting official info as @iosdevuk."
             }
         }
         
-        if indexPath.row == 5 {
+        if indexPath.row == 6 {
             if let noteCell = cell as? ExpandingTextLabelTableViewCell {
                 noteCell.contentText = "There are five minute talks on Thursday morning. If you would like to do five minutes on a topic, please volunteer and we'll add you to the list."
             }

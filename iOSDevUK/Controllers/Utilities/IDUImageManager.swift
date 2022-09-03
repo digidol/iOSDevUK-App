@@ -143,7 +143,7 @@ class IDUImageManager {
             
             let imageData = getImageInformation(forCategory: category)
             
-            //print("Image data for \(name) with version \(version): \(imageData)")
+            print("Image data for \(name) with version \(version): \(imageData)")
             var download = true
             if let imageVersion = imageData[name] {
                 if imageVersion >= version {
@@ -157,6 +157,7 @@ class IDUImageManager {
                 }
             }
         }
+        print("----------- finshed check and download ----")
     }
     
     private func updateImageInformation(withName name: String, category: AppImageCategory, version: Int) {

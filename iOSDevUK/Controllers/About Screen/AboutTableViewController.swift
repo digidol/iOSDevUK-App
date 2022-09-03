@@ -82,7 +82,7 @@ class AboutTableViewController: ExpandedTextCellTableViewController, SFSafariVie
         else {
             let expandableCell = tableView.dequeueReusableCell(withIdentifier: "Block", for: indexPath) as! ExpandableSubtitleTableViewCell
             
-            expandableCell.cellTitle.text = "The conference is organised by Aberystwyth University and it is now in its ninth year. iOS, iPhone, iPad, Apple Watch, watchOS, Apple TV and tvOS are trademarks of Apple Inc. For the avoidance of doubt, Apple Inc. has no association with this conference."
+            expandableCell.cellTitle.text = "The conference is organised by Aberystwyth University and it is now in its tenth year. iOS, iPhone, iPad, Apple Watch, watchOS, Apple TV and tvOS are trademarks of Apple Inc. For the avoidance of doubt, Apple Inc. has no association with this conference."
             
             cell = expandableCell
         }

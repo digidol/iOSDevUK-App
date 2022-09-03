@@ -258,10 +258,6 @@ class IDULocation {
         self.longitude = longitude
     }
     
-    //deinit {
-        //print("de-initialising IDULocation \(recordName)")
-    //}
-    
 }
 
 class IDUUserSettings {
