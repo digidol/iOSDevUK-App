@@ -81,11 +81,12 @@ class AllLocationsMapViewController: UIViewController, UITableViewDelegate, UITa
     func showMapLocations(forIndexPath indexPath: IndexPath) {
         mapView.removeAnnotations(mapView.annotations)
         
-        guard let locations = locationTypes?[indexPath.row].locations else {
+        guard let locationTypes = locationTypes else {
             print("Unable to access list of locations")
             return
         }
         
+        let locations = locationTypes[indexPath.row].locations
         showMapAnnotations(locations: locations)
         
         let region = regionForLocations(locations: locations)
