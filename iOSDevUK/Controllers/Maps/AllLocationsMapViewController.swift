@@ -36,6 +36,10 @@ class AllLocationsMapViewController: UIViewController, UITableViewDelegate, UITa
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        // In case this is the first time showing a map screen
+        // request permission to use the user's location
+        CLLocationManager().requestWhenInUseAuthorization()
     }
     
     // MARK: - Navigation
@@ -77,11 +81,12 @@ class AllLocationsMapViewController: UIViewController, UITableViewDelegate, UITa
     func showMapLocations(forIndexPath indexPath: IndexPath) {
         mapView.removeAnnotations(mapView.annotations)
         
-        guard let locations = locationTypes?[indexPath.row].locations else {
+        guard let locationTypes = locationTypes else {
             print("Unable to access list of locations")
             return
         }
         
+        let locations = locationTypes[indexPath.row].locations
         showMapAnnotations(locations: locations)
         
         let region = regionForLocations(locations: locations)
@@ -90,6 +95,10 @@ class AllLocationsMapViewController: UIViewController, UITableViewDelegate, UITa
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        // Avoid overriding the user's location annotation view, use the default
+        guard !(annotation is MKUserLocation) else {
+            return nil
+        }
         
         let identifier = "iosdevukLocation"
         var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
